@@ -3,28 +3,29 @@
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6 login-form-1 form-group">
-                <h3>Ingresar</h3>     
+                <h3>Registro</h3>     
                 <div class="form-group">
                     <input [(ngModel)]="usuario.username" 
                             type="text" class="form-control" 
-                            placeholder="Usuario" required/>
+                            placeholder="Correo" required/>
                 </div>
                 <div class="form-group">
                     <input  [(ngModel)]="usuario.password" 
                             type="password" class="form-control" 
                             placeholder="Contraseña" required/>
                 </div>
-                <div class="form-group ">
-                    <input [disabled]="disabled" (click)="submit()" type="submit" class="btn btnSubmit " value="Login"/>
+                <div class="form-group">
+                    <input  [(ngModel)]="usuario.name" 
+                            type="password" class="form-control" 
+                            placeholder="Nombre completo" required/>
                 </div>
-                <div class="form-group row">
-                    <a href="#" class="btnForgetPwd mr-4">Olvidaste la contraseña?</a>
-                    <a [routerLink]="['/signup']" class="btnForgetPwd-primary ml-5">No tienes cuenta?</a>                      
+                <div class="form-group">
+                    <input  [(ngModel)]="usuario.address" 
+                            type="password" class="form-control" 
+                            placeholder="Direccion" required/>
                 </div>
-                <div>
-                    <div *ngIf="alerta" class="alert alert-danger" role="alert">
-                        <strong>Error:</strong> Nombre de usuario o contraseña incorrecto
-                    </div>
+                <div class="form-group text-center">
+                    <input (click)="submit()" type="submit" class="btn btnSubmit" value="Enviar"/>
                 </div>
             </div>
         </div>

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import {UsuarioModel} from '../models/usuario.model'
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 
 let connected: boolean=false;
@@ -12,10 +11,8 @@ let connected: boolean=false;
 export class OdooService {
 
   odooClient: odoo_xmlrpc;
-  
   username:string ="";
   password:string ="";
-  intentos:number = 0;
 
   constructor() {
 
@@ -41,7 +38,6 @@ export class OdooService {
     this.odooClient.connect(function (err){
       if (err) { 
         console.log("Login Failed");
-        //this.intentos++;
         console.log(err);
         connected = false;
       } else {
