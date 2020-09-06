@@ -1,0 +1,32 @@
+<div class="container-fluid">
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 login-form-1 form-group">
+                <h3>Login</h3>     
+                <div class="form-group">
+                    <input [(ngModel)]="usuario.username" 
+                            type="text" class="form-control" 
+                            placeholder="Usuario" required/>
+                </div>
+                <div class="form-group">
+                    <input  [(ngModel)]="usuario.password" 
+                            type="password" class="form-control" 
+                            placeholder="Contraseña" required/>
+                </div>
+                <div class="form-group ">
+                    <input [disabled]="disabled" (click)="submit()" type="submit" class="btn btnSubmit " value="Login"/>
+                </div>
+                <div class="form-group row">
+                    <a href="#" class="btnForgetPwd mr-5">Olvidaste la contraseña?</a>
+                    <a href="#" class="btn btn-outline-info ml-5">Crear cuenta</a>                      
+                </div>
+                <div>
+                    <div *ngIf="alerta" class="alert alert-danger" role="alert">
+                        <strong>Error:</strong> Nombre de usuario o contraseña incorrecto
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
