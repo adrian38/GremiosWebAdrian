@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<body>
     <div class="container login-container">
         <div class="row">
             <div class="col-md-3"></div>
@@ -18,10 +18,11 @@
                     <input [disabled]="disabled" (click)="submit()" type="submit" class="btn btnSubmit " value="Login"/>
                 </div>
                 <div class="form-group row">
-                    <a href="#" class="btnForgetPwd mr-4">Olvidaste la contraseña?</a>
-                    <a [routerLink]="['/signup']" class="btnForgetPwd-primary ml-5">No tienes cuenta?</a>                      
+                    <a href="#" class="btnForgetPwd">Olvidaste la contraseña?</a>
+                                         
                 </div>
-                <div>
+                <a [routerLink]="['/signup']" class="btn btn-outline-info">No tienes cuenta?</a>  
+                <div class="m-3 text-center">
                     <div *ngIf="alerta" class="alert alert-danger" role="alert">
                         <strong>Error:</strong> Nombre de usuario o contraseña incorrecto
                     </div>
@@ -29,4 +30,4 @@
             </div>
         </div>
     </div>
-</div>
+</body>

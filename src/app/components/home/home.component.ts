@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { OdooService } from 'src/app/services/auth-odoo.service';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +7,7 @@ import { OdooService } from 'src/app/services/auth-odoo.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public _odoo:OdooService) {
+  constructor() {
    }
 
   ngOnInit(): void {

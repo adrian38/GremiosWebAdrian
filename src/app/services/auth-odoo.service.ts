@@ -8,7 +8,7 @@ let connected: boolean=false;
 @Injectable({
   providedIn: 'root'
 })
-export class OdooService {
+export class AuthOdooService {
 
   odooClient: odoo_xmlrpc;
   username:string ="";

@@ -1,6 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import {UsuarioModel} from '../../models/usuario.model'
-import { OdooService } from 'src/app/services/auth-odoo.service';
+import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,10 +11,11 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   usuario:UsuarioModel;
+  
   alerta:boolean=false;
   disabled=false;
 
-  constructor(private _authOdoo:OdooService, private router:Router) {
+  constructor(private _authOdoo:AuthOdooService, private router:Router) {
     this.usuario = new UsuarioModel;
    }
 
