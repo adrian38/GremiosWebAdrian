@@ -1,6 +1,6 @@
 import { Component, OnInit} from '@angular/core';
-import {UsuarioModel} from '../../models/usuario.model'
-import { AuthOdooService } from 'src/app/services/auth-odoo.service';
+import {  UsuarioModel  } from '../../models/usuario.model'
+import { AuthOdooService } from '../../services/auth-odoo.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   usuario:UsuarioModel;
-  
+
   alerta:boolean=false;
   disabled=false;
 
@@ -23,9 +23,10 @@ export class LoginComponent implements OnInit {
   }
 
   submit(){
+    console.log(this.usuario)
     this._authOdoo.login(this.usuario)
-    
-    setTimeout(()=>{
+
+   /* setTimeout(()=>{
       if(this._authOdoo.isConnected()){
         this.router.navigate(['/dashboard', 3]);
         console.log("done");
@@ -35,6 +36,6 @@ export class LoginComponent implements OnInit {
         this.alerta=true;
         setTimeout(()=>{this.alerta=false;this.disabled = false;},5000);
       }
-    },2000);
+    },2000);*/
   }
 }

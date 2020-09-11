@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as odoo_xmlrpc from 'odoo-xmlrpc'
-import {UsuarioModel} from '../models/usuario.model'
+import { UsuarioModel } from '../models/usuario.model'
 
 
 let connected: boolean=false;
@@ -17,7 +17,7 @@ export class AuthOdooService {
   constructor() {
 
     const host = '127.0.0.1'
-    const port=8069;
+    const port= 8069;
     const db = 'demo';
 
     this.odooClient = new odoo_xmlrpc({
@@ -30,16 +30,17 @@ export class AuthOdooService {
 
   }
 
-  login(usuario:UsuarioModel):void{
+  login(usuario:UsuarioModel){
 
     this.odooClient.username = usuario.username;
     this.odooClient.password = usuario.password;
-        
+
     this.odooClient.connect(function (err){
-      if (err) { 
-        console.log("Login Failed");
-        console.log(err);
+      if (err) {
+        console.error("Login Failed");
+        console.error(err);
         connected = false;
+        return console.log("Fail")
       } else {
         console.log("Login Success");
         connected = true;
@@ -47,7 +48,7 @@ export class AuthOdooService {
     });
   }
 
-  isConnected():boolean{  
-    return connected;      
+  isConnected():boolean{
+    return connected;
   }
 }
