@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import {  UsuarioModel  } from '../../models/usuario.model'
+import {  UsuarioModel  } from '../../models/usuario.model';
 import { AuthOdooService } from '../../services/auth-odoo.service';
 import { Router } from '@angular/router';
 
@@ -10,21 +10,21 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  usuario:UsuarioModel;
+  usuario: UsuarioModel;
 
-  alerta:boolean=false;
-  disabled=false;
+  alerta  = false;
+  disabled = false;
 
-  constructor(private _authOdoo:AuthOdooService, private router:Router) {
-    this.usuario = new UsuarioModel;
+  constructor(private authOdoo: AuthOdooService, private router: Router) {
+    this.usuario = new UsuarioModel();
    }
 
   ngOnInit(): void {
   }
 
-  submit(){
-    console.log(this.usuario)
-    this._authOdoo.login(this.usuario)
+  submit(): void  {
+    console.log(this.usuario);
+    this.authOdoo.login(this.usuario.username , this.usuario.password);
 
    /* setTimeout(()=>{
       if(this._authOdoo.isConnected()){
