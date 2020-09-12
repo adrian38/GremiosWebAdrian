@@ -3,6 +3,8 @@ import {  UsuarioModel  } from '../../models/usuario.model';
 import { AuthOdooService } from '../../services/auth-odoo.service';
 import { Router } from '@angular/router';
 
+
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

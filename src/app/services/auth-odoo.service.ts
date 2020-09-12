@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import *as odoo_xmlrpc from 'odoo-xmlrpc';
 import { UsuarioModel } from '../models/usuario.model';
-
+import { HttpClientModule } from '@angular/common/http';
 
 let connected = false;
 
