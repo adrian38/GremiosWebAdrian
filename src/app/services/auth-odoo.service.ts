@@ -31,10 +31,9 @@ export class AuthOdooService {
       {
         console.log('fail');
       }else{
-        console.log('ok',value)
+        console.log('ok', value );
       }
     });
-    console.log ('sepeto');
   }
 
   isConnected(): boolean{
