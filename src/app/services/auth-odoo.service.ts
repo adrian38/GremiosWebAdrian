@@ -39,7 +39,7 @@ export class AuthOdooService {
   }
 
   isConnected(): boolean{
-    if(connected == true)
+    if(connected === true)
     {
       return true;
     }
@@ -52,6 +52,9 @@ export class AuthOdooService {
     if (connected === true)
     {
       return uid;
+    } else
+    {
+      return 0;
     }
   }
 }
