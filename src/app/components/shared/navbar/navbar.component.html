@@ -1,9 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark row">
+    <a class="navbar-brand mt-4 mb-4">
       <img src="" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
       Gremio
     </a>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse mt-1 mb-1" id="navbarNav">
       <div class="d-flex justify-content-around">
           <div class="dropdown  ml-5 mr-5">
             <button class="btn btn-secondary dropdown-toggle" type="button"
@@ -12,8 +12,10 @@
               Elegir servicio
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Fontanería</a>
-              <a class="dropdown-item" href="#">Electricidad</a>
+              <a class="dropdown-item" (click)="newService('FONTANERÍA')"
+                 data-toggle="modal" data-target="#newServiceModal">Fontanería</a>
+              <a class="dropdown-item" (click)="newService('ELECTRICIDAD')"
+                  data-toggle="modal" data-target="#newServiceModal">Electricidad</a>
             </div>
           </div>
           <div class="input-group">
@@ -27,7 +29,7 @@
             </div>
           </div>
         </div>
-          <nav aria-label="..." class="mt-3 ml-auto p-2 bd-highlight">
+          <nav *ngIf="userConnected()" aria-label="..." class="mt-3 ml-auto p-2 bd-highlight">
             <ul class="pagination pagination-md">
               <li class="page-item active" aria-current="page" (click)="solicitudes()">
                 <span class="page-link">
@@ -44,4 +46,35 @@
             </ul>
           </nav>
     </div>
-  </nav>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="newServiceModal" tabindex="-1" 
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <img src="" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+          NUEVA SOLICITUD DE {{servicio}}
+        </h5>
+      </div>
+      <div class="column">
+        <div class="modal-body input-group">
+          <ul class="list-group list-group-flush" style="width: 30rem;">
+            <li class="list-group-item col-xl-2">             
+              <a class="col-md-1" style="width: 15rem;">¿Cuántas veces desea el servicio?</a>
+              <a class="col-xl-1" style="width: 15rem;">3</a>    
+            </li>
+            <li>
+              <button
+                  type="button" class="btn btn-outline-success" data-dismiss="modal"
+                  >Crear
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

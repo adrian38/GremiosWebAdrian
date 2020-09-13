@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 
 @Component({
   selector: 'app-navbar',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  servicio:string="";
 
-  constructor() { }
+  constructor(private _authOdoo:AuthOdooService) { }
 
   ngOnInit(): void {
+  }
+  
+  userConnected(){
+    return this._authOdoo.isConnected();
   }
 
   solicitudes(){
@@ -20,5 +26,13 @@ export class NavbarComponent implements OnInit {
   }
   terminados(){
     
+  }
+
+  newService (service:string){
+    if(this._authOdoo.isConnected()){
+      this.servicio = service;
+    }else{
+      
+    }
   }
 }

@@ -1,33 +1,29 @@
-<body>
-    <div class="container login-container">
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6 login-form-1 form-group">
-                <h3>Ingresar</h3>     
-                <div class="form-group">
-                    <input [(ngModel)]="usuario.username" 
-                            type="text" class="form-control" 
-                            placeholder="Usuario" required/>
-                </div>
-                <div class="form-group">
+<div class="container">
+    <div class="column">
+        <h1 class="text-center mb-4 text-primary">Gremio</h1>
+        <div class="card border-primary" style="width: 23rem;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                <h6 class="text-primary">USUARIO</h6>
+                <input [(ngModel)]="usuario.username" 
+                        type="text" class="form-control" 
+                        placeholder="Usuario" required/>
+                </li>
+                <li class="list-group-item">
+                    <h6 class="text-primary">CONTRASEÑA</h6>
                     <input  [(ngModel)]="usuario.password" 
                             type="password" class="form-control" 
                             placeholder="Contraseña" required/>
-                </div>
-                <div class="form-group ">
-                    <input [disabled]="disabled" (click)="submit()" type="submit" class="btn btnSubmit " value="Login"/>
-                </div>
-                <div class="form-group row">
-                    <a href="#" class="btnForgetPwd">Olvidaste la contraseña?</a>
-                                         
-                </div>
-                <a [routerLink]="['/signup']" class="btn btn-outline-info">No tienes cuenta?</a>  
-                <div class="m-3 text-center">
-                    <div *ngIf="alerta" class="alert alert-danger" role="alert">
-                        <strong>Error:</strong> Nombre de usuario o contraseña incorrecto
-                    </div>
-                </div>
-            </div>
+                </li>
+                <button class="btn btn-primary mr-3 ml-3 mt-3"
+                        [disabled]="disabled" (click)="submit()">
+                    INICIAR SESIÓN
+                </button>
+                <li class="list-group-item">
+                    <a [routerLink]="['/signup']" class="text-secondary mr-3 letra-chica">¿No tiene una cuenta?</a>
+                    <a [routerLink]="['/signup']" class="text ml-3 letra-chica">Restablecer contraseña</a>
+            </li>
+            </ul>
         </div>
     </div>
-</body>
+</div>
