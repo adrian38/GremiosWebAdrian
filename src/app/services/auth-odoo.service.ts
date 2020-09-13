@@ -4,6 +4,7 @@ import { UsuarioModel } from '../models/usuario.model';
 import { HttpClientModule } from '@angular/common/http';
 
 let connected = false;
+let uid : number;
 
 @Injectable({
   providedIn: 'root'
@@ -27,16 +28,30 @@ export class AuthOdooService {
     this.odooClient.password = password;
     console.log(this.odooClient);
     this.odooClient.connect(function(error,value){
-      if(error)
-      {
+      if (error)
+      { connected = false;
         console.log('fail');
       }else{
-        console.log('ok', value );
+        uid = value;
+        connected = true;
       }
     });
   }
 
   isConnected(): boolean{
-    return connected;
+    if(connected == true)
+    {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  sendUid(): number {
+    if (connected === true)
+    {
+      return uid;
+    }
   }
 }

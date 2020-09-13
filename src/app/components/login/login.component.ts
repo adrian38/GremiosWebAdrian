@@ -15,8 +15,9 @@ export class LoginComponent implements OnInit {
   usuario: UsuarioModel;
 
   alerta  = false;
-  disabled = false;
-
+  uid: number;
+  isAuth: boolean;
+  
   constructor(private authOdoo: AuthOdooService, private router: Router) {
     this.usuario = new UsuarioModel();
    }
@@ -25,19 +26,26 @@ export class LoginComponent implements OnInit {
   }
 
   submit(): void  {
-    console.log(this.usuario);
     this.authOdoo.login(this.usuario.username , this.usuario.password);
-
-   /* setTimeout(()=>{
-      if(this._authOdoo.isConnected()){
-        this.router.navigate(['/dashboard', 3]);
-        console.log("done");
-      }
-      else{
-        this.disabled = true;
-        this.alerta=true;
-        setTimeout(()=>{this.alerta=false;this.disabled = false;},5000);
-      }
-    },2000);*/
+    setTimeout(() => this.isAuth = (this.authOdoo.isConnected()), 2000);
+    setTimeout(() => this.runDash(), 3000);
   }
+  runDash(): void
+  {
+    if (this.isAuth === true)
+    {
+      this.alerta = false;
+      this.uid = this.authOdoo.sendUid();
+      this.router.navigateByUrl('dashboard/' + this.uid);
+    }
+    else{
+      this.alerta = true;
+    }
+  }
+
+
+
+
+
+
 }
