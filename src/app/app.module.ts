@@ -1,12 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {app_routing} from './app.routes';
-import {FormsModule} from '@angular/forms'
+import {FormsModule} from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
-//Services
-import {AuthOdooService} from './services/auth-odoo.service'
+// Services
+import {AuthOdooService} from './services/auth-odoo.service';
 
-//Components
+// Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
@@ -29,12 +30,12 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule, 
+    FormsModule,
     app_routing
   ],
   providers: [
     AuthOdooService,
-    
+    HttpClientModule,
   ],
   bootstrap: [AppComponent]
 })
