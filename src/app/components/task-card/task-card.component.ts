@@ -9,14 +9,14 @@ import { from } from 'rxjs';
 })
 export class TaskCardComponent implements OnInit {
 
-  @Input() task:TaskModel;
+  @Input() task: TaskModel;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  details(task:TaskModel){
+  details (task: TaskModel){
 
   }
 

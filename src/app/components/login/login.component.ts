@@ -1,7 +1,9 @@
 import { Component, OnInit} from '@angular/core';
-import {UsuarioModel} from '../../models/usuario.model'
-import { AuthOdooService } from 'src/app/services/auth-odoo.service';
+import {  UsuarioModel  } from '../../models/usuario.model';
+import { AuthOdooService } from '../../services/auth-odoo.service';
 import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-login',
@@ -10,22 +12,23 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  usuario:UsuarioModel;
-  
-  alerta:boolean=false;
-  disabled=false;
+  usuario: UsuarioModel;
 
-  constructor(private _authOdoo:AuthOdooService, private router:Router) {
-    this.usuario = new UsuarioModel;
+  alerta  = false;
+  disabled = false;
+
+  constructor(private authOdoo: AuthOdooService, private router: Router) {
+    this.usuario = new UsuarioModel();
    }
 
   ngOnInit(): void {
   }
 
-  submit(){
-    this._authOdoo.login(this.usuario)
-    
-    setTimeout(()=>{
+  submit(): void  {
+    console.log(this.usuario);
+    this.authOdoo.login(this.usuario.username , this.usuario.password);
+
+   /* setTimeout(()=>{
       if(this._authOdoo.isConnected()){
         this.router.navigate(['/dashboard', 3]);
         console.log("done");
@@ -35,6 +38,6 @@ export class LoginComponent implements OnInit {
         this.alerta=true;
         setTimeout(()=>{this.alerta=false;this.disabled = false;},5000);
       }
-    },2000);
+    },2000);*/
   }
 }

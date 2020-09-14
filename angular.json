@@ -125,6 +125,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "WebGremio"
+    }
+  },
+  "defaultProject": "WebGremio",
+  "cli": {
+    "analytics": "eeee44a0-6d1c-4d6d-ac40-06f1de70c913"
+  }
 }
