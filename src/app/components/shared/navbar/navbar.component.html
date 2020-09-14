@@ -1,3 +1,5 @@
+
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark row">
     <a class="navbar-brand mt-4 mb-4">
       <img src="" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
@@ -5,7 +7,7 @@
     </a>
     <div class="collapse navbar-collapse mt-1 mb-1" id="navbarNav">
       <div class="d-flex justify-content-around">
-          <div class="dropdown  ml-5 mr-5">
+          <div  class="dropdown  ml-5 mr-5">
             <button class="btn btn-secondary dropdown-toggle" type="button"
                     id="dropdownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -61,17 +63,61 @@
       </div>
       <div class="column">
         <div class="modal-body input-group">
-          <ul class="list-group list-group-flush" style="width: 30rem;">
-            <li class="list-group-item col-xl-2">             
-              <a class="col-md-1" style="width: 15rem;">¿Cuántas veces desea el servicio?</a>
-              <a class="col-xl-1" style="width: 15rem;">3</a>    
+          <ul class="list-group list-group-flush" style="width: 60rem;">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              ¿Cuántas veces desea el servicio?
+                <div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="frecuenciaRadios"
+                            value="unaVez" id="unaVezRadio" checked>         
+                    <label class="form-check-label" for="unaVezRadio">
+                      Una vez (Servicio Puntual)
+                    </label>
+                  </div>  
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="frecuenciaRadios"
+                            value="semanalmente" id="semanalmenteRadio">         
+                    <label class="form-check-label" for="semanalmenteRadio">
+                      Semanalmente (Servicio recurrente)
+                    </label>
+                  </div>
+                </div>  
             </li>
-            <li>
-              <button
-                  type="button" class="btn btn-outline-success" data-dismiss="modal"
-                  >Crear
-              </button>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              ¿Cuándo desea el servicio?
+              <input id="datepicker" width="276"/>
+              <script>
+                $('#datepicker').datepicker({
+                  uiLibrary:'bootstrap4'
+                });
+              </script>
             </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Describa el servicio que necesita
+              <textarea class="form-control"></textarea>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center" mb-5>
+              Dirección en que se realizará el servicio
+              <form>
+                <div class="form-row">
+                  <div class="col">
+                    <input type="text" class="form-control m-1" placeholder="Calle">
+                    <input type="text" class="form-control m-1" placeholder="Número">
+                    <input type="text" class="form-control m-1" placeholder="Portal">
+                    <input type="text" class="form-control m-1" placeholder="Escalera">
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control m-1" placeholder="Piso">
+                    <input type="text" class="form-control m-1" placeholder="Puerta">
+                    <input type="text" class="form-control m-1" placeholder="Cod. Postal">
+                  </div>
+                </div>
+              </form>
+            </li>
+            <button
+                  type="button" class="btn btn-outline-success mt-5" data-dismiss="modal">
+              Crear
+            </button>
           </ul>
         </div>
       </div>

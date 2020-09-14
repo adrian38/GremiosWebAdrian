@@ -29,10 +29,7 @@ export class NavbarComponent implements OnInit {
   }
 
   newService (service:string){
-    if(this._authOdoo.isConnected()){
       this.servicio = service;
-    }else{
       
-    }
   }
 }

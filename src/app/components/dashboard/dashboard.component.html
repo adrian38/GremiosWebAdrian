@@ -1,19 +1,6 @@
 <body>
-    <div class="column">
-        <div class="text-center mb-2">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                Crear Tarea
-            </button>
-        </div>
-        <app-task-card></app-task-card>
-        <div class="card-columns">
-            <div class="container text-center">
-                <app-task-card *ngFor="let task of tasksList; let i= index"
-                                [task] = "task">
-                </app-task-card>
-            </div>
-        </div>
-    </div>
+  <app-task-card></app-task-card>
+    
 </body>
 
 <!-- Modal -->

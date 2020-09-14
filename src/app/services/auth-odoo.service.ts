@@ -27,7 +27,6 @@ export class AuthOdooService {
       username: this.username,
       password: this.password,
     });
-
   }
 
   login(usuario:UsuarioModel):void{
