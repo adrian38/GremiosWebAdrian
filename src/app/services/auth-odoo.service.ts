@@ -1,43 +1,53 @@
 import { Injectable } from '@angular/core';
-import *as odoo_xmlrpc from 'odoo-xmlrpc';
-import { UsuarioModel } from '../models/usuario.model';
-import { HttpClientModule } from '@angular/common/http';
+import * as odoo_xmlrpc from 'odoo-xmlrpc'
+import {UsuarioModel} from '../models/usuario.model'
 
-let connected = false;
+
+let connected: boolean=false;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthOdooService {
 
-  public odooClient = new odoo_xmlrpc({
-    url: 'http://127.0.0.1',
-    port: '8069',
-    db: 'demo',
-    username: '',
-    password: '',
-  });
+  odooClient: odoo_xmlrpc;
+  username:string ="";
+  password:string ="";
 
   constructor() {
+
+    const host = '127.0.0.1'
+    const port=8069;
+    const db = 'demo';
+
+    this.odooClient = new odoo_xmlrpc({
+      url: 'http://' + host,
+      port: port,
+      db: db,
+      username: this.username,
+      password: this.password,
+    });
+
   }
 
-  login(username: string , password: string): void{
+  login(usuario:UsuarioModel):void{
 
-    this.odooClient.username = username;
-    this.odooClient.password = password;
-    console.log(this.odooClient);
-    this.odooClient.connect(function(error,value){
-      if(error)
-      {
-        console.log('fail');
-      }else{
-        console.log('ok',value)
+    this.odooClient.username = usuario.username;
+    this.odooClient.password = usuario.password;
+        
+    this.odooClient.connect(function (err){
+      if (err) { 
+        console.log("Login Failed");
+        console.log(err);
+        connected = false;
+      } else {
+        console.log("Login Success");
+        connected = true;
       }
     });
-    console.log ('sepeto');
   }
 
-  isConnected(): boolean{
-    return connected;
+  isConnected():boolean{  
+    return connected;      
   }
 }

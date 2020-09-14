@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   submit(): void  {
     console.log(this.usuario);
-    this.authOdoo.login(this.usuario.username , this.usuario.password);
+    
 
    /* setTimeout(()=>{
       if(this._authOdoo.isConnected()){
