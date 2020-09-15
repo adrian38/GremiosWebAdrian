@@ -18,7 +18,7 @@
     background-position: center;
     transition: -webkit-transform .2s;
     transition: transform .2s;
-    background-image: url(https://storage.googleapis.com/chydlx/codepen/blog-cards/image-1.jpg);
+    
   }
   .firmalar{
     background: #f1f4f5c7;

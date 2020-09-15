@@ -1,21 +1,57 @@
-<br>
-<br>
-<br>
-<div class="card text-center">
-  <img class="card-img-top" src=""  alt="">
-  <div class="card-body">
-    <h3 class="card-title">Gremio</h3>
-    <p class="card-text">Servicios para su Hogar</p>
-    <button type="button" 
-	class="btn btn-outline-primary"
-	href = "#" data-toggle="modal" data-target="#login-modal"
-	
-	>Empezar Ahora</button>
+<div class="container">
+  <div class="row">
+    <div class="column text-center mt-2 mb-5">
+      <h3 class="m-5">Servicios para tu hogar</h3>
+      <div class="border rounded border-primary m-5 text-center"
+            style="height: 7rem;">
+        <h1 class="mt-2" style="font-size: 4em;">Gremio</h1>
+      </div>
+      <button type="button" class="btn btn-primary m-4" 
+              data-toggle="modal" data-target="#exampleModal"
+        >EMPEZAR AHORA
+      </button>
+    </div>
   </div>
 </div>
 
-
-
-<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-	<app-login></app-login>
- </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" 
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="column">
+        <h1 class="text-center mb-4 text-primary">Gremio</h1>
+        <div class="card border-primary container mb-5" style="width: 23rem;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h6 class="text-primary">USUARIO</h6>
+                  <input [(ngModel)]="usuario.username" 
+                        type="text" class="form-control" 
+                        placeholder="Usuario" required/>
+                </li>
+                <li class="list-group-item">
+                    <h6 class="text-primary">CONTRASEÑA</h6>
+                    <input  [(ngModel)]="usuario.password" 
+                            type="password" class="form-control" 
+                            placeholder="Contraseña" required/>
+                </li>
+                <button class="btn btn-primary mr-3 ml-3 mt-3"
+                        [disabled]="disabled" (click)="submit()">
+                    INICIAR SESIÓN
+                </button>
+                <button type="button" id="close-modal" data-dismiss="modal" style="display: none;">close</button>
+                <li class="list-group-item">
+                    <a [routerLink]="['/signup']" class="text mr-3 letra-chica">¿No tiene una cuenta?</a>
+                    <a [routerLink]="['/signup']" class="text ml-3 letra-chica">Restablecer contraseña</a>
+            </li>
+              <div class="text-center">
+                <div *ngIf="alerta" class="alert alert-danger letra-chica" role="alert">
+                    <strong>Error:</strong> Nombre de usuario o contraseña incorrecto
+                </div>
+              </div>
+            </ul>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>

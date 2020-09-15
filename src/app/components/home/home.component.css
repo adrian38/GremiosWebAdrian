@@ -1,0 +1,9 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.letra-chica{
+    font-size: 0.8em;
+    letter-spacing: 0.1px;
+}

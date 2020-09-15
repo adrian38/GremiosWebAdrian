@@ -11,7 +11,6 @@ import {AuthOdooService} from './services/auth-odoo.service';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
-import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ChatComponent } from './components/chat/chat.component';
@@ -22,7 +21,6 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    LoginComponent,
     SignUpComponent,
     DashboardComponent,
     ChatComponent,
@@ -40,3 +38,4 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
