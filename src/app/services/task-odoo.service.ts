@@ -83,4 +83,65 @@ let odooClient = new odoo_xmlrpc({
             }
         });
     }
+
+    acceptProvider(id:number){
+        
+        let confirm_PO = function() {
+            const id_po = id
+            let inParams = []
+            inParams.push([id_po])
+            //inParams.push([69])
+            let params = []
+            params.push(inParams)
+            odooClient.execute_kw('purchase.order', 'button_confirm', params, function (err, value) {
+                if (err) {
+                    console.log(err);
+                    
+                } else {
+                    console.log(value);
+                    
+                }
+            })
+        }
+        
+        odooClient.connect(function (err,value) {
+            if (err) { 
+                console.log(err);
+                
+            } else {
+                console.log(value);            
+                confirm_PO(); 
+            }
+        });
+    }
+
+    declineProvider(id:number){
+        
+        let cancel_PO = function() {
+            const id_po = id
+            let inParams = []
+            inParams.push([id_po])
+            //inParams.push([69])
+            let params = []
+            params.push(inParams)
+            odooClient.execute_kw('purchase.order', 'button_cancel', params, function (err, value) {
+                if (err) {
+                    console.log(err);
+                    
+                } else {
+                    console.log(value);
+                }
+            })
+        }
+        
+        odooClient.connect(function (err,value) {
+            if (err) { 
+                console.log(err);
+                
+            } else {
+                console.log(value);            
+                cancel_PO(); 
+            }
+        });
+    }
   }

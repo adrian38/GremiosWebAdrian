@@ -14,19 +14,13 @@ export class ChatComponent implements OnInit {
 
   task:TaskModel;
   message:string="";
-  //messagesList: MessageModel[];
   messagesList:any;
-  interval:number;
 
-  constructor(private _taskOdoo:TaskOdooService, private _chatOdoo:ChatOdooService) {
-        
-    this._chatOdoo.requestAllMessages(84);
-    setTimeout(()=>{
-      this.messagesList=this._chatOdoo.getAllMessages();
-      console.log(this.messagesList[0].author_id);
-    },1500);
+  constructor(private _taskOdoo:TaskOdooService,
+              private _chatOdoo:ChatOdooService) {
 
     setInterval(()=>{
+
       this._chatOdoo.requestAllMessages(84);
 
       setTimeout(()=>{
@@ -46,16 +40,16 @@ export class ChatComponent implements OnInit {
     this.message="";
   }
 
-  updateChat(){
-    
-  }
-
   acceptProvider(){
-
+    this._taskOdoo.acceptProvider(84);
   }
 
   declineProvider(){
-    
+    this._taskOdoo.declineProvider(84);
+  }
+
+  updateTask(){
+
   }
 
 }
