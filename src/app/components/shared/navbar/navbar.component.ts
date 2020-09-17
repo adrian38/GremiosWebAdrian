@@ -10,6 +10,7 @@ import { TaskModel } from 'src/app/models/task.model';
 })
 export class NavbarComponent implements OnInit {
   servicio:string="";
+  descripcion:string="";
   task:TaskModel;
 
   constructor(private _authOdoo:AuthOdooService, private _taskOdoo:TaskOdooService) { }
@@ -35,7 +36,8 @@ export class NavbarComponent implements OnInit {
       this.servicio = service;   
   }
 
-  createNewService(){
-    this._taskOdoo.newTask();
+  createNewService(){    
+    this._taskOdoo.newTask(this.descripcion);
+    this.descripcion = "";
   }
 }

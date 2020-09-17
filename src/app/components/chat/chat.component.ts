@@ -3,6 +3,7 @@ import { TaskModel } from 'src/app/models/task.model';
 import { MessageModel } from 'src/app/models/message.model';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { ChatOdooService } from 'src/app/services/chat-odoo.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class ChatComponent implements OnInit {
   messagesList:any;
 
   constructor(private _taskOdoo:TaskOdooService,
-              private _chatOdoo:ChatOdooService) {
+              private _chatOdoo:ChatOdooService,
+              private router:Router) {
 
     setInterval(()=>{
 
@@ -42,14 +44,17 @@ export class ChatComponent implements OnInit {
 
   acceptProvider(){
     this._taskOdoo.acceptProvider(84);
+    this.router.navigate(['/dashboard', 3]);
   }
 
   declineProvider(){
     this._taskOdoo.declineProvider(84);
+    this.router.navigate(['/dashboard', 3]);
+    
   }
 
   updateTask(){
-
+    
   }
 
 }

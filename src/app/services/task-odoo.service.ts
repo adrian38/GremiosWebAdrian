@@ -29,13 +29,20 @@ let odooClient = new odoo_xmlrpc({
         odooClient.password = usuario.password;
     }
 
-    newTask(){
+    newTask(desc:string){
         
         let createService=function(){
             let SO = {
                 'company_id': 1, 
                 'order_line': [[0,0,{
                     'name': 'Servicio de Fontaneria', 
+                    'price_unit': 0.0, 
+                    'product_id': 39, 
+                    'product_uom': 1, 
+                    'product_uom_qty': 1.0, 
+                    'state': 'draft'
+                }],[0,0,{
+                    'name': desc, 
                     'price_unit': 0.0, 
                     'product_id': 39, 
                     'product_uom': 1, 
@@ -82,6 +89,10 @@ let odooClient = new odoo_xmlrpc({
                 createService();                
             }
         });
+    }
+
+    editTask(desc:string){
+        
     }
 
     acceptProvider(id:number){
@@ -143,5 +154,9 @@ let odooClient = new odoo_xmlrpc({
                 cancel_PO(); 
             }
         });
+    }
+
+    getTask(id:number){
+
     }
   }
