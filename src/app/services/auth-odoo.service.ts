@@ -16,7 +16,7 @@ export class AuthOdooService {
 
   constructor() {
 
-    const host = '127.0.0.1'
+    const host = '192.168.1.15'
     const port=8069;
     const db = 'demo';
 

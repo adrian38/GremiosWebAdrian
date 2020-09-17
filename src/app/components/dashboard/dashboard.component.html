@@ -1,6 +1,7 @@
 <body>
-  <app-task-card></app-task-card>
-    
+  <app-task-card *ngFor="let task of tasksList; let i= index"
+                  [task] = "task">
+  </app-task-card>
 </body>
 
 <!-- Modal -->

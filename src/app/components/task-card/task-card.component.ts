@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TaskModel } from '../../models/task.model'
-import { from } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-card',
@@ -11,13 +11,16 @@ export class TaskCardComponent implements OnInit {
 
   @Input() task: TaskModel;
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit(): void {
   }
 
   details (task: TaskModel){
 
+  }
+  openChat(task){
+    this.router.navigate(['/chat', task.id]);
   }
 
 }

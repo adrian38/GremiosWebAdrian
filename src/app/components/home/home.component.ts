@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { Router } from '@angular/router';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
+import { TaskOdooService } from 'src/app/services/task-odoo.service';
+import { ChatOdooService } from 'src/app/services/chat-odoo.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +17,10 @@ export class HomeComponent implements OnInit {
   alerta:boolean=false;
   disabled=false;
 
-  constructor(private _authOdoo:AuthOdooService, private router:Router) {
+  constructor(private _authOdoo:AuthOdooService,
+              private router:Router, 
+              private _taskOdoo:TaskOdooService,
+              private _chatOdoo:ChatOdooService) {
     this.usuario = new UsuarioModel;
    }
 
@@ -27,7 +32,8 @@ export class HomeComponent implements OnInit {
     
     setTimeout(()=>{
       if(this._authOdoo.isConnected()){
-        
+        this._taskOdoo.setUser(this.usuario);
+        this._chatOdoo.setUser(this.usuario);
         this.router.navigate(['/dashboard', 3]);
         console.log("done");
         document.getElementById('close-modal').click();

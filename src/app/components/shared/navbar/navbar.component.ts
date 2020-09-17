@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
+import { TaskOdooService } from 'src/app/services/task-odoo.service';
+import { TaskModel } from 'src/app/models/task.model';
 
 @Component({
   selector: 'app-navbar',
@@ -8,8 +10,9 @@ import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 })
 export class NavbarComponent implements OnInit {
   servicio:string="";
+  task:TaskModel;
 
-  constructor(private _authOdoo:AuthOdooService) { }
+  constructor(private _authOdoo:AuthOdooService, private _taskOdoo:TaskOdooService) { }
 
   ngOnInit(): void {
   }
@@ -29,7 +32,10 @@ export class NavbarComponent implements OnInit {
   }
 
   newService (service:string){
-      this.servicio = service;
-      
+      this.servicio = service;   
+  }
+
+  createNewService(){
+    this._taskOdoo.newTask();
   }
 }
