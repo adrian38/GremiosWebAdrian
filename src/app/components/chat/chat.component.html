@@ -15,33 +15,33 @@
 					<div class="form-group">
 						<div class="input-group">
 							<input id="fecha" type="text" class="form-control"
-								   placeholder="7-02-2020">
+							[placeholder]="fecha">
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
-							<input id="exampleInputEmail1" type="text" class="form-control"
-							 	   placeholder="09:00-12:00">
+							<input type="text" class="form-control"
+							[placeholder]="hora">
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
-							<input id="exampleInputEmail1" type="text" class="form-control"
+							<input type="text" class="form-control"
 								   placeholder="Address">
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
 							<textarea class="form-control" id="exampleFormControlTextarea1" 
-									  rows="1">
-								descripción
+									rows="2">
+								{{desc}}
 							</textarea>
 						</div>
 					</div>	
 					<div class="form-group">
 						<div class="input-group">
-							<input id="exampleInputEmail1" type="text" class="form-control" 
-							[placeholder]="20">
+							<input type="text" class="form-control" 
+							[placeholder]="costo">
 						</div>
 					</div>					
 				</form>
@@ -52,24 +52,22 @@
 						class="btn btn-outline-success" type="button">
 					Actualizar
 				</button>
+				<button (click)="acceptProvider()"
+							class="btn btn-outline-success ml-2">
+						<i class="fas fa-check-circle"></i>
+				</button>
+				<button (click)="declineProvider()"
+						class="btn btn-outline-danger ml-2">
+					<i class="fa fa-window-close"></i>
+				</button>
 			</div>
 		</div>
 	</div>
 	<div class="col-md-1"></div>
 	<div class="col-md-7">
 		<div class="card mr-1" style="height: 35rem;">
-			<div class="card-header row">
-				Fontanero
-				<div class="ml-auto">
-					<button (click)="acceptProvider()"
-							class="btn btn-outline-success mr-1">
-						<i class="fas fa-check-circle"></i>
-					</button>
-					<button (click)="declineProvider()"
-							class="btn btn-outline-danger">
-						<i class="fa fa-window-close"></i>
-					</button>
-				</div>
+			<div class="card-header">
+				{{providerName}}
 			</div>
 			<div class="card-body overflow-auto">
 				<div *ngFor="let message of messagesList" 

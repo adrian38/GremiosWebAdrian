@@ -20,7 +20,7 @@ export class TaskCardComponent implements OnInit {
 
   }
   openChat(task){
-    this.router.navigate(['/chat', task.id]);
+    this.router.navigate(['/chat', 210]);
   }
 
 }

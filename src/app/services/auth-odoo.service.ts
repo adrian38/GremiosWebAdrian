@@ -4,6 +4,7 @@ import {UsuarioModel} from '../models/usuario.model'
 
 
 let connected: boolean=false;
+let user:any;
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +34,24 @@ export class AuthOdooService {
 
     this.odooClient.username = usuario.username;
     this.odooClient.password = usuario.password;
+
+    let get_user = function(id:number) {
+      let inParams = []
+      inParams.push([id])
+      inParams.push([['res_partner', '=', id]])
+      inParams.push(['name'])
+      let params = []
+      params.push(inParams)
+      this.odooClient.execute_kw('res.partner', 'search', params, function (err, value) {
+          if (err) {
+              console.log(err);  
+          } else {
+              console.log(value);
+          }
+      })
+  }
         
-    this.odooClient.connect(function (err){
+    this.odooClient.connect(function (err, value){
       if (err) { 
         console.log("Login Failed");
         console.log(err);
@@ -42,6 +59,9 @@ export class AuthOdooService {
       } else {
         console.log("Login Success");
         connected = true;
+        console.log(value);
+        
+        get_user(value);
       }
     });
   }

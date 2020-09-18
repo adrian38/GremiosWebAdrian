@@ -36,15 +36,15 @@ let messagesList:any;
         odooClient.password = "alan";
     }
 
-    sendMessageClient(message:string){
+    sendMessageClient(message:string, id:number){
 
         let send_msg_PO = function() {
-            const id_po = 84
+            const id_po = id
             let inParams = []
             inParams.push([id_po])
             let params = []
             params.push(inParams)
-            params.push({'body':message})
+            params.push({'body':message,'message_type':'notification', 'subtype':'false'})
             odooClient.execute_kw('purchase.order', 'message_post', params, function (err, value) {
                 if (err) {
                     console.log(err);
@@ -65,15 +65,15 @@ let messagesList:any;
 
     }
 
-    sendMessageProvider(message:string){
+    sendMessageProvider(message:string, id:number){
         let send_msg_PO = function() {
-            const id_po = 84
+            const id_po = id
             let inParams = []
             inParams.push([id_po])
             //inParams.push([69])
             let params = []
             params.push(inParams)
-            params.push({'body':message})
+            params.push({'body':message,'message_type':'notification', 'subtype':'false'})
             odooClient2.execute_kw('purchase.order', 'message_post', params, function (err, value) {
                 if (err) {
                     console.log(err);
@@ -101,16 +101,20 @@ let messagesList:any;
             let inParams = []
             inParams.push([id_po])
             inParams.push([['res_id', '=', id_po]])
-            inParams.push(['message_type','model','res_id','body','author_id'])
+            inParams.push(['message_type','model','res_id','body','author_id','author_avatar','display_name','subtype_id'])
             let params = []
             params.push(inParams)
             odooClient.execute_kw('purchase.order', 'search_messages', params, function (err, value) {
                 if (err) {
                     console.log(err);  
                 } else {
-                    console.log(value);
-                    messagesList=value;
+                    //console.log(value);
+                    messagesList=value;               
+                    messagesList = messagesList.filter(messages=>{
+                        return messages.subtype_id ===false;
+                      });
                     messagesList.reverse();
+                    
                 }
             })
         }

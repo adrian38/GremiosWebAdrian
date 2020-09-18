@@ -7,9 +7,12 @@ let odooClient = new odoo_xmlrpc({
     url: 'http://' + '192.168.1.15',
     port: 8069,
     db: 'demo',
-    username: '',
-    password: '',
+    username: 'alan@example.com',
+    password: 'alan',
 });
+
+let task:any;
+let id_origin:number;
 
 @Injectable({
     providedIn: 'root'
@@ -17,8 +20,7 @@ let odooClient = new odoo_xmlrpc({
   export class TaskOdooService {
 
     TasksList:TaskModel[];
-    task:TaskModel;
-    user:UsuarioModel
+    user:UsuarioModel;
 
     constructor(){
         
@@ -41,14 +43,8 @@ let odooClient = new odoo_xmlrpc({
                     'product_uom': 1, 
                     'product_uom_qty': 1.0, 
                     'state': 'draft'
-                }],[0,0,{
-                    'name': desc, 
-                    'price_unit': 0.0, 
-                    'product_id': 39, 
-                    'product_uom': 1, 
-                    'product_uom_qty': 1.0, 
-                    'state': 'draft'
                 }]],
+                'note':desc,
                 'partner_id': 44,
                 'require_payment': false, 
                 'require_signature': false,
@@ -62,6 +58,7 @@ let odooClient = new odoo_xmlrpc({
             odooClient.execute_kw('sale.order', 'create', params, function (err, value) {
                 if (err) {
                     console.log(err);
+                    
                 } else {
                     //flow.set('SO',value)
                     console.log(value);
@@ -156,7 +153,62 @@ let odooClient = new odoo_xmlrpc({
         });
     }
 
-    getTask(id:number){
+    requestTask(id:number){
+        
 
+        let get_po_by_id = function() {
+            const id_po = id
+            let inParams = []
+            inParams.push([['id', '=', id_po]])
+            inParams.push(['partner_id', 'amount_total', 'order_line', 'user_id', 'date_order', 'origin'])
+            let params = []
+            params.push(inParams)
+            odooClient.execute_kw('purchase.order', 'search_read', params, function (err, value) {
+                if (err) {
+                    console.log(err);  
+                } else {
+                    console.log(value);
+                    task = value;
+                    id_origin = Number(task[0].origin.slice(1,task[0].origin.lenght))-1;
+                    
+                        
+                }
+            })
+        }
+
+        let get_desc_so = function(id) {
+            const id_so = id
+            let inParams = []
+            inParams.push([['id', '=', id_so]])
+            inParams.push(['note'])
+            let params = []
+            params.push(inParams)
+            odooClient.execute_kw('sale.order', 'search_read', params, function (err, value) {
+                if (err) {
+                    console.log(err);  
+                } else {
+                    console.log(value);
+                    task.push(value[0]);
+                    console.log(task);
+                               
+                }
+            })
+        }
+          
+        odooClient.connect(function (err,value) {
+            if (err) { 
+                console.log(err); 
+            } else {
+                console.log(value);
+                get_po_by_id();
+                setTimeout(() => {
+                    get_desc_so(id_origin);
+                }, 1000);                  
+            }
+        });
+    }
+
+    getRequestedTask(){
+        return task;
     }
   }
