@@ -34,6 +34,7 @@ export class ChatComponent implements OnInit {
     })
 
     this._taskOdoo.requestTask(this.purchaseOrderID);
+    
     setTimeout(()=>{
       this.task = this._taskOdoo.getRequestedTask()[0];
       this.desc = this._taskOdoo.getRequestedTask()[1]['note'];
@@ -43,7 +44,7 @@ export class ChatComponent implements OnInit {
       this.providerName = this.task['partner_id'][1];
       console.log(this.desc);
       
-    },2000);
+    },3000);
     
     
     

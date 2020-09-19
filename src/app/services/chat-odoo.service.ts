@@ -27,13 +27,15 @@ let messagesList:any;
 
     
     user:UsuarioModel
+    id:any;
 
     constructor(){}
 
-    setUser(usuario:UsuarioModel){
+    setUser(usuario:UsuarioModel, id){
         this.user=usuario;
-        odooClient.username = "alan@example.com";
-        odooClient.password = "alan";
+        odooClient.username = usuario.username;
+        odooClient.password = usuario.password;
+        this.id = id;
     }
 
     sendMessageClient(message:string, id:number){

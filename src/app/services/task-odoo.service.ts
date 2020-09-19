@@ -13,29 +13,36 @@ let odooClient = new odoo_xmlrpc({
 
 let task:any;
 let id_origin:number;
+let tasksList:any;
+let ID:any;
+let taskProvider:any;
 
 @Injectable({
     providedIn: 'root'
   })
   export class TaskOdooService {
 
-    TasksList:TaskModel[];
+    
     user:UsuarioModel;
+    
 
     constructor(){
         
     }
-    setUser(usuario:UsuarioModel){
+    setUser(usuario:UsuarioModel, id){
         this.user=usuario;
         odooClient.username = usuario.username;
         odooClient.password = usuario.password;
+        ID = id;
+
     }
 
-    newTask(desc:string){
+    newTask(desc:string, type:string){
         
         let createService=function(){
             let SO = {
-                'company_id': 1, 
+                'company_id': 1,
+                'client_order_ref':type, 
                 'order_line': [[0,0,{
                     'name': 'Servicio de Fontaneria', 
                     'price_unit': 0.0, 
@@ -45,7 +52,7 @@ let id_origin:number;
                     'state': 'draft'
                 }]],
                 'note':desc,
-                'partner_id': 44,
+                'partner_id': ID[0]['partner_id'][0],           
                 'require_payment': false, 
                 'require_signature': false,
                 'state': 'draft'
@@ -60,7 +67,6 @@ let id_origin:number;
                     console.log(err);
                     
                 } else {
-                    //flow.set('SO',value)
                     console.log(value);
                     inParams = []
                     inParams.push(value)
@@ -98,7 +104,6 @@ let id_origin:number;
             const id_po = id
             let inParams = []
             inParams.push([id_po])
-            //inParams.push([69])
             let params = []
             params.push(inParams)
             odooClient.execute_kw('purchase.order', 'button_confirm', params, function (err, value) {
@@ -106,8 +111,7 @@ let id_origin:number;
                     console.log(err);
                     
                 } else {
-                    console.log(value);
-                    
+                    console.log(value);            
                 }
             })
         }
@@ -129,7 +133,6 @@ let id_origin:number;
             const id_po = id
             let inParams = []
             inParams.push([id_po])
-            //inParams.push([69])
             let params = []
             params.push(inParams)
             odooClient.execute_kw('purchase.order', 'button_cancel', params, function (err, value) {
@@ -155,7 +158,6 @@ let id_origin:number;
 
     requestTask(id:number){
         
-
         let get_po_by_id = function() {
             const id_po = id
             let inParams = []
@@ -169,17 +171,14 @@ let id_origin:number;
                 } else {
                     console.log(value);
                     task = value;
-                    id_origin = Number(task[0].origin.slice(1,task[0].origin.lenght))-1;
-                    
-                        
+                    id_origin = task[0].origin;                               
                 }
             })
         }
 
         let get_desc_so = function(id) {
-            const id_so = id
             let inParams = []
-            inParams.push([['id', '=', id_so]])
+            inParams.push([['name', '=', id]])
             inParams.push(['note'])
             let params = []
             params.push(inParams)
@@ -201,7 +200,7 @@ let id_origin:number;
             } else {
                 console.log(value);
                 get_po_by_id();
-                setTimeout(() => {
+                setTimeout(() => {                       
                     get_desc_so(id_origin);
                 }, 1000);                  
             }
@@ -210,5 +209,66 @@ let id_origin:number;
 
     getRequestedTask(){
         return task;
+    }
+
+    requestTaskList(){
+        let get_so_list = function(id) {
+            let inParams = []
+            inParams.push([['partner_id', '=', id]])
+            inParams.push(['partner_id','name','note', 'date_order', 'client_order_ref'])
+            let params = []
+            params.push(inParams)
+            odooClient.execute_kw('sale.order', 'search_read', params, function (err, value) {
+                if (err) {
+                    console.log(err);  
+                } else {
+                    //console.log(value);
+                    tasksList=value;                              
+                }
+            })
+        }
+          
+        odooClient.connect(function (err,value) {
+            if (err) { 
+                console.log(err); 
+            } else {
+                console.log(value);
+                get_so_list(ID[0]['partner_id'][0]);                 
+            }
+        });
+    }
+
+    getRequestedTaskList(){
+        return tasksList;
+    }
+
+    requestProvidersForTask(id){
+        let get_po_of_task = function() {
+            let inParams = []
+            inParams.push([['origin', '=', id]])
+            inParams.push(['partner_id', 'amount_total', 'user_id', 'date_order', 'origin'])
+            let params = []
+            params.push(inParams)
+            odooClient.execute_kw('purchase.order', 'search_read', params, function (err, value) {
+                if (err) {
+                    console.log(err);  
+                } else {
+                    console.log(value);
+                    taskProvider=value;                
+                }
+            })
+        }
+        odooClient.connect(function (err,value) {
+            if (err) { 
+                console.log(err); 
+            } else {
+                console.log(value);
+                get_po_of_task();                 
+            }
+        });
+    }
+
+    getOffers(){
+        return taskProvider;
     }
   }

@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit {
   }
 
   createNewService(){    
-    this._taskOdoo.newTask(this.descripcion);
+    this._taskOdoo.newTask(this.descripcion, this.servicio);
     this.descripcion = "";
   }
 }

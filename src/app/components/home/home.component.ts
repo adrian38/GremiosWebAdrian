@@ -32,8 +32,9 @@ export class HomeComponent implements OnInit {
     
     setTimeout(()=>{
       if(this._authOdoo.isConnected()){
-        this._taskOdoo.setUser(this.usuario);
-        this._chatOdoo.setUser(this.usuario);
+        let user:any = this._authOdoo.getUser();       
+        this._taskOdoo.setUser(this.usuario, user);
+        this._chatOdoo.setUser(this.usuario, user);
         this.router.navigate(['/dashboard', 3]);
         console.log("done");
         document.getElementById('close-modal').click();

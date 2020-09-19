@@ -1,6 +1,9 @@
 <body>
   <app-task-card *ngFor="let task of tasksList; let i= index"
-                  [task] = "task">
+                  [tipo] = "task['client_order_ref']"
+                  [fecha] = "task['date_order']"
+                  [desc] = "task['note']"
+                  [name] = "task['name']">
   </app-task-card>
 </body>
 
