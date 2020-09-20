@@ -1,10 +1,20 @@
 <body>
-  <app-task-card *ngFor="let task of tasksList; let i= index"
+  <div *ngIf="userType=='client'">
+    <app-task-card *ngFor="let task of tasksList; let i= index"
                   [tipo] = "task['client_order_ref']"
                   [fecha] = "task['date_order']"
                   [desc] = "task['note']"
                   [name] = "task['name']">
-  </app-task-card>
+    </app-task-card>
+  </div> 
+  <div *ngIf="userType=='provider'">
+    <app-task-card *ngFor="let task of tasksList; let i= index"
+                  [tipo] = "task['user_id'][1]"
+                  [fecha] = "task['date_order']"
+                  [desc] = "task['note']"
+                  [name] = "task['name']">
+    </app-task-card>
+  </div>
 </body>
 
 <!-- Modal -->

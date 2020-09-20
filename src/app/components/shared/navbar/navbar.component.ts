@@ -12,8 +12,14 @@ export class NavbarComponent implements OnInit {
   servicio:string="";
   descripcion:string="";
   task:TaskModel;
+  userType:string="";
 
-  constructor(private _authOdoo:AuthOdooService, private _taskOdoo:TaskOdooService) { }
+  constructor(private _authOdoo:AuthOdooService, private _taskOdoo:TaskOdooService) {
+    setInterval(()=>{
+      this.userType=this._authOdoo.userType;
+    },2000)
+    
+   }
 
   ngOnInit(): void {
   }

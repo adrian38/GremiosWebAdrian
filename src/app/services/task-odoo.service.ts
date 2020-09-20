@@ -232,7 +232,7 @@ let taskProvider:any;
             if (err) { 
                 console.log(err); 
             } else {
-                console.log(value);
+                console.log(value);                
                 get_so_list(ID[0]['partner_id'][0]);                 
             }
         });
@@ -270,5 +270,35 @@ let taskProvider:any;
 
     getOffers(){
         return taskProvider;
+    }
+
+    requestTaskListProvider(){
+        let get_po_list = function(id) {
+            let inParams = []
+            inParams.push([['partner_id', '=', id]])
+            inParams.push(['user_id','partner_id','name', 'date_order'])
+            let params = []
+            params.push(inParams)
+            odooClient.execute_kw('purchase.order', 'search_read', params, function (err, value) {
+                if (err) {
+                    console.log(err);  
+                } else {
+
+                    //console.log(value);
+                    tasksList=value;                              
+                }
+            })
+        }
+          
+        odooClient.connect(function (err,value) {
+            if (err) { 
+                console.log(err); 
+            } else {
+                console.log(value);
+                console.log(ID[0]['partner_id'][0]);
+                             
+                get_po_list(ID[0]['partner_id'][0]);                 
+            }
+        });
     }
   }

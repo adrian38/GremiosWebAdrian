@@ -12,7 +12,7 @@ let odooClient = new odoo_xmlrpc({
 
 
 let connected: boolean=false;
-let user:any;
+let user:any; 
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,8 @@ export class AuthOdooService {
   /* odooClient: odoo_xmlrpc; */
   username:string ="";
   password:string ="";
+
+  userType:string="";
 
   constructor() {
 
@@ -55,11 +57,31 @@ export class AuthOdooService {
           } else {
               console.log(value);
               setTimeout(() => {
-                user=value;                
+                user=value;
+                get_type_user(value[0]['partner_id'][0]);                
               }, 1000);
           }
       })
-  }
+    }
+
+    let get_type_user = function(id:number) {
+      let inParams = []
+      inParams.push([id])
+      inParams.push(['supplier_rank', 'customer_rank'])
+      let params = []
+      params.push(inParams)
+      odooClient.execute_kw('res.partner', 'read', params, function (err, value) {
+          if (err) {
+              console.log(err);  
+          } else {
+              console.log(value);
+              setTimeout(() => {
+                user.push(value);                  
+              }, 1000);
+          }
+      })
+    }
+
         
     odooClient.connect(function (err, value){
       if (err) { 
@@ -71,7 +93,6 @@ export class AuthOdooService {
         connected = true;
         console.log(value);
         get_user(value);
-       
       }
     });
   }
@@ -81,6 +102,12 @@ export class AuthOdooService {
   }
 
   getUser(){
+    if(user[1][0].customer_rank > 0){  
+      this.userType = "client";
+    }else if(user[1][0].supplier_rank > 0){
+      this.userType = "provider";
+    }
     return user;
   }
+
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TaskModel } from '../../models/task.model'
 import { Router } from '@angular/router';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
+import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 
 @Component({
   selector: 'app-task-card',
@@ -17,12 +18,14 @@ export class TaskCardComponent implements OnInit {
   @Input() name: string="";
   showOffers:boolean = false;
   offersList:any;
+  userType:string="";
 
 
   constructor(private router:Router,
-              private _taskOdoo:TaskOdooService) {
-                
+              private _taskOdoo:TaskOdooService,
+              private _authOdoo:AuthOdooService) {
     
+    this.userType = this._authOdoo.userType
    }
 
   ngOnInit(): void {

@@ -22,11 +22,8 @@
                                 <li>
                                     <span class="vertical-align-mid">{{fecha.slice(11,fecha.length)}}</span>
                                 </li>
-                                <li>
-                                    <span class="vertical-align-mid">Adrian</span>
-                                </li>
                                 <br>
-                                    <span class="vertical-align-mid">
+                                    <span *ngIf="userType == 'client'" class="vertical-align-mid">
                                         <br>
                                         <button (click)="offers()"
                                                 type="button" 
@@ -37,7 +34,19 @@
                                                 class="btn btn-outline-primary btn-sm">
                                             Detalles
                                         </button>
-                                    </span>                          
+                                    </span>
+                                    <span *ngIf="userType == 'provider'" class="vertical-align-mid">
+                                        <br>
+                                        <button 
+                                                type="button" 
+                                                class="btn btn-outline-primary btn-sm">
+                                            Enviar Presupuesto
+                                        </button>  
+                                        <button type="button" 
+                                                class="btn btn-outline-primary btn-sm">
+                                            Chat
+                                        </button>
+                                    </span>                            
                             </ul>
                         </div>
                         

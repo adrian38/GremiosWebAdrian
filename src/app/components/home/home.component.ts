@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
     
     setTimeout(()=>{
       if(this._authOdoo.isConnected()){
-        let user:any = this._authOdoo.getUser();       
+        let user:any = this._authOdoo.getUser();               
         this._taskOdoo.setUser(this.usuario, user);
         this._chatOdoo.setUser(this.usuario, user);
         this.router.navigate(['/dashboard', 3]);
@@ -44,6 +44,6 @@ export class HomeComponent implements OnInit {
         this.alerta=true;
         setTimeout(()=>{this.alerta=false;this.disabled = false;},5000);
       }
-    },2000);
+    },3000);
   }
 }
