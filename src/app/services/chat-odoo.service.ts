@@ -6,8 +6,8 @@ let odooClient = new odoo_xmlrpc({
     url: 'http://' + '192.168.1.15',
     port: 8069,
     db: 'demo',
-    username: 'alan@example.com',
-    password: 'alan',
+    username: '',
+    password: '',
 });
 
 let odooClient2 = new odoo_xmlrpc({

@@ -69,10 +69,10 @@
 			<div class="card-header">
 				{{providerName}}
 			</div>
-			<div class="card-body overflow-auto">
+			<div *ngIf="userType == 'client'" class="card-body overflow-auto">
 				<div *ngFor="let message of messagesList" 
 					 [ngSwitch]="message.author_id[1]">
-					<div *ngSwitchCase="'Alan Brito'"
+					<div *ngSwitchCase="task['user_id'][1]"
 					 	 class="alert alert-primary col-md-8 ml-auto" role="alert">
 						{{message.body | deleteP}}
 					</div>
@@ -80,8 +80,20 @@
 					 	 class="alert alert-secondary col-md-8" role="alert">
 						{{message.body | deleteP}}
 					</div>
-				</div>
-				
+				</div>		
+			</div>
+			<div *ngIf="userType == 'provider'" class="card-body overflow-auto">
+				<div *ngFor="let message of messagesList" 
+					 [ngSwitch]="message.author_id[1]">
+					<div *ngSwitchCase="task['partner_id'][1]"
+					 	 class="alert alert-primary col-md-8 ml-auto" role="alert">
+						{{message.body | deleteP}}
+					</div>
+					<div *ngSwitchDefault
+					 	 class="alert alert-secondary col-md-8" role="alert">
+						{{message.body | deleteP}}
+					</div>
+				</div>		
 			</div>
 			<div class="card-footer">
 				<div class="input-group mb-3">

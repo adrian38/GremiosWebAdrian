@@ -7,8 +7,8 @@ let odooClient = new odoo_xmlrpc({
     url: 'http://' + '192.168.1.15',
     port: 8069,
     db: 'demo',
-    username: 'alan@example.com',
-    password: 'alan',
+    username: '',
+    password: '',
 });
 
 let task:any;
@@ -298,6 +298,44 @@ let taskProvider:any;
                 console.log(ID[0]['partner_id'][0]);
                              
                 get_po_list(ID[0]['partner_id'][0]);                 
+            }
+        });
+    }
+
+    sendOffer(presupuesto:number, id, date){
+        let POline = {
+            'name':'Presupuesto',
+            'product_id': 39,
+            'product_uom': 1,
+            'product_qty': 1,
+            'price_unit': presupuesto,
+            'date_planned':date,
+            'order_id': id,
+        }        
+
+        let addLinePO = function() {
+            
+            console.log(POline);
+            
+            let inParams = []
+            inParams.push(POline)
+            let params = []
+            params.push(inParams)
+            odooClient.execute_kw('purchase.order.line', 'create', params, function (err, value) {
+                if (err) {
+                    console.log(err);                         
+                } else {
+                    console.log(value);                                  
+                }
+            });
+        }
+                                                            
+        odooClient.connect(function (err,value) {
+            if (err) { 
+                console.log(err);    
+            } else {
+                console.log(value);                      
+                addLinePO()
             }
         });
     }

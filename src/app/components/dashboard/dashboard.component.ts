@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
           this.tasksList=this._taskOdoo.getRequestedTaskList();
           console.log(this.tasksList);  
         }, 2000);
-    },5000);
+    },10000);
   }
 
   ngOnInit(): void {

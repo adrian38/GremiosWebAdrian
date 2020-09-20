@@ -4,6 +4,7 @@ import { MessageModel } from 'src/app/models/message.model';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { ChatOdooService } from 'src/app/services/chat-odoo.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 
 
 @Component({
@@ -23,11 +24,15 @@ export class ChatComponent implements OnInit {
   hora:string="";
   providerName:string="";
   costo:number=0;
+  userType:string="";
 
-  constructor(private _taskOdoo:TaskOdooService,
+  constructor(private _authOdoo:AuthOdooService,
+              private _taskOdoo:TaskOdooService,
               private _chatOdoo:ChatOdooService,
               private router:Router,
               private activatedRoute:ActivatedRoute) {
+
+    this.userType=this._authOdoo.userType;
     
     this.activatedRoute.params.subscribe(params =>{
       this.purchaseOrderID = Number(params['id']);      
@@ -41,7 +46,13 @@ export class ChatComponent implements OnInit {
       this.fecha = this.task.date_order.slice(0,10);
       this.hora = this.task.date_order.slice(11,this.task.date_order.lenght);
       this.costo = this.task.amount_total;
-      this.providerName = this.task['partner_id'][1];
+      if(this._authOdoo.userType =="client"){
+        this.providerName = this.task['partner_id'][1];
+      }else if(this._authOdoo.userType =="provider"){
+        this.providerName = this.task['user_id'][1];
+      }
+      console.log(this.task);
+      
       console.log(this.desc);
       
     },3000);
@@ -54,6 +65,7 @@ export class ChatComponent implements OnInit {
 
       setTimeout(()=>{
         this.messagesList=this._chatOdoo.getAllMessages();
+        
       },1500);
     }, 3000);
     
@@ -62,8 +74,12 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {  
   }
 
-  sendMessage(){    
-    this._chatOdoo.sendMessageClient(this.message, Number(this.purchaseOrderID));
+  sendMessage(){
+    if(this._authOdoo.userType =="client"){
+      this._chatOdoo.sendMessageClient(this.message, Number(this.purchaseOrderID));
+    }else if(this._authOdoo.userType =="provider"){
+      this._chatOdoo.sendMessageProvider(this.message, Number(this.purchaseOrderID));
+    }     
     this.message="";
   }
 

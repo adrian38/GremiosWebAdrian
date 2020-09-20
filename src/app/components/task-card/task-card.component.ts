@@ -11,14 +11,17 @@ import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 })
 export class TaskCardComponent implements OnInit {
 
-  @Input() task: TaskModel;
+  @Input() task: any;
   @Input() fecha: string="";
   @Input() tipo: string="";
   @Input() desc: string="";
   @Input() name: string="";
   showOffers:boolean = false;
+  sendOffer:boolean= false;
   offersList:any;
+  presupuesto:number;
   userType:string="";
+
 
 
   constructor(private router:Router,
@@ -59,4 +62,8 @@ export class TaskCardComponent implements OnInit {
     this._taskOdoo.declineProvider(id);
   }
 
+  sendPresupuesto(){
+    console.log(this.presupuesto);
+    this._taskOdoo.sendOffer(this.presupuesto, this.task['id'], this.task['date_order']);
+  }
 }
