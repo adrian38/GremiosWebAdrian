@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthOdooService } from 'src/app/services/auth-odoo.service';
+import { AuthOdooService } from '../../../services/auth-odoo.service';
+import { TaskOdooService } from '../../../services/task-odoo.service';
+import { TaskModel } from '../../../models/task.model';
 
 @Component({
   selector: 'app-navbar',
@@ -8,12 +10,20 @@ import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 })
 export class NavbarComponent implements OnInit {
   servicio:string="";
+  descripcion:string="";
+  task:TaskModel;
+  userType:string="";
 
-  constructor(private _authOdoo:AuthOdooService) { }
+  constructor(private _authOdoo:AuthOdooService, private _taskOdoo:TaskOdooService) {
+    setInterval(()=>{
+      this.userType=this._authOdoo.userType;
+    },2000)
+
+   }
 
   ngOnInit(): void {
   }
-  
+
   userConnected(){
     return this._authOdoo.isConnected();
   }
@@ -22,14 +32,18 @@ export class NavbarComponent implements OnInit {
 
   }
   contratados(){
-    
+
   }
   terminados(){
-    
+
   }
 
   newService (service:string){
       this.servicio = service;
-      
+  }
+
+  createNewService(){
+    this._taskOdoo.newTask(this.descripcion, this.servicio);
+    this.descripcion = "";
   }
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuarioModel } from 'src/app/models/usuario.model';
-import { TaskModel } from 'src/app/models/task.model';
+import { UsuarioModel } from '../../models/usuario.model';
+import { TaskModel } from '../../models/task.model';
+import { TaskOdooService } from '../../services/task-odoo.service';
+import {AuthOdooService} from '../../services/auth-odoo.service';
 
 
 @Component({
@@ -12,16 +14,27 @@ export class DashboardComponent implements OnInit {
 
   usuario:UsuarioModel;
   task:TaskModel;
-  tasksList:TaskModel[];
+  tasksList:any;
+  userType:string;
 
-  constructor() {
+  constructor(private _taskOdoo:TaskOdooService,
+              private _authOdoo:AuthOdooService) {
     this.task = new TaskModel();
-    let task1 = new TaskModel("Fish Problem", "Necesito que maten al hombre-pescado", "assets/img/aquaman.png","Plomería",false);
-    let task2 = new TaskModel("Blind Grandpa", "Busco quien cuide a mi abuelo ciego", "assets/img/daredevil.png","Electricidad",false)
-    let task3 = new TaskModel("Coronavirus Vaccine", "Se busca investigador para vacuna contra coronavirus", "assets/img/batman.png","Plomería",false)
-    this.tasksList = [];
-    this.tasksList.push(task1, task2, task3);
-   }
+    this.userType = this._authOdoo.userType;
+
+
+    setInterval(()=>{
+      if(this.userType == "client"){
+        this._taskOdoo.requestTaskList();
+      }else if(this.userType == "provider"){
+        this._taskOdoo.requestTaskListProvider();
+      }
+        setTimeout(() => {
+          this.tasksList=this._taskOdoo.getRequestedTaskList();
+          console.log(this.tasksList);
+        }, 2000);
+    },10000);
+  }
 
   ngOnInit(): void {
   }
@@ -29,7 +42,7 @@ export class DashboardComponent implements OnInit {
   newTask(){
     console.log(this.task);
     this.tasksList.push(this.task);
-    
+
   }
 
 }

@@ -9,7 +9,7 @@ const app_routes: Routes = [
     {path:'home', component: HomeComponent},
     {path:'signup', component: SignUpComponent},
     {path:'dashboard/:id', component:DashboardComponent},
-    {path:':id/chat', component: ChatComponent},
+    {path:'chat/:id', component: ChatComponent},
     {path:'', pathMatch:'full', redirectTo:'home'}
 ];
 

@@ -4,6 +4,9 @@ import {app_routing} from './app.routes';
 import {FormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+//pipes
+
+
 // Services
 import {AuthOdooService} from './services/auth-odoo.service';
 
@@ -24,7 +27,7 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
     SignUpComponent,
     DashboardComponent,
     ChatComponent,
-    TaskCardComponent
+    TaskCardComponent,
   ],
   imports: [
     BrowserModule,
