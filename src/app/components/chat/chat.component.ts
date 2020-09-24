@@ -17,15 +17,13 @@ export class ChatComponent implements OnInit {
 
   purchaseOrderID:number;
 
-  task:any;
+  task:TaskModel;
+  task$: Observable<TaskModel>;
+  
   message:MessageModel;
   messagesList:MessageModel[];
   messagesList$: Observable<MessageModel[]>;
-  desc:string="";
-  fecha:string="";
-  hora:string="";
-  providerName:string="";
-  costo:number=0;
+  
   userType:string="";
 
   constructor(private _authOdoo:AuthOdooService,
@@ -33,6 +31,8 @@ export class ChatComponent implements OnInit {
               private _chatOdoo:ChatOdooService,
               private router:Router,
               private activatedRoute:ActivatedRoute) {
+
+    this.task = new TaskModel();
 
     this.message = new MessageModel();
     this.messagesList = [];
@@ -43,26 +43,7 @@ export class ChatComponent implements OnInit {
       this.purchaseOrderID = Number(params['id']);      
     })
 
-    this._taskOdoo.requestTask(this.purchaseOrderID);
-    
-    setTimeout(()=>{
-      this.task = this._taskOdoo.getRequestedTask()[0];
-      this.desc = this._taskOdoo.getRequestedTask()[1]['note'];
-      this.fecha = this.task.date_order.slice(0,10);
-      this.hora = this.task.date_order.slice(11,this.task.date_order.lenght);
-      this.costo = this.task.amount_total;
-      if(this._authOdoo.userType =="client"){
-        this.providerName = this.task['partner_id'][1];
-      }else if(this._authOdoo.userType =="provider"){
-        this.providerName = this.task['user_id'][1];
-      }
-      console.log(this.task);
-      
-      console.log(this.desc);
-      
-    },3000);
-    
-    
+    this._taskOdoo.requestTask(this.purchaseOrderID);  
     
     setInterval(()=>{
       this._chatOdoo.requestAllMessages(this.purchaseOrderID);
@@ -75,6 +56,11 @@ export class ChatComponent implements OnInit {
     this.messagesList$.subscribe(messagesList => {
       this.messagesList = messagesList;
     });
+
+    this.task$ = this._taskOdoo.getRequestedTask$();
+    this.task$.subscribe(task =>{
+      this.task = task;
+    })
   }
 
   sendMessage(){

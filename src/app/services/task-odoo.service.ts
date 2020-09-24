@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Testability } from '@angular/core';
 import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import {UsuarioModel} from '../models/usuario.model'
 import {TaskModel} from '../models/task.model'
+import {Observable, Subject} from 'rxjs';
 
 let odooClient = new odoo_xmlrpc({
     url: 'http://' + '192.168.1.15',
@@ -11,9 +12,15 @@ let odooClient = new odoo_xmlrpc({
     password: '',
 });
 
-let task:any;
-let id_origin:number;
-let tasksList:any;
+let task:TaskModel;
+let task$ = new Subject<TaskModel>();
+
+let tasksList:TaskModel[];
+let tasksList$ = new Subject<TaskModel[]>();
+
+let offersList:TaskModel[];
+let offersList$ = new Subject<TaskModel[]>();
+
 let ID:any;
 let taskProvider:any;
 
@@ -27,7 +34,7 @@ let taskProvider:any;
     
 
     constructor(){
-        
+        task = new TaskModel();
     }
     setUser(usuario:UsuarioModel, id){
         this.user=usuario;
@@ -37,12 +44,12 @@ let taskProvider:any;
 
     }
 
-    newTask(desc:string, type:string){
+    newTask(task:TaskModel){
         
         let createService=function(){
             let SO = {
                 'company_id': 1,
-                'client_order_ref':type, 
+                'client_order_ref':task.type, 
                 'order_line': [[0,0,{
                     'name': 'Servicio de Fontaneria', 
                     'price_unit': 0.0, 
@@ -51,8 +58,8 @@ let taskProvider:any;
                     'product_uom_qty': 1.0, 
                     'state': 'draft'
                 }]],
-                'note':desc,
-                'partner_id': ID[0]['partner_id'][0],           
+                'note':task.description,
+                'partner_id': task.client_id,           
                 'require_payment': false, 
                 'require_signature': false,
                 'state': 'draft'
@@ -74,11 +81,9 @@ let taskProvider:any;
                     params.push(inParams)
                     odooClient.execute_kw('sale.order', 'action_confirm', params, function (err, value) {
                         if (err) {
-                        console.log(err);
-                        
+                        console.log(err);                       
                     } else {
-                        console.log(value);
-                        
+                        console.log(value);                    
                     }
                     });
                 }
@@ -162,7 +167,7 @@ let taskProvider:any;
             const id_po = id
             let inParams = []
             inParams.push([['id', '=', id_po]])
-            inParams.push(['partner_id', 'amount_total', 'order_line', 'user_id', 'date_order', 'origin'])
+            inParams.push(['partner_id', 'amount_total', 'user_id', 'origin'])
             let params = []
             params.push(inParams)
             odooClient.execute_kw('purchase.order', 'search_read', params, function (err, value) {
@@ -170,9 +175,15 @@ let taskProvider:any;
                     console.log(err);  
                 } else {
                     console.log(value);
-                    task = value;
-                    id_origin = task[0].origin;
-                    get_desc_so(id_origin);                               
+                    task.budget = value[0]['amount_total'];
+                    task.client_id = value[0]['user_id'][0];
+                    task.client_name = value[0]['user_id'][1];
+                    task.provider_id = value[0]['partner_id'][0];
+                    task.provider_name = value[0]['partner_id'][1];
+                    task.id = id;
+                    task.origin = value[0]['origin'];
+                    console.log(task);
+                    get_desc_so(task.origin);                               
                 }
             })
         }
@@ -188,9 +199,9 @@ let taskProvider:any;
                     console.log(err);  
                 } else {
                     console.log(value);
-                    task.push(value[0]);
+                    task.description = value[0]['note'];
                     console.log(task);
-                               
+                    task$.next(task);                    
                 }
             })
         }
@@ -205,15 +216,15 @@ let taskProvider:any;
         });
     }
 
-    getRequestedTask(){
-        return task;
+    getRequestedTask$(): Observable<TaskModel>{
+        return task$.asObservable();
     }
 
-    requestTaskList(){
+    requestTaskListClient(){
         let get_so_list = function(id) {
             let inParams = []
             inParams.push([['partner_id', '=', id]])
-            inParams.push(['partner_id','name','note', 'date_order', 'client_order_ref'])
+            inParams.push(['partner_id','name','note', 'client_order_ref'])
             let params = []
             params.push(inParams)
             odooClient.execute_kw('sale.order', 'search_read', params, function (err, value) {
@@ -221,7 +232,18 @@ let taskProvider:any;
                     console.log(err);  
                 } else {
                     //console.log(value);
-                    tasksList=value;                              
+                    tasksList = [];              
+                    for(let order of value){
+                        let temp = new TaskModel();
+                        temp.description = order['note'];
+                        temp.type = order['client_order_ref'];
+                        temp.client_id = order['partner_id'][0];
+                        temp.client_name = order['partner_id'][1];
+                        temp.id_string = order['name'];
+                        temp.id = order['id'];
+                        tasksList.push(temp);
+                    } 
+                    tasksList$.next(tasksList);                        
                 }
             })
         }
@@ -236,15 +258,11 @@ let taskProvider:any;
         });
     }
 
-    getRequestedTaskList(){
-        return tasksList;
-    }
-
-    requestProvidersForTask(id){
-        let get_po_of_task = function() {
+    requestTaskListProvider(){
+        let get_po_list = function(id) {
             let inParams = []
-            inParams.push([['origin', '=', id]])
-            inParams.push(['partner_id', 'amount_total', 'user_id', 'date_order', 'origin'])
+            inParams.push([['partner_id', '=', id]])
+            inParams.push(['user_id','partner_id','name', 'date_order'])
             let params = []
             params.push(inParams)
             odooClient.execute_kw('purchase.order', 'search_read', params, function (err, value) {
@@ -252,7 +270,65 @@ let taskProvider:any;
                     console.log(err);  
                 } else {
                     console.log(value);
-                    taskProvider=value;                
+                    tasksList=[];
+                    for(let task of value) {
+                        let temp  = new TaskModel();
+                        temp.client_id = task['user_id'][0];
+                        temp.client_name = task['user_id'][1];
+                        temp.provider_id = task['partner_id'][0];
+                        temp.provider_name = task['partner_id'][1];
+                        temp.id = task['id'];
+                        temp.id_string = task['name'];
+                        temp.date_planned = task['date_order'];
+                        tasksList.push(temp);
+                    }
+                    tasksList$.next(tasksList);       
+                }
+            })
+        }
+          
+        odooClient.connect(function (err,value) {
+            if (err) { 
+                console.log(err); 
+            } else {
+                console.log(value);
+                console.log(ID[0]['partner_id'][0]);                           
+                get_po_list(ID[0]['partner_id'][0]);                 
+            }
+        });
+    }
+
+    getRequestedTaskList$(): Observable<TaskModel[]>{
+        return tasksList$.asObservable();
+    }
+
+    requestOffersForTask(id){
+        let get_po_of_task = function() {
+            let inParams = []
+            inParams.push([['origin', '=', id]])
+            inParams.push(['partner_id', 'amount_total', 'user_id', 'origin'])
+            let params = []
+            params.push(inParams)
+            odooClient.execute_kw('purchase.order', 'search_read', params, function (err, value) {
+                if (err) {
+                    console.log(err);  
+                } else {
+                    //console.log(value);
+                    offersList = [];
+                    for (let offer of value){
+                        let temp  = new TaskModel();
+                        temp.client_id = offer['user_id'][0];
+                        temp.client_name = offer['user_id'][1];
+                        temp.provider_id = offer['partner_id'][0];
+                        temp.provider_name = offer['partner_id'][1];
+                        temp.id = offer['id'];
+                        temp.id_string = offer['name'];
+                        temp.budget = offer['amount_total'];
+                        temp.origin = offer['origin'];
+                        offersList.push(temp);
+                    }
+                    //console.log(offersList);                    
+                    offersList$.next(offersList);          
                 }
             })
         }
@@ -266,49 +342,19 @@ let taskProvider:any;
         });
     }
 
-    getOffers(){
-        return taskProvider;
+    getOffers$(): Observable<TaskModel[]>{
+        return offersList$.asObservable();
     }
 
-    requestTaskListProvider(){
-        let get_po_list = function(id) {
-            let inParams = []
-            inParams.push([['partner_id', '=', id]])
-            inParams.push(['user_id','partner_id','name', 'date_order'])
-            let params = []
-            params.push(inParams)
-            odooClient.execute_kw('purchase.order', 'search_read', params, function (err, value) {
-                if (err) {
-                    console.log(err);  
-                } else {
-
-                    //console.log(value);
-                    tasksList=value;                              
-                }
-            })
-        }
-          
-        odooClient.connect(function (err,value) {
-            if (err) { 
-                console.log(err); 
-            } else {
-                console.log(value);
-                console.log(ID[0]['partner_id'][0]);
-                             
-                get_po_list(ID[0]['partner_id'][0]);                 
-            }
-        });
-    }
-
-    sendOffer(presupuesto:number, id, date){
+    sendOffer(offer:TaskModel){
         let POline = {
             'name':'Presupuesto',
             'product_id': 39,
             'product_uom': 1,
             'product_qty': 1,
-            'price_unit': presupuesto,
-            'date_planned':date,
-            'order_id': id,
+            'price_unit': offer.budget,
+            'date_planned': offer.date_planned,
+            'order_id': offer.id,
         }        
 
         let addLinePO = function() {

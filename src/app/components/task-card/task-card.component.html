@@ -11,16 +11,10 @@
                     </div>              
                     <div class="col-md-7">
                         <div class="firma-aciklama card-body">
-                            <h4>{{tipo}}</h4>
+                            <h4>{{task.type}}</h4>
                             <ul class="yacht-info__list space-2">
                                 <li>
                                     <span class="vertical-align-mid">Servicio Puntual</span>
-                                </li>
-                                <li>
-                                    <span class="vertical-align-mid">{{fecha.slice(0,10)}}</span>
-                                </li>
-                                <li>
-                                    <span class="vertical-align-mid">{{fecha.slice(11,fecha.length)}}</span>
                                 </li>
                                 <br>
                                     <span *ngIf="userType == 'client'" class="vertical-align-mid">
@@ -57,7 +51,7 @@
                     <ul>
                         <li *ngFor="let offer of offersList" class="row mt-1">
                             <div class="col-md-3">
-                                {{offer.partner_id[1]}}  
+                                {{offer.provider_name}}  
                             </div>
                             <div class="col-md-3">
                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -78,7 +72,7 @@
                                 </button>
                             </div>
                             <div class="col-md-2">
-                                {{offer.amount_total}}€ 
+                                {{offer.budget}}€ 
                             </div>
                         </li>
                     </ul>
@@ -88,12 +82,12 @@
                         <li class="row mt-1">
                             <div class="col-md-3"></div>
                             <div class="col-md-3">
-                                <input [(ngModel)]="presupuesto" type="number" 
+                                <input [(ngModel)]="task.budget" type="number" 
                                         class="form-control" placeholder="">
                             </div>
                             <div class="col-md-1"></div>
                             <div class="col-md-2">
-                                <button (click)="sendPresupuesto()" class="btn btn-outline-info">
+                                <button (click)="sendPresupuesto(task)" class="btn btn-outline-info">
                                     Enviar
                                 </button>
                             </div>

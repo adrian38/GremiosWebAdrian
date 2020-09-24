@@ -9,8 +9,6 @@ import { TaskModel } from 'src/app/models/task.model';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  servicio:string="";
-  descripcion:string="";
   task:TaskModel;
   userType:string="";
 
@@ -18,7 +16,9 @@ export class NavbarComponent implements OnInit {
     setInterval(()=>{
       this.userType=this._authOdoo.userType;
     },2000)
-    
+
+    this.task = new TaskModel();
+    this.task.client_id = 44 //sustituir por el id de usuario
    }
 
   ngOnInit(): void {
@@ -39,11 +39,11 @@ export class NavbarComponent implements OnInit {
   }
 
   newService (service:string){
-      this.servicio = service;   
+      this.task.type = service;   
   }
 
   createNewService(){    
-    this._taskOdoo.newTask(this.descripcion, this.servicio);
-    this.descripcion = "";
+    this._taskOdoo.newTask(this.task);
+    this.task = new TaskModel();
   }
 }
