@@ -2,39 +2,26 @@ import { Injectable } from '@angular/core';
 import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import {UsuarioModel} from '../models/usuario.model'
 import {TaskModel} from '../models/task.model'
+import {AuthOdooService} from '../services/auth-odoo.service';
 
-let odooClient = new odoo_xmlrpc({
-    url: 'http://' + '10.23.20.10',
-    port: 8069,
-    db: 'demo',
-    username: '',
-    password: '',
-});
-
+let odooClient;
 let task:any;
 let id_origin:number;
 let tasksList:any;
-let ID:any;
+let ID:any[];
 let taskProvider:any;
-
+let user:UsuarioModel;
 @Injectable({
     providedIn: 'root'
   })
   export class TaskOdooService {
 
-
-    user:UsuarioModel;
-
-
-    constructor(){
-
+    constructor(private _authOdoo:AuthOdooService){
+      odooClient = this._authOdoo.OdooInfo;
     }
-    setUser(usuario:UsuarioModel, id){
-        this.user=usuario;
-        odooClient.username = usuario.username;
-        odooClient.password = usuario.password;
-        ID = id;
 
+    setUser(usuario:UsuarioModel){
+        user=usuario;
     }
 
     newTask(desc:string, type:string){
@@ -52,7 +39,7 @@ let taskProvider:any;
                     'state': 'draft'
                 }]],
                 'note':desc,
-                'partner_id': ID[0]['partner_id'][0],
+                'partner_id': user.partner_id,
                 'require_payment': false,
                 'require_signature': false,
                 'state': 'draft'
@@ -231,7 +218,7 @@ let taskProvider:any;
                 console.log(err);
             } else {
                 console.log(value);
-                get_so_list(ID[0]['partner_id'][0]);
+                get_so_list(user.partner_id);
             }
         });
     }
@@ -293,9 +280,9 @@ let taskProvider:any;
                 console.log(err);
             } else {
                 console.log(value);
-                console.log(ID[0]['partner_id'][0]);
+                console.log(user.partner_id);
 
-                get_po_list(ID[0]['partner_id'][0]);
+                get_po_list(user.partner_id);
             }
         });
     }

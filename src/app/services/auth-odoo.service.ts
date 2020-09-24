@@ -25,7 +25,7 @@ export class AuthOdooService {
   password:string ="";
   userType:string="";
 
-
+public OdooInfo = odooClient;
 
   constructor() { }
 
@@ -45,7 +45,8 @@ export class AuthOdooService {
           if (err) {
               console.log(err);
           } else {
-              console.log(value);
+              usuario.partner_id = value[0].partner_id[0];
+              usuario.realname = value[0].partner_id[1];
               user=value;
               get_type_user(value[0]['partner_id'][0]);
           }
@@ -62,7 +63,16 @@ export class AuthOdooService {
           if (err) {
               console.log(err);
           } else {
-              console.log(value);
+              console.log("100",value);
+              console.log(value[0].id, " " ,value[0].supplier_rank , " " , value[0].customer_rank)
+              if(value[0].supplier_rank > 0)
+              {
+                usuario.type = "provider"
+
+              } else if(value[0].customer_rank > 0)
+                {
+                  usuario.type = "client"
+                }
               user.push(value);
           }
       })
@@ -77,8 +87,8 @@ export class AuthOdooService {
       } else {
         console.log("Login Success");
         usuario.connected = true;
-        console.log(value);
-        get_user(value);
+        usuario.id = value;
+        get_user(usuario.id);
       }
       connected$.next(connected);
     });

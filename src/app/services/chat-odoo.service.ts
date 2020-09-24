@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import { MessageModel } from '../models/message.model';
-import {UsuarioModel} from '../models/usuario.model'
+import { UsuarioModel } from '../models/usuario.model'
+import { AuthOdooService } from '../services/auth-odoo.service';
 import {Observable, Subject} from 'rxjs';
 
-let odooClient = new odoo_xmlrpc({
-    url: 'http://' + '10.23.20.10',
-    port: 8069,
-    db: 'demo',
-    username: '',
-    password: '',
-});
+let odooClient;
+let user: UsuarioModel
 
 let messagesList:MessageModel[];
 let messagesList$ = new Subject<MessageModel[]>();
@@ -21,16 +17,14 @@ let messagesList$ = new Subject<MessageModel[]>();
   export class ChatOdooService {
 
 
-    user:UsuarioModel
+  //  user:UsuarioModel
     id:any;
 
-    constructor(){}
+    constructor(private _authOdoo:AuthOdooService){}
 
-    setUser(usuario:UsuarioModel, id){
-        this.user=usuario;
-        odooClient.username = usuario.username;
-        odooClient.password = usuario.password;
-        this.id = id;
+    setUser(usuario:UsuarioModel){
+        user=usuario;
+        odooClient = this._authOdoo.OdooInfo;
     }
 
     sendMessageClient(message:MessageModel){

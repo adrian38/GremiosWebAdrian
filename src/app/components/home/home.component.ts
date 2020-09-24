@@ -38,16 +38,14 @@ export class HomeComponent implements OnInit {
 
   submit(){
     this._authOdoo.login(this.usuario)
-
-
     setTimeout(()=>{
       if(this.usuario.connected){
         let user:any = this._authOdoo.getUser();
-        console.error(user);
-        this._taskOdoo.setUser(this.usuario, user);
-        this._chatOdoo.setUser(this.usuario, user);
-        this.router.navigate(['/dashboard', user[0].id]);
-        //console.log("done");
+        this._taskOdoo.setUser(this.usuario);
+        this._chatOdoo.setUser(this.usuario);
+        console.log("MODELO USUARIO",this.usuario)
+        this.router.navigate(['/dashboard', this.usuario.id]);
+        console.log("done");
         document.getElementById('close-modal').click();
       }
       else{

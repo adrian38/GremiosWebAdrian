@@ -9,7 +9,8 @@ export class UsuarioModel{
     connected:boolean;
     phone:number;
     address:string;
-
+    id:number;
+    realname:string;
     constructor(){
     }
 }
