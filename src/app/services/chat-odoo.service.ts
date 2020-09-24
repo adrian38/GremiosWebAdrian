@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as odoo_xmlrpc from 'odoo-xmlrpc'
+import { MessageModel } from '../models/message.model';
 import {UsuarioModel} from '../models/usuario.model'
+import {Observable, Subject} from 'rxjs';
 
 let odooClient = new odoo_xmlrpc({
     url: 'http://' + '192.168.1.15',
@@ -10,15 +12,8 @@ let odooClient = new odoo_xmlrpc({
     password: '',
 });
 
-let odooClient2 = new odoo_xmlrpc({
-    url: 'http://' + '192.168.1.15',
-    port: 8069,
-    db: 'demo',
-    username: 'gonzalez@example.com',
-    password: 'gonzalez',
-});
-
-let messagesList:any;
+let messagesList:MessageModel[];
+let messagesList$ = new Subject<MessageModel[]>();
 
 @Injectable({
     providedIn: 'root'
@@ -38,15 +33,14 @@ let messagesList:any;
         this.id = id;
     }
 
-    sendMessageClient(message:string, id:number){
+    sendMessageClient(message:MessageModel){
 
         let send_msg_PO = function() {
-            const id_po = id
             let inParams = []
-            inParams.push([id_po])
+            inParams.push([message.offer_id])
             let params = []
             params.push(inParams)
-            params.push({'body':message,'message_type':'notification', 'subtype':'false'})
+            params.push({'body':message.message,'message_type':'notification', 'subtype':'false'})
             odooClient.execute_kw('purchase.order', 'message_post', params, function (err, value) {
                 if (err) {
                     console.log(err);
@@ -67,36 +61,6 @@ let messagesList:any;
 
     }
 
-    sendMessageProvider(message:string, id:number){
-        let send_msg_PO = function() {
-            const id_po = id
-            let inParams = []
-            inParams.push([id_po])
-            //inParams.push([69])
-            let params = []
-            params.push(inParams)
-            params.push({'body':message,'message_type':'notification', 'subtype':'false'})
-            odooClient2.execute_kw('purchase.order', 'message_post', params, function (err, value) {
-                if (err) {
-                    console.log(err);
-                    
-                } else {
-                    console.log(value);
-                    
-                }
-            })
-        }
-        
-        odooClient2.connect(function (err,value) {
-            if (err) { 
-                console.log(err);
-            } else {
-                console.log(value);
-                send_msg_PO() 
-            }
-        });
-    }
-
     requestAllMessages(idPurchaseOrder:number){
         let list_msg_ids = function() {
             const id_po = idPurchaseOrder
@@ -111,12 +75,20 @@ let messagesList:any;
                     console.log(err);  
                 } else {
                     //console.log(value);
-                    messagesList=value;               
-                    messagesList = messagesList.filter(messages=>{
-                        return messages.subtype_id ===false;
-                      });
-                    messagesList.reverse();
-                    
+                    value = value.filter(messages=>{
+                        return messages.subtype_id === false;
+                    });
+                    value.reverse();
+                    messagesList = [];
+                    for (let message of value){
+
+                        let temp: MessageModel= new MessageModel(message['body'].slice(3,message['body'].length-4),
+                                                                 message['author_id'][1],
+                                                                 message['author_id'][0], message['res_id']);
+                        messagesList.push(temp);
+                    }
+                    messagesList$.next(messagesList);
+                    //console.log(messagesList);                                    
                 }
             })
         }
@@ -131,7 +103,7 @@ let messagesList:any;
         });
     }
 
-    getAllMessages():any{
-        return messagesList;
+    getAllMessages$(): Observable<MessageModel[]>{
+        return messagesList$.asObservable();
     }
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import {UsuarioModel} from '../models/usuario.model'
+import {Observable, Subject} from 'rxjs'
 
 let odooClient = new odoo_xmlrpc({
   url: 'http://' + '192.168.1.15',
@@ -10,7 +11,7 @@ let odooClient = new odoo_xmlrpc({
   password: '',
 });
 
-
+let connected$ = new Subject<boolean>();
 let connected: boolean=false;
 let user:any; 
 
@@ -25,20 +26,15 @@ export class AuthOdooService {
 
   userType:string="";
 
+  
+
   constructor() {
 
     const host = '192.168.1.15'
     const port=8069;
     const db = 'demo';
-
-    /* this.odooClient = new odoo_xmlrpc({
-      url: 'http://' + host,
-      port: port,
-      db: db,
-      username: this.username,
-      password: this.password,
-    }); */
   }
+
 
   login(usuario:UsuarioModel):void{
 
@@ -56,10 +52,8 @@ export class AuthOdooService {
               console.log(err);  
           } else {
               console.log(value);
-              setTimeout(() => {
-                user=value;
-                get_type_user(value[0]['partner_id'][0]);                
-              }, 1000);
+              user=value;
+              get_type_user(value[0]['partner_id'][0]);
           }
       })
     }
@@ -75,9 +69,7 @@ export class AuthOdooService {
               console.log(err);  
           } else {
               console.log(value);
-              setTimeout(() => {
-                user.push(value);                  
-              }, 1000);
+              user.push(value); 
           }
       })
     }
@@ -87,18 +79,23 @@ export class AuthOdooService {
       if (err) { 
         console.log("Login Failed");
         console.log(err);
-        connected = false;
+        connected = false;  
       } else {
         console.log("Login Success");
         connected = true;
         console.log(value);
         get_user(value);
       }
+      connected$.next(connected);
     });
   }
 
   isConnected():boolean{  
     return connected;      
+  }
+
+  getConnected$(): Observable<boolean>{
+    return connected$.asObservable();
   }
 
   getUser(){

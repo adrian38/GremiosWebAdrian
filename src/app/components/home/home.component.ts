@@ -5,6 +5,8 @@ import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { ChatOdooService } from 'src/app/services/chat-odoo.service';
 
+import {Observable} from 'rxjs'
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,10 +14,13 @@ import { ChatOdooService } from 'src/app/services/chat-odoo.service';
 })
 export class HomeComponent implements OnInit {
 
+  connected$: Observable<boolean>;
+
   usuario:UsuarioModel;
   
   alerta:boolean=false;
   disabled=false;
+  connected:boolean;
 
   constructor(private _authOdoo:AuthOdooService,
               private router:Router, 
@@ -25,13 +30,17 @@ export class HomeComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.connected$ = this._authOdoo.getConnected$();
+    this.connected$.subscribe(connected => {
+      this.connected = connected;
+    });
   }
 
   submit(){
     this._authOdoo.login(this.usuario)
     
     setTimeout(()=>{
-      if(this._authOdoo.isConnected()){
+      if(this.connected){
         let user:any = this._authOdoo.getUser();               
         this._taskOdoo.setUser(this.usuario, user);
         this._chatOdoo.setUser(this.usuario, user);
@@ -42,8 +51,9 @@ export class HomeComponent implements OnInit {
       else{
         this.disabled = true;
         this.alerta=true;
-        setTimeout(()=>{this.alerta=false;this.disabled = false;},5000);
+        setTimeout(()=>{this.alerta=false;this.disabled = false;console.log(this.connected);
+        },5000);
       }
-    },3000);
+    },1000);
   }
 }

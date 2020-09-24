@@ -5,6 +5,7 @@ import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { ChatOdooService } from 'src/app/services/chat-odoo.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
+import {Observable} from 'rxjs'
 
 
 @Component({
@@ -17,8 +18,9 @@ export class ChatComponent implements OnInit {
   purchaseOrderID:number;
 
   task:any;
-  message:string="";
-  messagesList:any;
+  message:MessageModel;
+  messagesList:MessageModel[];
+  messagesList$: Observable<MessageModel[]>;
   desc:string="";
   fecha:string="";
   hora:string="";
@@ -31,6 +33,9 @@ export class ChatComponent implements OnInit {
               private _chatOdoo:ChatOdooService,
               private router:Router,
               private activatedRoute:ActivatedRoute) {
+
+    this.message = new MessageModel();
+    this.messagesList = [];
 
     this.userType=this._authOdoo.userType;
     
@@ -60,27 +65,22 @@ export class ChatComponent implements OnInit {
     
     
     setInterval(()=>{
-
       this._chatOdoo.requestAllMessages(this.purchaseOrderID);
-
-      setTimeout(()=>{
-        this.messagesList=this._chatOdoo.getAllMessages();
-        
-      },1500);
     }, 3000);
     
    }
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
+    this.messagesList$ = this._chatOdoo.getAllMessages$();
+    this.messagesList$.subscribe(messagesList => {
+      this.messagesList = messagesList;
+    });
   }
 
   sendMessage(){
-    if(this._authOdoo.userType =="client"){
-      this._chatOdoo.sendMessageClient(this.message, Number(this.purchaseOrderID));
-    }else if(this._authOdoo.userType =="provider"){
-      this._chatOdoo.sendMessageProvider(this.message, Number(this.purchaseOrderID));
-    }     
-    this.message="";
+    this.message.offer_id = this.purchaseOrderID;
+    this._chatOdoo.sendMessageClient(this.message);  
+    this.message= new MessageModel();
   }
 
   acceptProvider(){

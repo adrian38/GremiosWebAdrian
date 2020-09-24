@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 //pipes
-import {DeletePPipe} from './pipes/deleteP.pipe';
+
 
 // Services
 import {AuthOdooService} from './services/auth-odoo.service';
@@ -28,7 +28,6 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
     DashboardComponent,
     ChatComponent,
     TaskCardComponent,
-    DeletePPipe,
   ],
   imports: [
     BrowserModule,

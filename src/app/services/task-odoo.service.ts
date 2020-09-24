@@ -171,7 +171,8 @@ let taskProvider:any;
                 } else {
                     console.log(value);
                     task = value;
-                    id_origin = task[0].origin;                               
+                    id_origin = task[0].origin;
+                    get_desc_so(id_origin);                               
                 }
             })
         }
@@ -199,10 +200,7 @@ let taskProvider:any;
                 console.log(err); 
             } else {
                 console.log(value);
-                get_po_by_id();
-                setTimeout(() => {                       
-                    get_desc_so(id_origin);
-                }, 1000);                  
+                get_po_by_id();                                     
             }
         });
     }
