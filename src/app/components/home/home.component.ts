@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
         let user:any = this._authOdoo.getUser();
         this._taskOdoo.setUser(this.usuario);
         this._chatOdoo.setUser(this.usuario);
-        console.log("MODELO USUARIO",this.usuario)
+        //console.log("MODELO USUARIO",this.usuario)
         this.router.navigate(['/dashboard']);
         console.log("done");
         document.getElementById('close-modal').click();

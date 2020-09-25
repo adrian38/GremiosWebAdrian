@@ -14,20 +14,20 @@ let odooClient = new odoo_xmlrpc({
 let connected$ = new Subject<boolean>();
 let connected: boolean=false;
 let user:any;
+let userLogin : UsuarioModel = new UsuarioModel();
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthOdooService {
 
-  /* odooClient: odoo_xmlrpc; */
-  username:string ="";
-  password:string ="";
   userType:string="";
 
 public OdooInfo = odooClient;
 
-  constructor() { }
+  constructor() {
+
+  }
 
 
   login(usuario:UsuarioModel):void{
@@ -90,32 +90,20 @@ public OdooInfo = odooClient;
         usuario.connected = true;
         usuario.id = value;
         connected = usuario.connected;
+        userLogin = usuario;
         get_user(usuario.id);
       }
       connected$.next(connected);
     });
   }
 
-  isConnected():boolean{
-    if(connected === true)
-    {
-      return true;
-    }else{
-      return false;
-    }
-  }
 
   getConnected$(): Observable<boolean>{
     return connected$.asObservable();
   }
 
   getUser(){
-    if(user[1][0].customer_rank > 0){
-      this.userType = "client";
-    }else if(user[1][0].supplier_rank > 0){
-      this.userType = "provider";
-    }
-    return user;
+    return userLogin;
   }
 
 }

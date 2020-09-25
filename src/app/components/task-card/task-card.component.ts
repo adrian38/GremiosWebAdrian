@@ -3,6 +3,7 @@ import { TaskModel } from '../../models/task.model'
 import { Router } from '@angular/router';
 import { TaskOdooService } from '../../services/task-odoo.service';
 import { AuthOdooService } from '../../services/auth-odoo.service';
+import { UsuarioModel} from '../../models/usuario.model'
 
 @Component({
   selector: 'app-task-card',
@@ -21,14 +22,14 @@ export class TaskCardComponent implements OnInit {
   offersList:any;
   presupuesto:number;
   userType:string="";
-
+  user : UsuarioModel;
 
 
   constructor(private router:Router,
               private _taskOdoo:TaskOdooService,
               private _authOdoo:AuthOdooService) {
-
-    this.userType = this._authOdoo.userType
+    this.user = this._authOdoo.getUser();
+    this.userType = this.user.type
    }
 
   ngOnInit(): void {

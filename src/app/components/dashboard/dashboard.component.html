@@ -1,13 +1,13 @@
 <body>
-  <div *ngIf="userType=='client'">
+  <div *ngIf="usuario.type=='client'">
     <app-task-card *ngFor="let task of tasksList; let i= index"
                   [tipo] = "task['client_order_ref']"
                   [fecha] = "task['date_order']"
                   [desc] = "task['note']"
                   [name] = "task['name']">
     </app-task-card>
-  </div> 
-  <div *ngIf="userType=='provider'">
+  </div>
+  <div *ngIf="usuario.type=='provider'">
     <app-task-card *ngFor="let task of tasksList; let i= index"
                   [tipo] = "task['user_id'][1]"
                   [fecha] = "task['date_order']"
@@ -38,12 +38,12 @@
                     <option value="Plomeria">Plomeria</option>
                     <option value="Electricidad">Electricidad</option>
                 </select>
-            </div>              
+            </div>
             <div class="form-group input-group">
-                <input [(ngModel)]="task.name" 
-                        type="text" class="form-control" 
+                <input [(ngModel)]="task.name"
+                        type="text" class="form-control"
                         placeholder="Título"/>
-            
+
             </div>
             <div class="form-group input-group">
                 <div class="input-group-prepend">
@@ -60,7 +60,7 @@
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" type="button">Button</button>
                 </div>
-            </div>            
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-danger"
@@ -73,4 +73,3 @@
       </div>
     </div>
   </div>
-  

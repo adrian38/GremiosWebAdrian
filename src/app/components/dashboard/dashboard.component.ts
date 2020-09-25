@@ -20,13 +20,14 @@ export class DashboardComponent implements OnInit {
   constructor(private _taskOdoo:TaskOdooService,
               private _authOdoo:AuthOdooService) {
     this.task = new TaskModel();
-    this.userType = this._authOdoo.userType;
+    this.usuario = this._authOdoo.getUser();
+    console.log(this.usuario.type)
 
 
     setInterval(()=>{
-      if(this.userType == "client"){
+      if(this.usuario.type == "client"){
         this._taskOdoo.requestTaskList();
-      }else if(this.userType == "provider"){
+      }else if(this.usuario.type == "provider"){
         this._taskOdoo.requestTaskListProvider();
       }
         setTimeout(() => {

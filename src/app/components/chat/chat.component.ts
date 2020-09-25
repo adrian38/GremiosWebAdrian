@@ -6,7 +6,7 @@ import { ChatOdooService } from '../../services/chat-odoo.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthOdooService } from '../../services/auth-odoo.service';
 import {Observable} from 'rxjs'
-
+import { UsuarioModel } from '../../models/usuario.model';
 
 @Component({
   selector: 'app-chat',
@@ -27,6 +27,7 @@ export class ChatComponent implements OnInit {
   providerName:string="";
   costo:number=0;
   userType:string="";
+  user : UsuarioModel
 
   constructor(private _authOdoo:AuthOdooService,
               private _taskOdoo:TaskOdooService,
@@ -36,8 +37,8 @@ export class ChatComponent implements OnInit {
 
     this.message = new MessageModel();
     this.messagesList = [];
-
-    this.userType=this._authOdoo.userType;
+    this.user = this._authOdoo.getUser()
+    this.userType=this.user.type;
 
     this.activatedRoute.params.subscribe(params =>{
       this.purchaseOrderID = Number(params['id']);
@@ -51,9 +52,9 @@ export class ChatComponent implements OnInit {
       this.fecha = this.task.date_order.slice(0,10);
       this.hora = this.task.date_order.slice(11,this.task.date_order.lenght);
       this.costo = this.task.amount_total;
-      if(this._authOdoo.userType =="client"){
+      if(this.user.type =="client"){
         this.providerName = this.task['partner_id'][1];
-      }else if(this._authOdoo.userType =="provider"){
+      }else if(this.user.type =="provider"){
         this.providerName = this.task['user_id'][1];
       }
       console.log(this.task);
