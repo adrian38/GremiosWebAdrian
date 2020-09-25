@@ -84,10 +84,12 @@ public OdooInfo = odooClient;
         console.log("Login Failed");
         console.log(err);
         usuario.connected = false;
+        connected = usuario.connected;
       } else {
         console.log("Login Success");
         usuario.connected = true;
         usuario.id = value;
+        connected = usuario.connected;
         get_user(usuario.id);
       }
       connected$.next(connected);
@@ -95,7 +97,12 @@ public OdooInfo = odooClient;
   }
 
   isConnected():boolean{
-    return connected;
+    if(connected === true)
+    {
+      return true;
+    }else{
+      return false;
+    }
   }
 
   getConnected$(): Observable<boolean>{
