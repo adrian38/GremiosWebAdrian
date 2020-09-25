@@ -6,10 +6,10 @@ import { UsuarioModel } from '../models/usuario.model';
   providedIn: 'root'
 })
 export class AuthGuardService {
-  user : UsuarioModel = this._authOdoo.getUser();
+  user : UsuarioModel = new UsuarioModel();
   constructor(private _authOdoo:AuthOdooService, private route:Router) { }
   canActivate(next: ActivatedRouteSnapshot, state:RouterStateSnapshot){
-      console.log(this.user)
+    this.user = this._authOdoo.getUser();
       if(this.user.connected == true){
         return true;
       }else{
