@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { TaskModel } from 'src/app/models/task.model';
+import { UsuarioModel } from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-navbar',
@@ -10,11 +11,11 @@ import { TaskModel } from 'src/app/models/task.model';
 })
 export class NavbarComponent implements OnInit {
   task:TaskModel;
-  userType:string="";
+  user: UsuarioModel = new UsuarioModel();
 
   constructor(private _authOdoo:AuthOdooService, private _taskOdoo:TaskOdooService) {
     setInterval(()=>{
-      this.userType=this._authOdoo.userType;
+      this.user=this._authOdoo.getUser();
     },2000)
 
     this.task = new TaskModel();
@@ -28,14 +29,18 @@ export class NavbarComponent implements OnInit {
     return this._authOdoo.isConnected();
   }
 
+  userConnected(){
+    return this.user.connected;
+  }
+
   solicitudes(){
 
   }
   contratados(){
-    
+
   }
   terminados(){
-    
+
   }
 
   newService (service:string){

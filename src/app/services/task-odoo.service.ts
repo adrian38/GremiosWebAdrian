@@ -4,13 +4,7 @@ import {UsuarioModel} from '../models/usuario.model'
 import {TaskModel} from '../models/task.model'
 import {Observable, Subject} from 'rxjs';
 
-let odooClient = new odoo_xmlrpc({
-    url: 'http://' + '192.168.1.15',
-    port: 8069,
-    db: 'demo',
-    username: '',
-    password: '',
-});
+let odooClient;
 
 let task:TaskModel;
 let task$ = new Subject<TaskModel>();
@@ -21,27 +15,19 @@ let tasksList$ = new Subject<TaskModel[]>();
 let offersList:TaskModel[];
 let offersList$ = new Subject<TaskModel[]>();
 
-let ID:any;
-let taskProvider:any;
+let user:UsuarioModel;
 
 @Injectable({
     providedIn: 'root'
   })
   export class TaskOdooService {
-
-    
-    user:UsuarioModel;
-    
-
     constructor(){
         task = new TaskModel();
+      odooClient = this._authOdoo.OdooInfo;
     }
-    setUser(usuario:UsuarioModel, id){
-        this.user=usuario;
-        odooClient.username = usuario.username;
-        odooClient.password = usuario.password;
-        ID = id;
 
+    setUser(usuario:UsuarioModel){
+        user=usuario;
     }
 
     newTask(task:TaskModel){
@@ -253,7 +239,7 @@ let taskProvider:any;
                 console.log(err); 
             } else {
                 console.log(value);                
-                get_so_list(ID[0]['partner_id'][0]);                 
+                get_so_list(user.partner_id);
             }
         });
     }
@@ -292,8 +278,7 @@ let taskProvider:any;
                 console.log(err); 
             } else {
                 console.log(value);
-                console.log(ID[0]['partner_id'][0]);                           
-                get_po_list(ID[0]['partner_id'][0]);                 
+                get_po_list(user.partner_id);
             }
         });
     }

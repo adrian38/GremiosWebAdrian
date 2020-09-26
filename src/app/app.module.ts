@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 // Services
 import {AuthOdooService} from './services/auth-odoo.service';
+import {AuthGuardService} from './services/auth-guard.service';
 
 // Components
 import { AppComponent } from './app.component';
@@ -37,6 +38,7 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
   providers: [
     AuthOdooService,
     HttpClientModule,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })

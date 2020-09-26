@@ -6,6 +6,7 @@ import { ChatOdooService } from 'src/app/services/chat-odoo.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import {Observable} from 'rxjs'
+import { UsuarioModel } from '../../models/usuario.model';
 
 
 @Component({
@@ -19,12 +20,10 @@ export class ChatComponent implements OnInit {
 
   task:TaskModel;
   task$: Observable<TaskModel>;
-  
   message:MessageModel;
   messagesList:MessageModel[];
   messagesList$: Observable<MessageModel[]>;
-  
-  userType:string="";
+  user : UsuarioModel
 
   constructor(private _authOdoo:AuthOdooService,
               private _taskOdoo:TaskOdooService,
@@ -37,7 +36,7 @@ export class ChatComponent implements OnInit {
     this.message = new MessageModel();
     this.messagesList = [];
 
-    this.userType=this._authOdoo.userType;
+    this.user = this._authOdoo.getUser()
     
     this.activatedRoute.params.subscribe(params =>{
       this.purchaseOrderID = Number(params['id']);      

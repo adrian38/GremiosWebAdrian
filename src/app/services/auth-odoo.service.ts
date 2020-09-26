@@ -13,26 +13,20 @@ let odooClient = new odoo_xmlrpc({
 
 let connected$ = new Subject<boolean>();
 let connected: boolean=false;
-let user:any; 
+let userLogin : UsuarioModel = new UsuarioModel();
+let user:any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthOdooService {
 
-  /* odooClient: odoo_xmlrpc; */
-  username:string ="";
-  password:string ="";
-
   userType:string="";
 
-  
+public OdooInfo = odooClient;
 
   constructor() {
 
-    const host = '192.168.1.15'
-    const port=8069;
-    const db = 'demo';
   }
 
 
@@ -49,9 +43,10 @@ export class AuthOdooService {
       params.push(inParams)
       odooClient.execute_kw('res.users', 'read', params, function (err, value) {
           if (err) {
-              console.log(err);  
+              console.log(err);
           } else {
-              console.log(value);
+              usuario.partner_id = value[0].partner_id[0];
+              usuario.realname = value[0].partner_id[1];
               user=value;
               get_type_user(value[0]['partner_id'][0]);
           }
@@ -66,45 +61,49 @@ export class AuthOdooService {
       params.push(inParams)
       odooClient.execute_kw('res.partner', 'read', params, function (err, value) {
           if (err) {
-              console.log(err);  
+              console.log(err);
           } else {
-              console.log(value);
-              user.push(value); 
+              console.log("100",value);
+              console.log(value[0].id, " " ,value[0].supplier_rank , " " , value[0].customer_rank)
+              if(value[0].supplier_rank > 0)
+              {
+                usuario.type = "provider"
+
+              } else if(value[0].customer_rank > 0)
+                {
+                  usuario.type = "client"
+                }
+              user.push(value);
           }
       })
     }
 
-        
+
     odooClient.connect(function (err, value){
-      if (err) { 
+      if (err) {
         console.log("Login Failed");
         console.log(err);
-        connected = false;  
+        usuario.connected = false;
+        connected = usuario.connected;
       } else {
         console.log("Login Success");
-        connected = true;
-        console.log(value);
-        get_user(value);
+        usuario.connected = true;
+        usuario.id = value;
+        connected = usuario.connected;
+        userLogin = usuario;
+        get_user(usuario.id);
       }
       connected$.next(connected);
     });
   }
 
-  isConnected():boolean{  
-    return connected;      
-  }
 
   getConnected$(): Observable<boolean>{
     return connected$.asObservable();
   }
 
   getUser(){
-    if(user[1][0].customer_rank > 0){  
-      this.userType = "client";
-    }else if(user[1][0].supplier_rank > 0){
-      this.userType = "provider";
-    }
-    return user;
+    return userLogin;
   }
 
 }

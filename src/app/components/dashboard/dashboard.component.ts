@@ -17,12 +17,12 @@ export class DashboardComponent implements OnInit {
   task:TaskModel;
   tasksList:TaskModel[];
   tasksList$:Observable<TaskModel[]>;
-  userType:string;
 
   constructor(private _taskOdoo:TaskOdooService,
               private _authOdoo:AuthOdooService) {
     this.task = new TaskModel();
-    this.userType = this._authOdoo.userType;
+    this.usuario = this._authOdoo.getUser();
+    console.log(this.usuario.type)
     
     if(this.userType == "client"){
       this._taskOdoo.requestTaskListClient();

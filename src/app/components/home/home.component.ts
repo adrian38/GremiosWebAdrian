@@ -40,11 +40,11 @@ export class HomeComponent implements OnInit {
     this._authOdoo.login(this.usuario)
     
     setTimeout(()=>{
-      if(this.connected){
-        let user:any = this._authOdoo.getUser();               
-        this._taskOdoo.setUser(this.usuario, user);
-        this._chatOdoo.setUser(this.usuario, user);
-        this.router.navigate(['/dashboard', 3]);
+      if(this.usuario.connected){
+        let user:any = this._authOdoo.getUser();
+        this._taskOdoo.setUser(this.usuario);
+        this._chatOdoo.setUser(this.usuario);
+        this.router.navigate(['/dashboard']);
         console.log("done");
         document.getElementById('close-modal').click();
       }
