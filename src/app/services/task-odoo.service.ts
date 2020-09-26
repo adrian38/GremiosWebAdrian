@@ -3,6 +3,7 @@ import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import {UsuarioModel} from '../models/usuario.model'
 import {TaskModel} from '../models/task.model'
 import {Observable, Subject} from 'rxjs';
+import { AuthOdooService } from './auth-odoo.service';
 
 let odooClient;
 
@@ -21,7 +22,7 @@ let user:UsuarioModel;
     providedIn: 'root'
   })
   export class TaskOdooService {
-    constructor(){
+    constructor(private _authOdoo:AuthOdooService){
         task = new TaskModel();
       odooClient = this._authOdoo.OdooInfo;
     }

@@ -14,26 +14,26 @@ import { Observable } from 'rxjs';
 export class DashboardComponent implements OnInit {
 
   usuario:UsuarioModel;
+  usuario$: Observable<UsuarioModel>;
   task:TaskModel;
   tasksList:TaskModel[];
   tasksList$:Observable<TaskModel[]>;
 
   constructor(private _taskOdoo:TaskOdooService,
               private _authOdoo:AuthOdooService) {
-    this.task = new TaskModel();
-    this.usuario = this._authOdoo.getUser();
-    console.log(this.usuario.type)
     
-    if(this.userType == "client"){
+    this.usuario = this._authOdoo.getUser();
+    
+    if(this.usuario.type == "client"){
       this._taskOdoo.requestTaskListClient();
-    }else if(this.userType == "provider"){
+    }else if(this.usuario.type == "provider"){
       this._taskOdoo.requestTaskListProvider();
     }
     
     setInterval(()=>{
-      if(this.userType == "client"){
+      if(this.usuario.type == "client"){
         this._taskOdoo.requestTaskListClient();
-      }else if(this.userType == "provider"){
+      }else if(this.usuario.type == "provider"){
         this._taskOdoo.requestTaskListProvider();
       }
 
@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
     this.tasksList$ = this._taskOdoo.getRequestedTaskList$();
     this.tasksList$.subscribe(tasksList =>{
       this.tasksList = tasksList;
-      //console.log(this.tasksList);
-    })
+      console.log(this.tasksList);
+    });
   }
 }

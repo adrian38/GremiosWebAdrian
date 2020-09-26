@@ -15,17 +15,21 @@
 					<div class="form-group">
 						<div class="input-group">
 							<input id="fecha" type="text" class="form-control"
-							[placeholder]="fecha">
+							placeholder="fecha">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<input type="text" class="form-control"
+							placeholder="hora">
+						</div>
+					</div>
 					<div class="form-group">
 						<div class="input-group">
 							<input type="text" class="form-control"
 								   placeholder="Address">
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<input type="text" class="form-control"
-							[placeholder]="hora">
 					<div class="form-group">
 						<div class="input-group">
 							<textarea class="form-control" id="exampleFormControlTextarea1" 
@@ -36,13 +40,12 @@
 					</div>	
 					<div class="form-group">
 						<div class="input-group">
-							<input type="text" class="form-control" 
+							<input type="number" class="form-control" 
 							[placeholder]="task.budget">
 						</div>
-					</div>					
+					</div>							
 				</form>
-				
-			</div>
+			</div>	
 			<div class="card-footer text-center">
 				<button (click)="updateTask()"
 						class="btn btn-outline-success" type="button">
@@ -62,13 +65,13 @@
 	<div class="col-md-1"></div>
 	<div class="col-md-7">
 		<div class="card mr-1" style="height: 35rem;">
-			<div *ngIf="userType == 'client'" class="card-header">
+			<div *ngIf="user.type == 'client'" class="card-header">
 				{{task.provider_name}}
 			</div>
-			<div *ngIf="userType == 'provider'" class="card-header">
+			<div *ngIf="user.type == 'provider'" class="card-header">
 				{{task.client_name}}
 			</div>
-			<div *ngIf="userType == 'client'" class="card-body overflow-auto">
+			<div *ngIf="user.type == 'client'" class="card-body overflow-auto">
 				<div *ngFor="let message of messagesList" 
 					 [ngSwitch]="message.author">
 					<div *ngSwitchCase="task.client_name"
@@ -81,7 +84,7 @@
 					</div>
 				</div>		
 			</div>
-			<div *ngIf="userType == 'provider'" class="card-body overflow-auto">
+			<div *ngIf="user.type == 'provider'" class="card-body overflow-auto">
 				<div *ngFor="let message of messagesList" 
 					 [ngSwitch]="message.author">
 					<div *ngSwitchCase="task.provider_name"
@@ -92,7 +95,7 @@
 					 	 class="alert alert-secondary col-md-8" role="alert">
 						{{message.message}}
 					</div>
-				</div>		
+				</div>
 			</div>
 			<div class="card-footer">
 				<div class="input-group mb-3">
@@ -106,7 +109,7 @@
 							<i class="fas fa-paper-plane"></i>
 						</button>
 					</div>
-				  </div>
+				</div>
 			</div>
 		</div>
 	</div>

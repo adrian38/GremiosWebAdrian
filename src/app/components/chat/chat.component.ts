@@ -23,7 +23,8 @@ export class ChatComponent implements OnInit {
   message:MessageModel;
   messagesList:MessageModel[];
   messagesList$: Observable<MessageModel[]>;
-  user : UsuarioModel
+  user: UsuarioModel
+  usuario$: Observable<UsuarioModel>
 
   constructor(private _authOdoo:AuthOdooService,
               private _taskOdoo:TaskOdooService,
@@ -32,11 +33,9 @@ export class ChatComponent implements OnInit {
               private activatedRoute:ActivatedRoute) {
 
     this.task = new TaskModel();
-
+    this.user = this._authOdoo.getUser();
     this.message = new MessageModel();
     this.messagesList = [];
-
-    this.user = this._authOdoo.getUser()
     
     this.activatedRoute.params.subscribe(params =>{
       this.purchaseOrderID = Number(params['id']);      
@@ -59,7 +58,7 @@ export class ChatComponent implements OnInit {
     this.task$ = this._taskOdoo.getRequestedTask$();
     this.task$.subscribe(task =>{
       this.task = task;
-    })
+    });
   }
 
   sendMessage(){
@@ -70,12 +69,12 @@ export class ChatComponent implements OnInit {
 
   acceptProvider(){
     this._taskOdoo.acceptProvider(this.purchaseOrderID);
-    this.router.navigate(['/dashboard', 3]);
+    this.router.navigate(['/dashboard']);
   }
 
   declineProvider(){
     this._taskOdoo.declineProvider(this.purchaseOrderID);
-    this.router.navigate(['/dashboard', 3]);
+    this.router.navigate(['/dashboard']);
     
   }
 
