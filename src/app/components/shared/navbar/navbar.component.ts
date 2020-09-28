@@ -16,9 +16,7 @@ export class NavbarComponent implements OnInit {
   user$: Observable<UsuarioModel>;
 
   constructor(private _authOdoo:AuthOdooService, private _taskOdoo:TaskOdooService) {
-
     this.task = new TaskModel();
-    this.task.client_id = this.user.id
    }
 
   ngOnInit(): void {
@@ -48,7 +46,8 @@ export class NavbarComponent implements OnInit {
       this.task.type = service;   
   }
 
-  createNewService(){    
+  createNewService(){
+    this.task.client_id = this.user.partner_id;
     this._taskOdoo.newTask(this.task);
     this.task = new TaskModel();
   }
