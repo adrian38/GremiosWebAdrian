@@ -1,12 +1,13 @@
 import { Component, OnInit} from '@angular/core';
-import { TaskModel } from '../../models/task.model';
-import { MessageModel } from '../../models/message.model';
-import { TaskOdooService } from '../../services/task-odoo.service';
-import { ChatOdooService } from '../../services/chat-odoo.service';
+import { TaskModel } from 'src/app/models/task.model';
+import { MessageModel } from 'src/app/models/message.model';
+import { TaskOdooService } from 'src/app/services/task-odoo.service';
+import { ChatOdooService } from 'src/app/services/chat-odoo.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthOdooService } from '../../services/auth-odoo.service';
+import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import {Observable} from 'rxjs'
 import { UsuarioModel } from '../../models/usuario.model';
+
 
 @Component({
   selector: 'app-chat',
@@ -17,17 +18,13 @@ export class ChatComponent implements OnInit {
 
   purchaseOrderID:number;
 
-  task:any;
+  task:TaskModel;
+  task$: Observable<TaskModel>;
   message:MessageModel;
   messagesList:MessageModel[];
   messagesList$: Observable<MessageModel[]>;
-  desc:string="";
-  fecha:string="";
-  hora:string="";
-  providerName:string="";
-  costo:number=0;
-  userType:string="";
-  user : UsuarioModel
+  user: UsuarioModel
+  usuario$: Observable<UsuarioModel>
 
   constructor(private _authOdoo:AuthOdooService,
               private _taskOdoo:TaskOdooService,
@@ -35,40 +32,21 @@ export class ChatComponent implements OnInit {
               private router:Router,
               private activatedRoute:ActivatedRoute) {
 
+    this.task = new TaskModel();
+    this.user = this._authOdoo.getUser();
     this.message = new MessageModel();
     this.messagesList = [];
-    this.user = this._authOdoo.getUser()
-    this.userType=this.user.type;
-
+    
     this.activatedRoute.params.subscribe(params =>{
-      this.purchaseOrderID = Number(params['id']);
+      this.purchaseOrderID = Number(params['id']);      
     })
 
-    this._taskOdoo.requestTask(this.purchaseOrderID);
-
-    setTimeout(()=>{
-      this.task = this._taskOdoo.getRequestedTask()[0];
-      this.desc = this._taskOdoo.getRequestedTask()[1]['note'];
-      this.fecha = this.task.date_order.slice(0,10);
-      this.hora = this.task.date_order.slice(11,this.task.date_order.lenght);
-      this.costo = this.task.amount_total;
-      if(this.user.type =="client"){
-        this.providerName = this.task['partner_id'][1];
-      }else if(this.user.type =="provider"){
-        this.providerName = this.task['user_id'][1];
-      }
-      console.log(this.task);
-
-      console.log(this.desc);
-
-    },3000);
-
-
-
+    this._taskOdoo.requestTask(this.purchaseOrderID);  
+    
     setInterval(()=>{
       this._chatOdoo.requestAllMessages(this.purchaseOrderID);
     }, 3000);
-
+    
    }
 
   ngOnInit(): void {
@@ -76,27 +54,32 @@ export class ChatComponent implements OnInit {
     this.messagesList$.subscribe(messagesList => {
       this.messagesList = messagesList;
     });
+
+    this.task$ = this._taskOdoo.getRequestedTask$();
+    this.task$.subscribe(task =>{
+      this.task = task;
+    });
   }
 
   sendMessage(){
     this.message.offer_id = this.purchaseOrderID;
-    this._chatOdoo.sendMessageClient(this.message);
+    this._chatOdoo.sendMessageClient(this.message);  
     this.message= new MessageModel();
   }
 
   acceptProvider(){
     this._taskOdoo.acceptProvider(this.purchaseOrderID);
-    this.router.navigate(['/dashboard', 3]);
+    this.router.navigate(['/dashboard']);
   }
 
   declineProvider(){
     this._taskOdoo.declineProvider(this.purchaseOrderID);
-    this.router.navigate(['/dashboard', 3]);
-
+    this.router.navigate(['/dashboard']);
+    
   }
 
   updateTask(){
-
+    
   }
 
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import { MessageModel } from '../models/message.model';
-import { UsuarioModel } from '../models/usuario.model'
-import { AuthOdooService } from '../services/auth-odoo.service';
+import {UsuarioModel} from '../models/usuario.model'
 import {Observable, Subject} from 'rxjs';
+import { AuthOdooService } from '../services/auth-odoo.service';
 
 let odooClient;
 let user: UsuarioModel
@@ -39,17 +39,17 @@ let messagesList$ = new Subject<MessageModel[]>();
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(value);
+                    console.log(value);                    
                 }
             })
         }
-
+        
         odooClient.connect(function (err,value) {
-            if (err) {
+            if (err) { 
                 console.log(err);
-            } else {
-                console.log(value);
-                send_msg_PO();
+            } else {              
+                console.log(value); 
+                send_msg_PO(); 
             }
         });
 
@@ -66,7 +66,7 @@ let messagesList$ = new Subject<MessageModel[]>();
             params.push(inParams)
             odooClient.execute_kw('purchase.order', 'search_messages', params, function (err, value) {
                 if (err) {
-                    console.log(err);
+                    console.log(err);  
                 } else {
                     //console.log(value);
                     value = value.filter(messages=>{
@@ -82,17 +82,17 @@ let messagesList$ = new Subject<MessageModel[]>();
                         messagesList.push(temp);
                     }
                     messagesList$.next(messagesList);
-                    //console.log(messagesList);
+                    //console.log(messagesList);                                    
                 }
             })
         }
-
+          
         odooClient.connect(function (err,value) {
-            if (err) {
-                console.log(err);
+            if (err) { 
+                console.log(err); 
             } else {
                 console.log(value);
-                list_msg_ids()
+                list_msg_ids() 
             }
         });
     }

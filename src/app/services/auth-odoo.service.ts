@@ -4,17 +4,17 @@ import {UsuarioModel} from '../models/usuario.model'
 import {Observable, Subject} from 'rxjs'
 
 let odooClient = new odoo_xmlrpc({
-  url: 'http://' + '10.23.20.10',
+  url: 'http://' + '127.0.0.1',
   port: 8069,
   db: 'demo',
   username: '',
   password: '',
 });
 
-let connected$ = new Subject<boolean>();
+let user$ = new Subject<UsuarioModel>();
 let connected: boolean=false;
-let user:any;
 let userLogin : UsuarioModel = new UsuarioModel();
+let user:any;
 
 @Injectable({
   providedIn: 'root'
@@ -93,16 +93,15 @@ public OdooInfo = odooClient;
         userLogin = usuario;
         get_user(usuario.id);
       }
-      connected$.next(connected);
+      user$.next(userLogin);
     });
   }
 
-
-  getConnected$(): Observable<boolean>{
-    return connected$.asObservable();
+  getUser$(): Observable<UsuarioModel>{
+    return user$.asObservable();
   }
 
-  getUser(){
+  getUser(): UsuarioModel{
     return userLogin;
   }
 
