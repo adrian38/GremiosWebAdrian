@@ -29,6 +29,7 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
     DashboardComponent,
     ChatComponent,
     TaskCardComponent,
+
   ],
   imports: [
     BrowserModule,
