@@ -31,6 +31,7 @@ export class ChatComponent implements OnInit {
               private _chatOdoo:ChatOdooService,
               private router:Router,
               private activatedRoute:ActivatedRoute) {
+                
 
     this.task = new TaskModel();
     this.user = this._authOdoo.getUser();
