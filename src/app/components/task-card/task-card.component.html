@@ -5,81 +5,113 @@
             <div class="col-md-8">
                 <div class="firma-card row mt-3">
                     <div class="col-md-5 img-padding-no">
-                        <div class="firma-resim">                          
-                               <img src="">                            
-                        </div>
+                        <div class="firma-resim">
+                            <img src="../../../assets/img/CardImg.png" class="heaven">
+                            <img src="../../../assets/img/CardImgFilter.png" class="eye"> 
+                        </div>                                                                
                     </div>              
-                    <div class="col-md-7">
-                        <div class="firma-aciklama card-body">
-                            <h4>{{task.type}}</h4>
-                            <ul class="yacht-info__list space-2">
-                                <li>
-                                    <span class="vertical-align-mid">Servicio Puntual</span>
-                                </li>
-                                <br>
-                                    <span *ngIf="userType == 'client'" class="vertical-align-mid">
-                                        <br>
-                                        <button (click)="offers()"
-                                                type="button" 
-                                                class="btn btn-outline-primary btn-sm">
-                                            Ofertas
-                                        </button>  
-                                        <button type="button" 
-                                                class="btn btn-outline-primary btn-sm">
-                                            Detalles
-                                        </button>
-                                    </span>
-                                    <span *ngIf="userType == 'provider'" class="vertical-align-mid">
-                                        <br>
-                                        <button (click)="sendOffer=!sendOffer"
-                                                type="button" 
-                                                class="btn btn-outline-primary btn-sm">
-                                            Ofertar
-                                        </button>  
-                                        <button (click)="openChat(this.task['id'])"
-                                                type="button" 
-                                                class="btn btn-outline-primary btn-sm">
-                                            Chat
-                                        </button>
-                                    </span>                            
-                            </ul>
+                    <div class="col-md-7 row">
+                        <div class="col-md-8">
+                            <h5>{{task.type}}</h5>
+                            <div class="row mb-4">
+                                <span style="font-size: small;"><img src="../../../assets/img/calendarIcon.png">Miercoles, 9 de septiembre de 2020</span>
+                                <span style="font-size: small;"><img src="../../../assets/img/watchIcon.png">Horario de servicio: de 9:00 a 10:00</span>
+                            </div>      
+                            <span *ngIf="userType == 'client'" class="vertical-align-mid mb-3">
+                                <button (click)="offers()"
+                                        type="button" 
+                                        class="btn btn-primary btn-sm mr-2">
+                                    Ofertas
+                                </button>  
+                                <button (click)="details()"
+                                        type="button" 
+                                        class="btn btn-primary btn-sm">
+                                    Detalles
+                                </button>
+                            </span>
+                            <span *ngIf="userType == 'provider'" class="vertical-align-mid mb-2">
+                                <button (click)="sendOffer=!sendOffer"
+                                        type="button" 
+                                        class="btn btn-primary btn-sm mr-2">
+                                    Ofertar
+                                </button>  
+                                <button (click)="openChat(this.task['id'])"
+                                        type="button" 
+                                        class="btn btn-primary btn-sm">
+                                    Chat
+                                </button>
+                            </span>
                         </div>
-                        
+                        <div class="col-md-4">
+                            <span type="button" class="text-green mt-1">Cancelar</span>
+                            <br><br><br>
+                            <div>
+                                <p style="font-size: smaller;">Solicitado:</p>
+                                <p style="font-size: smaller;">Fecha solicitado</p>
+                            </div>           
+                        </div>                        
                     </div>
                 </div>
-                <div *ngIf="showOffers" class="card">
-                    <ul>
-                        <li *ngFor="let offer of offersList" class="row mt-1">
-                            <div class="col-md-3">
-                                {{offer.provider_name}}  
-                            </div>
-                            <div class="col-md-3">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-md-4">
-                                <button (click)="openChat(offer.id)" class="btn btn-outline-dark">
-                                    <i class="fa fa-comments" aria-hidden="true"></i>
-                                </button>
-                                <button (click)="acceptProvider(offer.id)" class="btn btn-outline-dark">
-                                    <i class="fas fa-check-circle" aria-hidden="true"></i>
-                                </button>
-                                <button (click)="declineProvider(offer.id)"  class="btn btn-outline-dark">
-                                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="col-md-2">
-                                {{offer.budget}}€ 
+                <div *ngIf="showOffers" class="card orange-bkground">
+                    <ul class="list-group-flush">
+                        <li *ngFor="let offer of offersList" class="list-group-item orange-bkground">
+                            <div class="row">
+                                <div class="col-md-3 text-white" style="font-size: medium;">
+                                    {{offer.provider_name}}
+                                </div>
+                                <div class="col-md-3">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="col-md-4">
+                                    <button (click)="openChat(offer.id)" class="btn btn-outline-dark">
+                                        <i class="fa fa-comments" aria-hidden="true"></i>
+                                    </button>
+                                    <button (click)="acceptProvider(offer.id)" class="btn btn-outline-dark">
+                                        <i class="fas fa-check-circle" aria-hidden="true"></i>
+                                    </button>
+                                    <button (click)="declineProvider(offer.id)"  class="btn btn-outline-dark">
+                                        <i class="fa fa-window-close" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="col-md-2" style="font-size: x-large;">
+                                    <strong>{{offer.budget}}€</strong> 
+                                </div>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div *ngIf="sendOffer" class="card">
-                    <ul>
-                        <li class="row mt-1">
+                <div *ngIf="showDetails" class="card text-center orange-bkground">
+                    <ul class="nav nav-pills nav-justified">
+                        <li (click)="navDetails('description')" class="nav-item">
+                            <a class="nav-link active">DESCRIPCIÓN</a>
+                        </li>
+                        <li (click)="navDetails('date')" class="nav-item">
+                            <a class="nav-link">FECHA Y HORA</a>
+                        </li>
+                        <li (click)="navDetails('address')" class="nav-item">
+                            <a class="nav-link">DIRECCIÓN</a>
+                        </li>
+                    </ul>
+                    <div class="card-body" style="background-color: white;!important">
+                        <div *ngIf="showDescription" class="row">
+                            <p>{{task.description}}</p>
+                        </div>
+                        <div *ngIf="showDate" class="row">
+                            <div class="col-md-7"><p>Fecha</p></div>
+                            <div class="col-md-5"><p>Hora</p></div>
+                        </div>
+                        <div *ngIf="showAddress" class="row">
+                            <p>show address</p>
+                        </div>
+                    </div>   
+                </div>
+                <div *ngIf="sendOffer" class="card orange-bkground">
+                    <ul class="list-group-flush">
+                        <li class="list-group-item orange-bkground">
                             <div class="col-md-3"></div>
                             <div class="col-md-3">
                                 <input [(ngModel)]="task.budget" type="number" 
@@ -98,8 +130,7 @@
             </div>
             <div class="col-md-2"></div>
         </div>
-    </div>
-    
+    </div>   
 </div>
 
 

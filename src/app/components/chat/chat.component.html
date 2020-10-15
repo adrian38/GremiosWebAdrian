@@ -1,116 +1,118 @@
-<div class=" row mt-3 card-group">
-	<div class="col-md-3" style="font-size: small;">
-		<div class="card" style="height: 35rem;">
-			<div class="card-header"  style="font-size: large">
-				Servicio
-			</div>
-			<div class="card-body">
-				<form class="col">
-					<div class="form-group ">
-						<select id="inputState" class="form-control">
-							<option [selected]="false">Servicio puntual</option>
-							<option [selected]="true">Semanalmente</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<input id="fecha" type="date" class="form-control"
-							placeholder="fecha">
+<div class="container ">
+	<div class="row card-group">
+		<div class="col-md-3" style="font-size: small;">
+			<div class="card mt-3" style="height: 35rem;">
+				<div class="card-header orange-bkground"  style="font-size: large">
+					Servicio de {{task.type}}
+				</div>
+				<div class="card-body">
+					<form class="col">
+						<div class="form-group">
+							<div class="input-group">
+								<input id="fecha" type="date" class="form-control"
+								placeholder="fecha"
+								[disabled] ="user.type == 'provider'">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<input type="time" class="form-control"
-							placeholder="hora">
+						<div class="form-group">
+							<div class="input-group">
+								<input type="time" class="form-control"
+								placeholder="hora"
+								[disabled] ="user.type == 'provider'">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<input type="text" class="form-control"
-								   placeholder="Address">
+						<div class="form-group">
+							<div class="input-group">
+								<input type="text" class="form-control"
+									placeholder="Address"
+									[disabled] ="user.type == 'provider'">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<textarea class="form-control" id="exampleFormControlTextarea1"
-									rows="2">
-								{{task.description}}
-							</textarea>
+						<div class="form-group">
+							<div class="input-group">
+								<textarea class="form-control" id="exampleFormControlTextarea1"
+										rows="2"
+										[disabled] ="user.type == 'provider'">
+									{{task.description}}
+								</textarea>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<input type="number" class="form-control" 
-							[placeholder]="task.budget">
-						</div>
-					</div>							
-				</form>
-			</div>	
-			<div class="card-footer text-center">
-				<button (click)="updateTask()"
-						class="btn btn-outline-success" type="button">
-					Actualizar
-				</button>
-				<button (click)="acceptProvider()"
-							class="btn btn-outline-success ml-2">
-						<i class="fas fa-check-circle"></i>
-				</button>
-				<button (click)="declineProvider()"
-						class="btn btn-outline-danger ml-2">
-					<i class="fa fa-window-close"></i>
-				</button>
+						<div class="form-group">
+							<div class="input-group">
+								<input  type="number" class="form-control" 
+								[placeholder]="task.budget"
+								[disabled] ="user.type == 'client'">
+							</div>
+						</div>							
+					</form>
+				</div>	
+				<div class="card-footer text-center">
+					<button (click)="updateTask()"
+							class="btn btn-secondary" type="button">
+						Actualizar
+					</button>
+					<button (click)="acceptProvider()"
+								class="btn btn-secondary ml-2">
+							<i class="fas fa-check-circle"></i>
+					</button>
+					<button (click)="declineProvider()"
+							class="btn btn-secondary ml-2">
+						<i class="fa fa-window-close"></i>
+					</button>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-1"></div>
-	<div class="col-md-7">
-		<div class="card mr-1" style="height: 35rem;">
-			<div *ngIf="user.type == 'client'" class="card-header">
-				{{task.provider_name}}
-			</div>
-			<div *ngIf="user.type == 'provider'" class="card-header">
-				{{task.client_name}}
-			</div>
-			<div *ngIf="user.type == 'client'" class="card-body overflow-auto">
-				<div *ngFor="let message of messagesList" 
-					 [ngSwitch]="message.author">
-					<div *ngSwitchCase="task.client_name"
-					 	 class="alert alert-primary col-md-8 ml-auto" role="alert">
-						{{message.message}}
+		<div class="col-md-1"></div>
+		<div class="col-md-7">
+			<div class="card mt-3" style="height: 35rem;">
+				<div *ngIf="user.type == 'client'" class="card-header orange-bkground">
+					{{task.provider_name}}
+				</div>
+				<div *ngIf="user.type == 'provider'" class="card-header orange-bkground">
+					{{task.client_name}}
+				</div>
+				<div *ngIf="user.type == 'client'" class="card-body overflow-auto">
+					<div *ngFor="let message of messagesList" 
+						[ngSwitch]="message.author">
+						<div *ngSwitchCase="task.client_name"
+							class="alert alert-primary col-md-8 ml-auto" role="alert">
+							{{message.message}}
+						</div>
+						<div *ngSwitchDefault
+							class="alert alert-secondary col-md-8" role="alert">
+							{{message.message}}
+						</div>
 					</div>
-					<div *ngSwitchDefault
-					 	 class="alert alert-secondary col-md-8" role="alert">
-						{{message.message}}
+				</div>
+				<div *ngIf="user.type == 'provider'" class="card-body overflow-auto">
+					<div *ngFor="let message of messagesList" 
+						[ngSwitch]="message.author">
+						<div *ngSwitchCase="task.provider_name"
+							class="alert alert-primary col-md-8 ml-auto" role="alert">
+							{{message.message}}
+						</div>
+						<div *ngSwitchDefault
+							class="alert alert-secondary col-md-8" role="alert">
+							{{message.message}}
+						</div>
+					</div>
+				</div>
+				<div class="card-footer send-area">
+					<div class="input-group" style="height: min-content;">
+						<input [(ngModel)]="message.message" height="30px"
+							type="text" class="form-control input-sendM" placeholder=""
+							aria-label="Recipient's username" aria-describedby="button-addon2">
+						<div class="input-group-append btn-send">
+							<button (click)="sendMessage()"
+									class="btn btn-secondary btn-send" type="button"
+									id="button-addon2">
+								<i class="fas fa-paper-plane"></i>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div *ngIf="user.type == 'provider'" class="card-body overflow-auto">
-				<div *ngFor="let message of messagesList" 
-					 [ngSwitch]="message.author">
-					<div *ngSwitchCase="task.provider_name"
-					 	 class="alert alert-primary col-md-8 ml-auto" role="alert">
-						{{message.message}}
-					</div>
-					<div *ngSwitchDefault
-					 	 class="alert alert-secondary col-md-8" role="alert">
-						{{message.message}}
-					</div>
-				</div>
-			</div>
-			<div class="card-footer">
-				<div class="input-group mb-3">
-					<input [(ngModel)]="message.message"
-						   type="text" class="form-control" placeholder=""
-						   aria-label="Recipient's username" aria-describedby="button-addon2">
-					<div class="input-group-append">
-						<button (click)="sendMessage()"
-								class="btn btn-outline-success" type="button"
-								id="button-addon2">
-							<i class="fas fa-paper-plane"></i>
-						</button>
-					</div>
-				</div>
-			</div>
+			<br><br><br>
 		</div>
 	</div>
 </div>

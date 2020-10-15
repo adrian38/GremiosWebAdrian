@@ -1,9 +1,43 @@
-.container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.homeImg{
+    background-image: url('../../../assets/img/HomeImg.png');
+    background-size: cover;
+    height: 100%;
+    width: 100%;
 }
-.letra-chica{
-    font-size: 0.8em;
-    letter-spacing: 0.1px;
+
+.fluid{
+    background-color: rgb(235, 235, 235);
+}
+
+.eye{
+    opacity: 0.3;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: -37px;
+    left: -5px;
+    z-index: 2;
+}
+
+.heaven{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: -2px;
+    left: 0;
+    z-index: 1;
+}
+
+.modalLogin{
+    border-radius: 20px 20px 20px 20px;
+}
+
+.modalLogin{
+    width: 400px;
+}
+
+.form-check-input::before{
+    background-color: darkcyan;
+    border-color: darkcyan;
+    color: darkcyan;
 }

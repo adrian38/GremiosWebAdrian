@@ -1,0 +1,61 @@
+.navbar-dark{
+    background-color: rgb(49, 49, 58) !important;
+    border-radius: 0 0 30px 0;
+    height: 60px;
+    width: auto;
+}
+
+.logoNavbar{
+    width: 40px;
+    height: 40px;
+}
+
+.dropboxNavbar{
+    height: 30px;
+    width: auto;
+    font-size: 80%;
+    color: rgb(49, 49, 58);
+}
+
+.text-navbar{
+    color: rgb(49, 49, 58);
+}
+
+.searchNavbar{
+    height: 30px;
+    width: min-content;
+    font-size: 80%;
+    text-align: center;
+}
+
+.tabs{
+    background-color:rgb(49, 49, 58);
+    border-color: rgb(49, 49, 58);
+}
+
+.tabs:hover, .tabs:active{
+    background-color:rgb(246, 183, 118);;
+    border-color: rgb(246, 183, 118);
+    border-radius: 2px 2px 2px 2px;
+}
+
+.tabImg{
+    height: 45px;
+    width: 45px;
+}
+
+.date, .time{
+    font-size: 50%;
+}
+
+.input-photo{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+
+

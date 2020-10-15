@@ -3,25 +3,55 @@
     border: 1px solid;
     border-color: #c7bdbd40;
     margin-top: 1rem auto;
-    border-radius: 5px;
+    border-radius: 75px 5px 5px 5px;
     box-shadow: 0 4px 6px -1px rgb(198, 207, 234);
     overflow: hidden;
   }
   .firma-resim{
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-size: cover;
-    background-position: center;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
     transition: -webkit-transform .2s;
     transition: transform .2s;
-    background-image: url(https://storage.googleapis.com/chydlx/codepen/blog-cards/image-1.jpg);
+    overflow: hidden;
   }
   .firmalar{
     background: #f1f4f5c7;
   }
+
+.eye{
+    opacity: 0.3;
+    position: absolute;
+    height: 130%;
+    width: 80%;
+    top: -15px;
+    left: -10px;
+    z-index: 2;
+}
+
+.heaven{
+    position: absolute;
+    z-index: 1;
+}
+
+.card-body{
+  overflow: hidden;
+  left: 0px;
+}
+
+.nav-link{
+  background-color: rgb(246, 183, 118) !important;
+  color: white !important;
+  border-radius: 0 !important;
+}
+
+.nav-link:active, .nav-link:hover{
+  background-color: rgb(49, 49, 58) !important;
+  color: rgb(246, 183, 118) !important;
+  cursor: pointer;
+}
   
   @media (max-width: 768px) {
   
@@ -37,7 +67,7 @@
     }
     .img-padding-no{
       padding-right: 0px;
-      padding-left: 0px;
+      padding-left: -20px;
     }
   }
   

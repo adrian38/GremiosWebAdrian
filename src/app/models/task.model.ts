@@ -11,10 +11,13 @@ export class TaskModel{
     budget:number;
     origin:string;
     date_planned:string;
+    date:string;
+    time:string;
 
     constructor(type:string="",description:string="", id:number=0, id_string:string="",
                 client_id:number=0,client_name:string="", provider_id:number=0, provider_name:number=0,
-                budget:number=0,origin:string="",date_planned:string=""){
+                budget:number=0,origin:string="",date_planned:string="", date:string="", 
+                time:string=""){
 
         this.type=type;
         this.description=description;
@@ -27,5 +30,7 @@ export class TaskModel{
         this.budget=budget;
         this.origin=origin;
         this.date_planned=date_planned;
+        this.date = date;
+        this.time = time;
     }
 }

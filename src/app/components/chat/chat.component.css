@@ -1,0 +1,22 @@
+.input-sendM{
+    border-radius: 25px 25px 25px 25px;
+}
+
+.btn-send{
+    border-radius: 25px 25px 25px 25px;
+}
+
+.send-area{
+    background-color: rgb(139, 139, 163) !important;
+    border-color:  rgb(139, 139, 163) !important;
+}
+
+.alert-primary{
+    background-color: rgb(219, 219, 219) !important;
+    border-color:  rgb(219, 219, 219) !important;
+}
+
+.alert-secondary{
+    background-color: rgb(250, 219, 186) !important;
+    border-color:  rgb(250, 219, 186) !important;
+}

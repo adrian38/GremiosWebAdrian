@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import {app_routing} from './app.routes';
 import {FormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import {ReactiveFormsModule} from '@angular/forms'
 
 //pipes
 
@@ -34,6 +35,7 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     app_routing
   ],
   providers: [

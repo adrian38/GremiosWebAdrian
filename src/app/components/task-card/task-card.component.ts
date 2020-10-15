@@ -17,6 +17,10 @@ export class TaskCardComponent implements OnInit {
 
   showOffers:boolean = false;
   sendOffer:boolean= false;
+  showDetails:boolean = false;
+  showDescription:boolean=false;
+  showDate:boolean=true;
+  showAddress:boolean=false;
 
   userType:string="";
   user : UsuarioModel;
@@ -43,12 +47,33 @@ export class TaskCardComponent implements OnInit {
   }
 
   offers(){
+    this.showDetails = false;
     this.showOffers=!this.showOffers;
     this._taskOdoo.requestOffersForTask(this.task.id_string);   
   }
 
-  details (task: TaskModel){
+  details(){
+    this.showOffers = false;
+    this.showDetails = !this.showDetails;
+  }
 
+  navDetails (nav: string){
+    switch(nav){
+      case 'description':
+        this.showAddress = false;
+        this.showDate = false;
+        this.showDescription = true;
+        break;
+      case 'date':
+        this.showAddress = false;
+        this.showDate = true;
+        this.showDescription = false;
+        break;
+      default:
+        this.showAddress = true;
+        this.showDate = false;
+        this.showDescription = false;
+    }
   }
 
   openChat(id){    

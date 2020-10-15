@@ -1,50 +1,72 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark row">
-    <a class="navbar-brand mt-4 mb-4">
-      <img src="" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
-      Gremio
+    <a class="navbar-brand">
+      <img src="../../../../assets/img/logoNavbar.png"
+           alt="logoNavbar"
+           class="d-inline-block align-top ml-3 logoNavbar">
     </a>
-    <div class="collapse navbar-collapse mt-1 mb-1" id="navbarNav">
-      <div class="d-flex justify-content-around">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="d-flex">
           <div *ngIf="user.type == 'client'"  class="dropdown  ml-5 mr-5">
-            <button class="btn btn-secondary dropdown-toggle" type="button"
+            <button class="btn btn-primary dropdown-toggle dropboxNavbar text-navbar" type="button"
                     id="dropdownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
               Elegir servicio
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" (click)="newService('Fontanería')"
-                 data-toggle="modal" data-target="#newServiceModal">Fontanería</a>
-              <a class="dropdown-item" (click)="newService('Electricidad')"
-                  data-toggle="modal" data-target="#newServiceModal">Electricidad</a>
+              <a class="dropdown-item dropboxNavbar"
+                 (click)="newService('Fontanería')"
+                 data-toggle="modal"
+                 data-target="#newServiceModal">
+                Fontanería
+              </a>
+              <a class="dropdown-item dropboxNavbar" 
+                 (click)="newService('Electricidad')"
+                 data-toggle="modal"
+                 data-target="#newServiceModal">
+                Electricidad
+              </a>
             </div>
           </div>
           <div *ngIf="user.type == 'client'" class="input-group">
-            <input type="text" class="form-control" placeholder="Buscar servicio"
+            <input class="form-control searchNavbar col-md-7" placeholder="Buscar servicio"
                    aria-label="Recipient's username" aria-describedby="button-addon2"
                    type="search">
-            <div class="input-group-append">
-              <button class="btn btn-secondary" type="submit" id="button-addon2">
+            <div class="input-group-append searchNavbar">
+              <button class="btn btn-primary text-navbar" type="submit" id="button-addon2">
                 <i class="fas fa-search"></i>
               </button>
             </div>
           </div>
         </div>
-          <nav *ngIf="userConnected()" aria-label="..." class="mt-3 ml-auto p-2 bd-highlight">
-            <ul class="pagination pagination-md">
-              <li class="page-item active" aria-current="page" (click)="solicitudes()">
-                <span class="page-link">
-                  Solicitudes
-                  <span class="sr-only">(current)</span>
-                </span>
+          <nav *ngIf="userConnected()" aria-label="..." class="ml-auto bd-highlight mt-2 mr-2">
+            <ul class="pagination pagination-sm">
+              <li class="page-item mr-1" aria-current="page" (click)="solicitudes()">
+                <div class="tabs btn">
+                  <img src="../../../../assets/img/SolicitudesNavbar.png"
+                       onmouseover="this.src='../../../../assets/img/SolicitudesNavbarActive.png'"
+                       onmouseout="this.src='../../../../assets/img/SolicitudesNavbar.png'"
+                       class="tabImg" alt="">
+                </div>       
               </li>
               <li class="page-item" (click)="contratados()">
-                <a class="page-link">Contratados</a>
+                <div class="tabs btn wrapped" >
+                  <img src="../../../../assets/img/ContratadosNavbar.png"
+                     onmouseover="this.src='../../../../assets/img/ContratadosNavbarActive.png'"
+                     onmouseout="this.src='../../../../assets/img/ContratadosNavbar.png'"
+                     class="tabImg active"
+                     alt="">
+                </div>
               </li>
-              <li class="page-item" (click)="terminados()">
-                <a *ngIf="user.type == 'client'" class="page-link">Terminados</a>
-                <a *ngIf="user.type == 'provider'" class="page-link">Historial</a>
+              <li class="page-item " (click)="terminados()">
+                <div class="tabs btn">
+                  <img src="../../../../assets/img/HistorialNavbar.png"
+                     onmouseover="this.src='../../../../assets/img/HistorialNavbarActive.png'"
+                     onmouseout="this.src='../../../../assets/img/HistorialNavbar.png'"
+                     class="tabImg" alt=""
+                     style="width: 38px;">
+                </div>
               </li>
             </ul>
           </nav>
@@ -52,76 +74,125 @@
 </nav>
 
 <!-- Modal -->
-<div class="modal fade" id="newServiceModal" tabindex="-1" 
-      aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade"
+     id="newServiceModal"
+     tabindex="-1" 
+     aria-labelledby="ServiceModal"
+     aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          <img src="" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+        <h6 class="modal-title"
+            id="ServiceModal">
           NUEVA SOLICITUD DE {{task.type | uppercase }}
-        </h5>
+        </h6>
       </div>
       <div class="column">
-        <div class="modal-body input-group">
-          <ul class="list-group list-group-flush" style="width: 60rem;">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              ¿Cuántas veces desea el servicio?
-                <div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="frecuenciaRadios"
-                            value="unaVez" id="unaVezRadio" checked>         
-                    <label class="form-check-label" for="unaVezRadio">
-                      Una vez (Servicio Puntual)
-                    </label>
-                  </div>  
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="frecuenciaRadios"
-                            value="semanalmente" id="semanalmenteRadio">         
-                    <label class="form-check-label" for="semanalmenteRadio">
-                      Semanalmente (Servicio recurrente)
-                    </label>
-                  </div>
-                </div>  
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Describa el servicio que necesita
-              <textarea [(ngModel)]="task.description" class="form-control"></textarea>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center" mb-5>
-              Dirección en que se realizará el servicio
-              <form>
-                <div class="form-row">
-                  <div class="col">
-                    <input type="text" class="form-control m-1" placeholder="Calle">
-                    <input type="text" class="form-control m-1" placeholder="Número">
-                    <input type="text" class="form-control m-1" placeholder="Portal">
-                    <input type="text" class="form-control m-1" placeholder="Escalera">
-                  </div>
-                  <div class="col">
-                    <input type="text" class="form-control m-1" placeholder="Piso">
-                    <input type="text" class="form-control m-1" placeholder="Puerta">
-                    <input type="text" class="form-control m-1" placeholder="Cod. Postal">
-                  </div>
+        <form autocomplete="off"
+              [formGroup]="newServiceForm"
+              (ngSubmit)="createNewService()">
+          <div class="modal-body input-group">
+            <ul class="list-group list-group-flush"
+                style="width: 80rem;">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Título del servicio
+                <textarea formControlName="title"
+                          class="form-control"
+                          [class.is-invalid]=tituloNoValido></textarea>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <label>¿Cuándo necesita el servicio? </label>
+                <div class="row">
+                  <input type = "date"
+                         class= "col-md-7"
+                         formControlName="date">
+                         
+                  <input type = "time"
+                         class= "col-md-5"
+                         formControlName="time">
                 </div>
-              </form>
-            </li>
-            <li>
-              <div class = "form-row">
-                <div class = "col">
-                  <label>Fecha & Hora </label>
-                  <br>
-                  <input type = "date" class= "col-md-6">
-                  <input type = "time" class= "col-md-6">
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Describa el servicio que necesita
+                <textarea formControlName="description"
+                          class="form-control"></textarea>
+              </li>
+              <li class="list-group-item d-flex align-items-center">
+                Fotos del proyecto
+                <div class="ml-auto" formArrayName="photos">
+                  <label for="i"
+                        class="btn min-content"
+                        *ngFor="let control of photos.controls; let i=index"       
+                        >
+                    <input type="file" 
+                          name="photo" 
+                          id=i 
+                          class="input-photo" 
+                          accept="image/*">
+                    
+                    <img [src]="control.value"
+                        class="card-img logoNavbar"
+                        alt="No image">
+                </label>
+                </div>               
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center" mb-5>
+                Dirección en que se realizará el servicio
+                <form>
+                  <div class="form-row">
+                    <div class="col">
+                      <input type="text" class="form-control m-1" placeholder="Calle">
+                      <input type="text" class="form-control m-1" placeholder="Número">
+                      <input type="text" class="form-control m-1" placeholder="Portal">
+                      <input type="text" class="form-control m-1" placeholder="Escalera">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control m-1" placeholder="Piso">
+                      <input type="text" class="form-control m-1" placeholder="Puerta">
+                      <input type="text" class="form-control m-1" placeholder="Cod. Postal">
+                    </div>
+                  </div>
+                </form>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                ¿Dispone de los materiales necesarios?
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="radio" 
+                           class="form-check-input"
+                           name="materials"
+                           formControlName="materials"
+                           value="yes">
+                    Si
+                  </label>
                 </div>
-              </div>
-            </li>
-            <button (click)="createNewService()"
-                  type="button" class="btn btn-outline-success mt-5" data-dismiss="modal">
-              Crear
-            </button>
-          </ul>
-        </div>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="radio"
+                           class="form-check-input"
+                           name="materials"
+                           formControlName="materials"
+                           value="no"
+                           [class.is-invalid]=materialsNoValido>
+                    No
+                  </label>
+                </div>
+              </li>
+              <div class="text-center">
+                <button (click)="createNewService()"
+                      type="button" class="btn btn-secondary mt-2 mr-3">
+                  Crear
+                </button>
+                <button class="btn btn-secondary mt-2 ml-1"
+                        type="button"
+                        id="close-modal"
+                        data-dismiss="modal">
+                  Cancelar
+                </button>
+              </div>     
+            </ul>    
+          </div>
+        </form>
       </div>
     </div>
   </div>

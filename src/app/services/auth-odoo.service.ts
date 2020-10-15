@@ -4,7 +4,7 @@ import {UsuarioModel} from '../models/usuario.model'
 import {Observable, Subject} from 'rxjs'
 
 let odooClient = new odoo_xmlrpc({
-  url: 'http://' + '127.0.0.1',
+  url: 'http://' + '192.168.1.16',
   port: 8069,
   db: 'demo',
   username: '',

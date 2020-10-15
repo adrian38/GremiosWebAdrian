@@ -1,56 +1,94 @@
-<div class="container">
+<div class="fluid">
   <div class="row">
-    <div class="column text-center mt-2 mb-5">
-      <h3 class="m-5">Servicios para tu hogar</h3>
-      <div class="border rounded border-primary m-5 text-center"
-            style="height: 7rem;">
-        <h1 class="mt-2" style="font-size: 4em;">Gremio</h1>
-      </div>
-      <button type="button" class="btn btn-primary m-4" 
-              data-toggle="modal" data-target="#exampleModal"
-        >EMPEZAR AHORA
-      </button>
+    <div class="col-md-7">
+      <img src="../../../assets/img/HomeImg.png" 
+           class="heaven" 
+           alt="homeImg">
+      <img src="../../../assets/img/HomeImgFilter.png" 
+           class="eye" 
+           alt="homeImgFilter">
+    </div>
+    <div class="col-md-5 mt-3 text-center">
+      <img class="mt-3 img-fluid" 
+          src="../../../assets/img/logoHome.png"
+          alt="homeLogo">
+        <br><br><br><br><br><br><br><br><br><br>
+        <button type="button" 
+          class="btn btn-secondary"
+          data-toggle="modal"
+          data-target="#loginModal">
+          EMPEZAR AHORA
+        </button>
     </div>
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" 
-      aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="column">
-        <h1 class="text-center mb-4 text-primary">Gremio</h1>
-        <div class="card border-primary container mb-5" style="width: 23rem;">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                  <h6 class="text-primary">USUARIO</h6>
-                  <input [(ngModel)]="usuario.username" 
-                        type="text" class="form-control" 
-                        placeholder="Usuario" required/>
-                </li>
-                <li class="list-group-item">
-                    <h6 class="text-primary">CONTRASEÑA</h6>
-                    <input  [(ngModel)]="usuario.password" 
-                            type="password" class="form-control" 
-                            placeholder="Contraseña" required/>
-                </li>
-                <button class="btn btn-primary mr-3 ml-3 mt-3"
-                        [disabled]="disabled" (click)="submit()">
-                    INICIAR SESIÓN
-                </button>
-                <button type="button" id="close-modal" data-dismiss="modal" style="display: none;">close</button>
-                <li class="list-group-item">
-                    <a [routerLink]="['/signup']" class="text mr-3 letra-chica">¿No tiene una cuenta?</a>
-                    <a [routerLink]="['/signup']" class="text ml-3 letra-chica">Restablecer contraseña</a>
-            </li>
-              <div class="text-center">
-                <div *ngIf="alerta" class="alert alert-danger letra-chica" role="alert">
-                    <strong>Error:</strong> Nombre de usuario o contraseña incorrecto
-                </div>
-              </div>
-            </ul>
+
+
+<!-- Login Modal -->
+<div class="modal fade" 
+     id="loginModal" 
+     tabindex="-1"
+     aria-hidden="true">
+  <div class="modal-dialog modalLogin modal-dialog-centered">
+    <div class="modal-content modalLogin">
+      <div class="modal-header">
+        <h6 class="text-white">Login</h6>
+      </div>
+      <div class="modal-body container-fluid">
+        <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="login()">
+          <h5 class="mt-3">
+            USUARIO
+          </h5>
+          <input class="form-control"
+                type="text"
+                placeholder="Usuario"
+                formControlName="usuario"
+                [class.is-invalid]=usuarioNoValido/>
+          <br>
+
+          <h5 class="mt-3">
+            CONTRASEÑA
+          </h5>
+          <input class="form-control"
+                 type="password"
+                 placeholder="Contraseña"
+                 formControlName="password"
+                 [class.is-invalid]=passwordNoValido/>
+
+            <div class="form-check mt-1 form-check-inline">
+              <input class="form-check-input"
+                    type="checkbox"
+                    name="rememberMeCheck"
+                    id=""
+                    value="checkedValue">
+
+              <label class="form-check-label"
+                    for="rememberMeCheck">
+                Recordarme
+              </label>
+            </div>
+          <div class="text-center">
+            <button class="btn btn-primary text-black mt-4 text-center"
+                    type="submit"
+                    [disabled]="disabled">
+              INICIAR SESIÓN
+            </button>
+          </div>
+        </form>
+
+      <button type="button" id="close-loginModal" data-dismiss="modal" style="display: none;">close</button>
+      
+      <div class="mt-2">
+        <a type="button" (click)="openSignUpModal()" class="text-green mr-3 letra-chica">¿No tiene una cuenta?</a>
+        <a [routerLink]="['/signup']" class="text-green ml-3 letra-chica">Restablecer contraseña</a>
+      </div>
+
+      <div class="text-center">
+        <div *ngIf="alerta" class="alert alert-danger letra-chica" role="alert">
+            <strong>Error:</strong> Nombre de usuario o contraseña incorrecto
         </div>
+      </div>  
     </div>
     </div>
   </div>
