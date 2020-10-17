@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
-import { TaskModel } from 'src/app/models/task.model';
+import { Address, TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from '../../../models/usuario.model';
 import { Observable } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -56,13 +56,13 @@ export class NavbarComponent implements OnInit {
         ['../../../../assets/img/noImage.png']
       ]),
       address: this.fb.group({
-        calle: ['', Validators.required],
-        numero: ['', Validators.required],
-        portal: ['', Validators.required],
-        escalera: ['', Validators.required],
-        piso: ['', Validators.required],
-        puerta: ['', Validators.required],
-        cp: ['', Validators.required]
+        calle: ['' ],
+        numero: ['' ],
+        portal: [''],
+        escalera: [''],
+        piso: [''],
+        puerta: [''],
+        cp: ['']
       }),
       materials: ['', [Validators.required]],
     });
@@ -83,7 +83,7 @@ export class NavbarComponent implements OnInit {
   }
 
   newService (service:string){
-      this.task.type = service;   
+      this.task.type = service;  
   }
 
   createNewService(){
@@ -95,11 +95,26 @@ export class NavbarComponent implements OnInit {
         control.markAsTouched();
       })
     }
-    console.log(this.photos.controls);
-    
-    /* this.task.client_id = this.user.partner_id;
+    document.getElementById('close-newService-modal').click();
+    this.task.title = this.newServiceForm.value['title'];
+    this.task.date = this.newServiceForm.value['date'];
+    this.task.time = this.newServiceForm.value['time'];
+    this.task.description = this.newServiceForm.value['description'];
+    this.task.address = new Address(this.newServiceForm.value['address']['calle'],
+                                    this.newServiceForm.value['address']['numero'],
+                                    this.newServiceForm.value['address']['portal'],
+                                    this.newServiceForm.value['address']['escalera'],
+                                    this.newServiceForm.value['address']['piso'],
+                                    this.newServiceForm.value['address']['puerta'],
+                                    this.newServiceForm.value['address']['cp'],
+                                    'latitude',
+                                    'longitude');
+    this.task.require_materials = Boolean(Number(this.newServiceForm.value['materials']));
+    this.task.client_id = this.user.partner_id;
+    console.log(this.task);
     this._taskOdoo.newTask(this.task);
-    this.task = new TaskModel(); */
+    //this.newServiceForm.reset();
+    this.task = new TaskModel();
   }
 
   loadPhoto(i:number){

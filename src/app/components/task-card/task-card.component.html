@@ -4,20 +4,33 @@
             <div class="col-md-2"></div>
             <div class="col-md-8">
                 <div class="firma-card row mt-3">
-                    <div class="col-md-5 img-padding-no">
+                    <div class="col-md-3 img-padding-no">
                         <div class="firma-resim">
                             <img src="../../../assets/img/CardImg.png" class="heaven">
-                            <img src="../../../assets/img/CardImgFilter.png" class="eye"> 
+                            <div class="eye"></div>  
                         </div>                                                                
                     </div>              
-                    <div class="col-md-7 row">
+                    <div class="col-md-9 row">
                         <div class="col-md-8">
-                            <h5>{{task.type}}</h5>
-                            <div class="row mb-4">
-                                <span style="font-size: small;"><img src="../../../assets/img/calendarIcon.png">Miercoles, 9 de septiembre de 2020</span>
-                                <span style="font-size: small;"><img src="../../../assets/img/watchIcon.png">Horario de servicio: de 9:00 a 10:00</span>
+                            <h6>{{task.title}}</h6>
+                            <div class="col mb-4">
+                                <div class="row">
+                                    <span style="font-size: small;">
+                                        <i class="fas fa-tools"></i> 
+                                         Tipo: {{task.type}}</span>
+                                </div>
+                                <div class="row">
+                                    <span style="font-size: small;">
+                                        <i class="far fa-calendar-alt"></i> 
+                                         Fecha: {{task.date}}</span>
+                                </div>
+                                <div class="row">
+                                    <span style="font-size: small;">
+                                        <i class="fas fa-clock"></i> 
+                                        Hora: {{task.time}}</span>
+                                </div>
                             </div>      
-                            <span *ngIf="userType == 'client'" class="vertical-align-mid mb-3">
+                            <span *ngIf="userType == 'client'" class="vertical-align-mid mb-4">
                                 <button (click)="offers()"
                                         type="button" 
                                         class="btn btn-primary btn-sm mr-2">
@@ -29,7 +42,7 @@
                                     Detalles
                                 </button>
                             </span>
-                            <span *ngIf="userType == 'provider'" class="vertical-align-mid mb-2">
+                            <span *ngIf="userType == 'provider'" class="vertical-align-mid mb-4">
                                 <button (click)="sendOffer=!sendOffer"
                                         type="button" 
                                         class="btn btn-primary btn-sm mr-2">
@@ -46,8 +59,10 @@
                             <span type="button" class="text-green mt-1">Cancelar</span>
                             <br><br><br>
                             <div>
-                                <p style="font-size: smaller;">Solicitado:</p>
-                                <p style="font-size: smaller;">Fecha solicitado</p>
+                                <div class="col">
+                                    <p style="font-size: smaller;">Solicitado:</p>
+                                    <p style="font-size: smaller;">{{task.date_planned}}</p>
+                                </div>  
                             </div>           
                         </div>                        
                     </div>
@@ -101,11 +116,11 @@
                             <p>{{task.description}}</p>
                         </div>
                         <div *ngIf="showDate" class="row">
-                            <div class="col-md-7"><p>Fecha</p></div>
-                            <div class="col-md-5"><p>Hora</p></div>
+                            <div class="col-md-7"><p>{{task.date}}</p></div>
+                            <div class="col-md-5"><p>{{task.time}}</p></div>
                         </div>
                         <div *ngIf="showAddress" class="row">
-                            <p>show address</p>
+                            <p>{{task.address.street}} {{task.address.number}}, {{task.address.cp}}</p>
                         </div>
                     </div>   
                 </div>

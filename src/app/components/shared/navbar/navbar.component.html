@@ -133,23 +133,23 @@
                     <img [src]="control.value"
                         class="card-img logoNavbar"
                         alt="No image">
-                </label>
+                  </label>
                 </div>               
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center" mb-5>
                 Dirección en que se realizará el servicio
-                <form>
+                <form [formGroup]="this.newServiceForm.get('address')">
                   <div class="form-row">
                     <div class="col">
-                      <input type="text" class="form-control m-1" placeholder="Calle">
-                      <input type="text" class="form-control m-1" placeholder="Número">
-                      <input type="text" class="form-control m-1" placeholder="Portal">
-                      <input type="text" class="form-control m-1" placeholder="Escalera">
+                      <input type="text" class="form-control m-1" placeholder="Calle" formControlName="calle">
+                      <input type="text" class="form-control m-1" placeholder="Número" formControlName="numero">
+                      <input type="text" class="form-control m-1" placeholder="Portal" formControlName="portal">
+                      <input type="text" class="form-control m-1" placeholder="Escalera" formControlName="escalera">
                     </div>
                     <div class="col">
-                      <input type="text" class="form-control m-1" placeholder="Piso">
-                      <input type="text" class="form-control m-1" placeholder="Puerta">
-                      <input type="text" class="form-control m-1" placeholder="Cod. Postal">
+                      <input type="text" class="form-control m-1" placeholder="Piso" formControlName="piso">
+                      <input type="text" class="form-control m-1" placeholder="Puerta" formControlName="puerta">
+                      <input type="text" class="form-control m-1" placeholder="Cod. Postal" formControlName="cp">
                     </div>
                   </div>
                 </form>
@@ -162,7 +162,8 @@
                            class="form-check-input"
                            name="materials"
                            formControlName="materials"
-                           value="yes">
+                           value="0"
+                           [class.is-invalid]=materialsNoValido>
                     Si
                   </label>
                 </div>
@@ -172,20 +173,20 @@
                            class="form-check-input"
                            name="materials"
                            formControlName="materials"
-                           value="no"
+                           value="1"
                            [class.is-invalid]=materialsNoValido>
                     No
                   </label>
                 </div>
               </li>
               <div class="text-center">
-                <button (click)="createNewService()"
-                      type="button" class="btn btn-secondary mt-2 mr-3">
+                <button 
+                      type="submit" class="btn btn-secondary mt-2 mr-3">
                   Crear
                 </button>
                 <button class="btn btn-secondary mt-2 ml-1"
                         type="button"
-                        id="close-modal"
+                        id="close-newService-modal"
                         data-dismiss="modal">
                   Cancelar
                 </button>

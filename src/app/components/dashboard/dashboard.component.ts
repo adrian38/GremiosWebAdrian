@@ -5,7 +5,6 @@ import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import {AuthOdooService} from 'src/app/services/auth-odoo.service';
 import { Observable } from 'rxjs';
 
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',

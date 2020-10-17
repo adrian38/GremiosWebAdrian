@@ -1,7 +1,7 @@
 import { Injectable, Testability } from '@angular/core';
 import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import {UsuarioModel} from '../models/usuario.model'
-import {TaskModel} from '../models/task.model'
+import {Address, TaskModel} from '../models/task.model'
 import {Observable, Subject} from 'rxjs';
 import { AuthOdooService } from './auth-odoo.service';
 
@@ -36,7 +36,7 @@ let user:UsuarioModel;
         let createService=function(){
             let SO = {
                 'company_id': 1,
-                'client_order_ref':task.type, 
+                'client_order_ref':task.type,
                 'order_line': [[0,0,{
                     'name': 'Servicio de Fontaneria', 
                     'price_unit': 0.0, 
@@ -46,10 +46,22 @@ let user:UsuarioModel;
                     'state': 'draft'
                 }]],
                 'note':task.description,
-                'partner_id': task.client_id,           
+                'partner_id': task.client_id,
+                'title':task.title,
+                'commitment_date':(task.date + ' ' + task.time),
+                'require_materials':task.require_materials,          
                 'require_payment': false, 
                 'require_signature': false,
-                'state': 'draft'
+                'state': 'draft',
+                'address_street' : task.address.street,
+                'address_floor' : task.address.floor,
+                'address_portal' : task.address.portal,
+                'address_number' : task.address.number,
+                'address_door' : task.address.door,
+                'address_stairs' : task.address.stair,
+                'address_zip_code' : task.address.cp,
+                'address_latitude' : '',
+                'address_longitude' : '',
             }
     
             let inParams = [];
@@ -154,7 +166,8 @@ let user:UsuarioModel;
             const id_po = id
             let inParams = []
             inParams.push([['id', '=', id_po]])
-            inParams.push(['partner_id', 'amount_total', 'user_id', 'origin'])
+            inParams.push(['partner_id', 'amount_total', 'user_id', 'origin', 'title',
+                            'note', 'commitment_date', ''])
             let params = []
             params.push(inParams)
             odooClient.execute_kw('purchase.order', 'search_read', params, function (err, value) {
@@ -211,7 +224,10 @@ let user:UsuarioModel;
         let get_so_list = function(id) {
             let inParams = []
             inParams.push([['partner_id', '=', id]])
-            inParams.push(['partner_id','name','note', 'client_order_ref'])
+            inParams.push(['partner_id','name','note', 'client_order_ref', 'title', 'require_materials',
+                            'commitment_date', 'address_street', 'address_floor', 'address_portal',
+                            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+                            'address_latitude', 'address_longitude'])
             let params = []
             params.push(inParams)
             odooClient.execute_kw('sale.order', 'search_read', params, function (err, value) {
@@ -228,6 +244,19 @@ let user:UsuarioModel;
                         temp.client_name = order['partner_id'][1];
                         temp.id_string = order['name'];
                         temp.id = order['id'];
+                        temp.title = order['title'];
+                        temp.require_materials = order['require_materials'];
+                        temp.date = String(order['commitment_date']).slice(0, 10);
+                        temp.time = String(order['commitment_date']).slice(10, String(order['commitment_date']).length);
+                        temp.address = new Address(order['address_street'],
+                                                   order['address_number'],
+                                                   order['address_portal'],
+                                                   order['address_stairs'],
+                                                   order['address_floor'],
+                                                   order['address_door'],
+                                                   order['address_zip_code'],
+                                                   order['address_latitude'],
+                                                   order['address_longitude'])
                         tasksList.push(temp);
                     } 
                     tasksList$.next(tasksList);                        

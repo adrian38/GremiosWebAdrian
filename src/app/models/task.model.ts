@@ -1,3 +1,28 @@
+export class Address {
+    street:string;
+    number:string;
+    portal:string;
+    stair:string;
+    floor:string;
+    door:string;
+    cp:string;
+    latitude:string;
+    longitude:string;
+
+    constructor(street:string, number:string, portal:string, stair:string, floor:string,
+                door:string, cp:string, latitude:string, longitude:string) {
+        this.street=street;
+        this.number=number;
+        this.portal=portal;
+        this.stair=stair;
+        this.floor=floor;
+        this.door=door;
+        this.cp=cp;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+}
+
 
 export class TaskModel{
     type:string;
@@ -13,11 +38,14 @@ export class TaskModel{
     date_planned:string;
     date:string;
     time:string;
+    title:string;
+    address:Address
+    require_materials:boolean;
 
     constructor(type:string="",description:string="", id:number=0, id_string:string="",
                 client_id:number=0,client_name:string="", provider_id:number=0, provider_name:number=0,
                 budget:number=0,origin:string="",date_planned:string="", date:string="", 
-                time:string=""){
+                time:string="", title:string="", require_materials:boolean=true){
 
         this.type=type;
         this.description=description;
@@ -32,5 +60,7 @@ export class TaskModel{
         this.date_planned=date_planned;
         this.date = date;
         this.time = time;
+        this.title = title;
+        this.require_materials = require_materials;
     }
 }
