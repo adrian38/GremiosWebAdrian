@@ -48,8 +48,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.usuario$ = this._authOdoo.getUser$();
     this.usuario$.subscribe(user => {
-      this.usuario = user;
-      this.checkUser();
+
+    this.usuario = user;
+    this.checkUser();
     });
   }
 
@@ -75,6 +76,7 @@ export class HomeComponent implements OnInit {
 
   checkUser(){
     if(this.usuario.connected){
+      
       this._taskOdoo.setUser(this.usuario);
       this._chatOdoo.setUser(this.usuario);
       this.router.navigate(['/dashboard']);

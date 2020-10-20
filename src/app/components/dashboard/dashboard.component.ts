@@ -15,35 +15,51 @@ export class DashboardComponent implements OnInit {
   usuario:UsuarioModel;
   usuario$: Observable<UsuarioModel>;
   task:TaskModel;
-  tasksList:TaskModel[];
+  solicitudesList:TaskModel[];
+  contratadosList:TaskModel[];
+  historialList:TaskModel[];
   tasksList$:Observable<TaskModel[]>;
+  tab:String;
+  tab$:Observable<String>;
 
   constructor(private _taskOdoo:TaskOdooService,
               private _authOdoo:AuthOdooService) {
+
+    this.usuario=this._authOdoo.getUser();
+    this.tab = 'Solicitudes';
+    this.observablesSubscriptions();
+    //this._taskOdoo.notificationPullProvider();
     
-    this.usuario = this._authOdoo.getUser();
     
     if(this.usuario.type == "client"){
-      this._taskOdoo.requestTaskListClient();
+        this._taskOdoo.requestTaskListClient();
     }else if(this.usuario.type == "provider"){
       this._taskOdoo.requestTaskListProvider();
     }
-    
-    setInterval(()=>{
-      if(this.usuario.type == "client"){
-        this._taskOdoo.requestTaskListClient();
-      }else if(this.usuario.type == "provider"){
-        this._taskOdoo.requestTaskListProvider();
-      }
-
-    },10000);
   }
 
   ngOnInit(): void {
+  }
+
+  observablesSubscriptions(){
+    this.tab$ = this._taskOdoo.getSelectedTab$();
+    this.tab$.subscribe((tab:String)=>{
+      this.tab = tab;
+    });
+
     this.tasksList$ = this._taskOdoo.getRequestedTaskList$();
-    this.tasksList$.subscribe(tasksList =>{
-      this.tasksList = tasksList;
-      console.log(this.tasksList);
+    this.tasksList$.subscribe((tasksList:TaskModel[]) =>{  
+      this.solicitudesList = tasksList.filter(task=>{
+        return task.state === 'to invoice'; //Solicitadas
+      });
+      this.contratadosList = tasksList.filter(task=>{
+        return task.state === 'invoiced'; //Contratadas
+      });
+      this.historialList = tasksList.filter(task=>{
+        return task.state === ''; //Historial
+      });
+      console.log(this.solicitudesList);
     });
   }
+  
 }

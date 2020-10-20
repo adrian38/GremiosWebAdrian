@@ -4,7 +4,7 @@ import {UsuarioModel} from '../models/usuario.model'
 import {Observable, Subject} from 'rxjs'
 
 let odooClient = new odoo_xmlrpc({
-  url: 'http://' + '45.93.100.189',
+  url: 'http://' + '192.168.1.16',
   port: 8069,
   db: 'demo',
   username: '',
@@ -14,7 +14,6 @@ let odooClient = new odoo_xmlrpc({
 let user$ = new Subject<UsuarioModel>();
 let connected: boolean=false;
 let userLogin : UsuarioModel = new UsuarioModel();
-let user:any;
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +46,6 @@ public OdooInfo = odooClient;
           } else {
               usuario.partner_id = value[0].partner_id[0];
               usuario.realname = value[0].partner_id[1];
-              user=value;
               get_type_user(value[0]['partner_id'][0]);
           }
       })
@@ -63,17 +61,15 @@ public OdooInfo = odooClient;
           if (err) {
               console.log(err);
           } else {
-              console.log("100",value);
-              console.log(value[0].id, " " ,value[0].supplier_rank , " " , value[0].customer_rank)
               if(value[0].supplier_rank > 0)
               {
                 usuario.type = "provider"
 
               } else if(value[0].customer_rank > 0)
-                {
-                  usuario.type = "client"
-                }
-              user.push(value);
+              {
+                usuario.type = "client"
+              }
+              user$.next(userLogin);
           }
       })
     }
@@ -93,7 +89,6 @@ public OdooInfo = odooClient;
         userLogin = usuario;
         get_user(usuario.id);
       }
-      user$.next(userLogin);
     });
   }
 

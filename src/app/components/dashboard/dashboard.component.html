@@ -1,9 +1,19 @@
 <body>
   <div>
-    <app-task-card *ngFor="let task of tasksList; let i= index"
-                  [task] = "task">
-    </app-task-card>
+    <div *ngIf="tab==='Solicitudes'">
+      <app-task-card  *ngFor="let task of solicitudesList; let i= index"
+                      [task] = "task">     
+      </app-task-card>
+    </div>
+    <div *ngIf="tab==='Contratados'">
+      <app-task-card  *ngFor="let task of contratadosList; let i= index"
+                      [task] = "task">               
+      </app-task-card>
+    </div>
+    <div *ngIf="tab==='Historial'">
+      <app-task-card  *ngFor="let task of historialList; let i= index"
+                      [task] = "task">         
+      </app-task-card>
+    </div>   
   </div> 
 </body>
-
-<!-- Modal -->

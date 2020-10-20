@@ -3,7 +3,7 @@ import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { Address, TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from '../../../models/usuario.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -16,6 +16,8 @@ export class NavbarComponent implements OnInit {
   user: UsuarioModel = new UsuarioModel();
   user$: Observable<UsuarioModel>;
 
+  selectedTab:String;
+  
   newServiceForm: FormGroup;
 
   get tituloNoValido(){
@@ -33,6 +35,8 @@ export class NavbarComponent implements OnInit {
               private _authOdoo:AuthOdooService,
               private _taskOdoo:TaskOdooService) {
     this.task = new TaskModel();
+    this.selectedTab = 'Solicitudes';
+    this._taskOdoo.setSelectedTab(this.selectedTab);
     this.createForm();
    }
 
@@ -72,14 +76,9 @@ export class NavbarComponent implements OnInit {
     return this.user.connected;
   }
 
-  solicitudes(){
-
-  }
-  contratados(){
-
-  }
-  terminados(){
-
+  changeTab(tab:String){
+    this.selectedTab = tab;
+    this._taskOdoo.setSelectedTab(this.selectedTab);
   }
 
   newService (service:string){

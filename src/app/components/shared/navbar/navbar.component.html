@@ -1,12 +1,10 @@
-
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark row">
     <a class="navbar-brand">
       <img src="../../../../assets/img/logoNavbar.png"
            alt="logoNavbar"
            class="d-inline-block align-top ml-3 logoNavbar">
     </a>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div async class="collapse navbar-collapse" id="navbarNav">
       <div class="d-flex">
           <div *ngIf="user.type == 'client'"  class="dropdown  ml-5 mr-5">
             <button class="btn btn-primary dropdown-toggle dropboxNavbar text-navbar" type="button"
@@ -42,7 +40,7 @@
         </div>
           <nav *ngIf="userConnected()" aria-label="..." class="ml-auto bd-highlight mt-2 mr-2">
             <ul class="pagination pagination-sm">
-              <li class="page-item mr-1" aria-current="page" (click)="solicitudes()">
+              <li class="page-item mr-1" aria-current="page" (click)="changeTab('Solicitudes')">
                 <div class="tabs btn">
                   <img src="../../../../assets/img/SolicitudesNavbar.png"
                        onmouseover="this.src='../../../../assets/img/SolicitudesNavbarActive.png'"
@@ -50,7 +48,7 @@
                        class="tabImg" alt="">
                 </div>       
               </li>
-              <li class="page-item" (click)="contratados()">
+              <li class="page-item" (click)="changeTab('Contratados')">
                 <div class="tabs btn wrapped" >
                   <img src="../../../../assets/img/ContratadosNavbar.png"
                      onmouseover="this.src='../../../../assets/img/ContratadosNavbarActive.png'"
@@ -59,7 +57,7 @@
                      alt="">
                 </div>
               </li>
-              <li class="page-item " (click)="terminados()">
+              <li class="page-item " (click)="changeTab('Historial')">
                 <div class="tabs btn">
                   <img src="../../../../assets/img/HistorialNavbar.png"
                      onmouseover="this.src='../../../../assets/img/HistorialNavbarActive.png'"

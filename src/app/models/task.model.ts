@@ -41,6 +41,7 @@ export class TaskModel{
     title:string;
     address:Address
     require_materials:boolean;
+    state:String;
 
     constructor(type:string="",description:string="", id:number=0, id_string:string="",
                 client_id:number=0,client_name:string="", provider_id:number=0, provider_name:number=0,

@@ -1,11 +1,14 @@
 import { Injectable, Testability } from '@angular/core';
-import * as odoo_xmlrpc from 'odoo-xmlrpc'
+import * as jayson from 'jayson';
+import * as xmlrpc from 'node_modules/xmlrpc/lib/client'
 import {UsuarioModel} from '../models/usuario.model'
 import {Address, TaskModel} from '../models/task.model'
 import {Observable, Subject} from 'rxjs';
 import { AuthOdooService } from './auth-odoo.service';
+import { HttpClient } from '@angular/common/http';
 
 let odooClient;
+
 
 let task:TaskModel;
 let task$ = new Subject<TaskModel>();
@@ -22,6 +25,9 @@ let user:UsuarioModel;
     providedIn: 'root'
   })
   export class TaskOdooService {
+    selectedTab:String;
+    selectedTab$ = new Subject<String>();
+
     constructor(private _authOdoo:AuthOdooService){
         task = new TaskModel();
       odooClient = this._authOdoo.OdooInfo;
@@ -220,11 +226,11 @@ let user:UsuarioModel;
         return task$.asObservable();
     }
 
-    requestTaskListClient(){
+    requestTaskListClient(){        
         let get_so_list = function(id) {
             let inParams = []
             inParams.push([['partner_id', '=', id]])
-            inParams.push(['partner_id','name','note', 'client_order_ref', 'title', 'require_materials',
+            inParams.push(['partner_id','name','note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
                             'commitment_date', 'address_street', 'address_floor', 'address_portal',
                             'address_number', 'address_door', 'address_stairs', 'address_zip_code',
                             'address_latitude', 'address_longitude'])
@@ -246,6 +252,7 @@ let user:UsuarioModel;
                         temp.id = order['id'];
                         temp.title = order['title'];
                         temp.require_materials = order['require_materials'];
+                        temp.state = order['invoice_status'];
                         temp.date = String(order['commitment_date']).slice(0, 10);
                         temp.time = String(order['commitment_date']).slice(10, String(order['commitment_date']).length);
                         temp.address = new Address(order['address_street'],
@@ -258,7 +265,7 @@ let user:UsuarioModel;
                                                    order['address_latitude'],
                                                    order['address_longitude'])
                         tasksList.push(temp);
-                    } 
+                    }                       
                     tasksList$.next(tasksList);                        
                 }
             })
@@ -268,7 +275,7 @@ let user:UsuarioModel;
             if (err) { 
                 console.log(err); 
             } else {
-                console.log(value);                
+                //console.log(value);                
                 get_so_list(user.partner_id);
             }
         });
@@ -278,7 +285,7 @@ let user:UsuarioModel;
         let get_po_list = function(id) {
             let inParams = []
             inParams.push([['partner_id', '=', id]])
-            inParams.push(['user_id','partner_id','name', 'date_order'])
+            inParams.push(['user_id','partner_id','name', 'date_order', 'invoice_status'])
             let params = []
             params.push(inParams)
             odooClient.execute_kw('purchase.order', 'search_read', params, function (err, value) {
@@ -287,6 +294,7 @@ let user:UsuarioModel;
                 } else {
                     console.log(value);
                     tasksList=[];
+                    
                     for(let task of value) {
                         let temp  = new TaskModel();
                         temp.client_id = task['user_id'][0];
@@ -294,10 +302,13 @@ let user:UsuarioModel;
                         temp.provider_id = task['partner_id'][0];
                         temp.provider_name = task['partner_id'][1];
                         temp.id = task['id'];
+                        temp.state = task['invoice_status'];
                         temp.id_string = task['name'];
                         temp.date_planned = task['date_order'];
                         tasksList.push(temp);
                     }
+                    
+                    
                     tasksList$.next(tasksList);       
                 }
             })
@@ -324,11 +335,12 @@ let user:UsuarioModel;
             inParams.push(['partner_id', 'amount_total', 'user_id', 'origin'])
             let params = []
             params.push(inParams)
+            
             odooClient.execute_kw('purchase.order', 'search_read', params, function (err, value) {
                 if (err) {
                     console.log(err);  
                 } else {
-                    //console.log(value);
+                    console.log(value);
                     offersList = [];
                     for (let offer of value){
                         let temp  = new TaskModel();
@@ -398,4 +410,61 @@ let user:UsuarioModel;
             }
         });
     }
+
+    setSelectedTab(tab:String){
+        this.selectedTab = tab;
+        this.selectedTab$.next(this.selectedTab);
+    }
+
+    getSelectedTab$():Observable<String>{
+        return this.selectedTab$.asObservable();
+    }
+
+    notificationPullProvider(){
+
+        let host = '192.168.1.16'
+        let port = 8069
+        let db = 'demo'
+        let usuario = 'gonzalez@example.com'
+        let pass = 'gonzalez'
+    
+        'use strict';
+        const jsonrpc = require('jayson/lib/client/browser');
+        
+    
+        let poll = function(uid,partner_id,partner_name) {
+            let path = '/longpolling/poll'
+            
+            let client = jsonrpc.Client.http("http://" + host + ":" + port + path)
+    
+            console.log({payload:{channel:db + '_' + partner_id.toString()}});
+            
+            client.request('call', {context: {uid:uid}, channels:[db + '_' + partner_id.toString()],last: 0},{context: {lang: 'es_ES', uid:uid}}, function(err, error, result) {
+                if(err){
+                    console.log(err);
+                    
+                } else{
+                    console.log(result);                  
+                }
+            })
+        }
+    
+        
+        let path = '/jsonrpc'
+    
+        let client = jsonrpc.client.http("http://" + host + ":" + port + path)
+    
+        client.request('call', {service:'common', method:'login', args:[db, usuario, pass]}, function(err, error, result) {
+            if(err){
+                console.log(err);               
+            } else {
+                console.log(result);           
+                poll(11,44,'Fontaneria');
+                
+            }
+        })
+        
+    }
+
+
   }
