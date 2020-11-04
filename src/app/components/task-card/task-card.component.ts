@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, NgZone } from '@angular/core';
 import { TaskModel } from '../../models/task.model'
 import { Router } from '@angular/router';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
@@ -31,7 +31,8 @@ export class TaskCardComponent implements OnInit {
   
   constructor(private router:Router,
               private _taskOdoo:TaskOdooService,
-              private _authOdoo:AuthOdooService) {
+              private _authOdoo:AuthOdooService,
+              private ngZone: NgZone) {
     
     this.user = this._authOdoo.getUser();
     this.offersList =[];
@@ -41,15 +42,17 @@ export class TaskCardComponent implements OnInit {
   ngOnInit(): void {
     this.offersList$ = this._taskOdoo.getOffers$();
     this.offersList$.subscribe(offersList =>{
+      this.ngZone.run( () => {
       this.offersList= offersList;
-      //console.log(this.offersList);      
+      //console.log(this.offersList);
+      });      
     });
   }
 
   offers(){
-    this.showDetails = false;
     this.showOffers=!this.showOffers;
-    this._taskOdoo.requestOffersForTask(this.task.id_string);   
+    if(this.showOffers)
+      this._taskOdoo.requestOffersForTask(this.task.id_string);   
   }
 
   details(){

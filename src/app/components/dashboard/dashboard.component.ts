@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { TaskModel } from 'src/app/models/task.model';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
@@ -18,24 +18,29 @@ export class DashboardComponent implements OnInit {
   solicitudesList:TaskModel[];
   contratadosList:TaskModel[];
   historialList:TaskModel[];
-  tasksList$:Observable<TaskModel[]>;
+  tasksList$:Observable<TaskModel[]>; // servicio comunicacion
   tab:String;
   tab$:Observable<String>;
 
   constructor(private _taskOdoo:TaskOdooService,
-              private _authOdoo:AuthOdooService) {
+              private _authOdoo:AuthOdooService,
+              private ngZone: NgZone) {
 
     this.usuario=this._authOdoo.getUser();
-    this.tab = 'Solicitudes';
+    
     this.observablesSubscriptions();
+    this.tab = 'Solicitudes';
     //this._taskOdoo.notificationPullProvider();
     
     
     if(this.usuario.type == "client"){
         this._taskOdoo.requestTaskListClient();
+        
+        
     }else if(this.usuario.type == "provider"){
       this._taskOdoo.requestTaskListProvider();
     }
+
   }
 
   ngOnInit(): void {
@@ -49,16 +54,19 @@ export class DashboardComponent implements OnInit {
 
     this.tasksList$ = this._taskOdoo.getRequestedTaskList$();
     this.tasksList$.subscribe((tasksList:TaskModel[]) =>{  
-      this.solicitudesList = tasksList.filter(task=>{
-        return task.state === 'to invoice'; //Solicitadas
+      this.ngZone.run( () => {
+        this.solicitudesList = tasksList.filter(task=>{
+          console.log('solicitadas');
+          return task.state === 'to invoice'; //Solicitadas
+        });
+        this.contratadosList = tasksList.filter(task=>{
+          return task.state === 'invoiced'; //Contratadas
+        });
+        this.historialList = tasksList.filter(task=>{
+          return task.state === ''; //Historial
+        });
+        console.log(this.solicitudesList);
       });
-      this.contratadosList = tasksList.filter(task=>{
-        return task.state === 'invoiced'; //Contratadas
-      });
-      this.historialList = tasksList.filter(task=>{
-        return task.state === ''; //Historial
-      });
-      console.log(this.solicitudesList);
     });
   }
   

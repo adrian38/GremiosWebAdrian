@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { Address, TaskModel } from 'src/app/models/task.model';
@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(private fb:FormBuilder,
               private _authOdoo:AuthOdooService,
-              private _taskOdoo:TaskOdooService) {
+              private _taskOdoo:TaskOdooService,private ngZone: NgZone) {
     this.task = new TaskModel();
     this.selectedTab = 'Solicitudes';
     this._taskOdoo.setSelectedTab(this.selectedTab);
@@ -43,8 +43,11 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.user$ = this._authOdoo.getUser$();
     this.user$.subscribe(user => {
-      this.user = user;
-      console.log(this.user);
+      this.ngZone.run( () => {
+        this.user = user;
+        console.log(this.user);
+      });
+    
     });
   }
 
