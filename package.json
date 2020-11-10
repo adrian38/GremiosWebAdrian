@@ -26,6 +26,7 @@
     "bootstrap": "^4.5.3",
     "bootstrap-icons": "^1.1.0",
     "buffer": "^5.7.0",
+    "jayson": "github:tedeh/jayson#typescript",
     "jquery": "^3.5.1",
     "ng2-date-picker": "^10.0.0",
     "odoo-xmlrpc": "^1.0.8",
