@@ -69,7 +69,7 @@ export class ChatComponent implements OnInit {
   }
 
   acceptProvider(){
-    this._taskOdoo.acceptProvider(this.purchaseOrderID);
+    //this._taskOdoo.acceptProvider(this.purchaseOrderID);//Arreglar
     this.router.navigate(['/dashboard']);
   }
 

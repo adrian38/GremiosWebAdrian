@@ -55,6 +55,25 @@ export class TaskCardComponent implements OnInit {
       this._taskOdoo.requestOffersForTask(this.task.id_string);   
   }
 
+  ////Hacer en el HTML
+  selectTypeCancel(){
+    if (this.userType === "client" ){
+      this.cancelSOclient()
+    }else if(this.userType === "provider"){
+      this.cancelPOsuplier();
+    }
+  }
+  //////////////////////
+  cancelSOclient(){
+    console.log("CancelarSo");
+    this._taskOdoo.cancelSOclient(this.task.id); 
+  }
+
+  cancelPOsuplier(){
+    console.log("CancelarPo");
+    this._taskOdoo.cancelPOsuplier(this.task.id); 
+  }
+
   details(){
     this.showOffers = false;
     this.showDetails = !this.showDetails;
@@ -83,8 +102,9 @@ export class TaskCardComponent implements OnInit {
     this.router.navigate(['/chat', id]);
   }
 
-  acceptProvider(id){
-    this._taskOdoo.acceptProvider(id);
+  acceptProvider(PO_id){
+    let SO_id = this.task.id;
+    this._taskOdoo.acceptProvider(PO_id,SO_id);
     
   }
 

@@ -3,7 +3,7 @@ import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import { UsuarioModel } from '../models/usuario.model'
 import { Observable, Subject } from 'rxjs'
 let jayson = require('../../../node_modules/jayson/lib/client/');
-const jaysonServer = {
+let jaysonServer = {
   host: '192.168.0.106',
   port: '8069',
   db: 'demo',
@@ -32,6 +32,7 @@ export class AuthOdooService {
   userType: string = "";
 
   public OdooInfo = odooClient;
+  public OdooInfoJayson = jaysonServer;
 
   constructor() {
 
@@ -73,8 +74,8 @@ export class AuthOdooService {
       }
 
       client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-        if (err) {
-          console.log(err);
+        if (err || !value) {
+          console.log(err , "Error get_user");
         } else {
 
           usuario.partner_id = value[0].partner_id[0];
@@ -91,12 +92,21 @@ export class AuthOdooService {
                           console.log("proveedor");
                         } */
 
-          usuario.type = "client"
+                        if(value[0].classification === "custumer")
+                        {
+                          usuario.type = "client"
+                          console.log("cliente");
+          
+                        } else 
+                        {
+                          usuario.type = "provider"
+                          console.log("proveedor");
+                        }
           user$.next(userLogin);
         }
       });
     }
-    const client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+    let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
     client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
 
       if (err || !value) {
@@ -113,11 +123,6 @@ export class AuthOdooService {
         get_user(usuario.id);
       }
     });
-
-
-
-
-
   }
 
   getUser$(): Observable<UsuarioModel> {
