@@ -72,6 +72,7 @@ export class HomeComponent implements OnInit {
     this.usuario.username = this.loginForm.get('usuario').value
     this.usuario.password = this.loginForm.get('password').value
     this._authOdoo.login(this.usuario);
+    //this._authOdoo.loginClientApk(this.usuario);
   }
 
   checkUser(){

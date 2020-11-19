@@ -38,7 +38,7 @@ export class AuthOdooService {
 
   }
 
-
+  ///////////////login desde la web
   login(usuario: UsuarioModel): void {
 
     odooClient.username = usuario.username;
@@ -124,6 +124,91 @@ export class AuthOdooService {
       }
     });
   }
+
+  //////////////////////////////////////////////////
+
+  //Login desde la apk de cliente
+
+  loginClientApk(usuario: UsuarioModel): void {
+
+    odooClient.username = usuario.username;
+    odooClient.password = usuario.password;
+
+    jaysonServer.username = usuario.username;
+    jaysonServer.password = usuario.password;
+
+    let get_user = function (id: number) {
+      let inParams = []
+      inParams.push([['id', '=', id]])
+      inParams.push([
+        'name',
+        'login',
+        'email',
+        'partner_id',
+        'groups_id',
+        'image_1920',
+        'classification'
+      ])
+      let params = []
+      params.push(inParams)
+
+      let fparams = [];
+      fparams.push(jaysonServer.db);
+      fparams.push(id);
+      fparams.push(jaysonServer.password);
+      fparams.push('res.users');//model
+      fparams.push('search_read');//method
+
+      for (let i = 0; i < params.length; i++) {
+        fparams.push(params[i]);
+      }
+
+      client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+        if (err || !value) {
+          console.log(err , "Error get_user");
+        } else {
+
+          
+
+                         if(value[0].classification === "custumer")
+                        {
+                          usuario.type = "client"
+                          console.log("cliente");
+                          usuario.connected = true;
+                          usuario.id = id;
+                          connected = usuario.connected;
+                          usuario.partner_id = value[0].partner_id[0];
+                          usuario.realname = value[0].name;
+                          userLogin = usuario;
+          
+                        } else 
+                        {
+                          usuario.connected = false;
+                          connected = usuario.connected;
+                        }
+          user$.next(userLogin);
+        }
+      });
+    }
+    let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+    client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
+
+      if (err || !value) {
+        console.log("Login Failed");
+        console.log(err);
+        usuario.connected = false;
+        connected = usuario.connected;
+      } else {
+        console.log("Connected");
+        
+        get_user(value);
+      }
+    });
+  }
+
+
+
+  //////////////////////////////////////////////////
 
   getUser$(): Observable<UsuarioModel> {
     return user$.asObservable();
