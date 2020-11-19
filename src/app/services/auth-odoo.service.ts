@@ -111,9 +111,10 @@ export class AuthOdooService {
 
       if (err || !value) {
         console.log("Login Failed");
-        console.log(err);
+        //console.log(err);
         usuario.connected = false;
-        connected = usuario.connected;
+        userLogin = usuario;
+        user$.next(userLogin);;
       } else {
         console.log("Connected");
         usuario.connected = true;
@@ -197,7 +198,8 @@ export class AuthOdooService {
         console.log("Login Failed");
         console.log(err);
         usuario.connected = false;
-        connected = usuario.connected;
+        userLogin = usuario;
+        user$.next(userLogin);;
       } else {
         console.log("Connected");
         

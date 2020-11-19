@@ -45,15 +45,19 @@ export class TaskCardComponent implements OnInit {
       this.ngZone.run( () => {
         let temp = (offersList.find(element=>element.origin));
         if(this.task.id_string === temp.origin)
-        {this.offersList= offersList;} 
+        {this.offersList= offersList;
+          this.showOffers = true;
+        } 
      
       });      
     });
   }
 
   offers(){
-    this.showOffers=!this.showOffers;
-    if(this.showOffers)
+    if(this.showOffers){
+      this.showOffers = false;
+    }
+      else
       this._taskOdoo.requestOffersForTask(this.task.id_string);   
   }
 

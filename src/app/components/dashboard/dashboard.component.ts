@@ -49,7 +49,9 @@ export class DashboardComponent implements OnInit {
   observablesSubscriptions() {
     this.tab$ = this._taskOdoo.getSelectedTab$();
     this.tab$.subscribe((tab: String) => {
+      this.ngZone.run(() => {
       this.tab = tab;
+    });
     });
 
     this.tasksList$ = this._taskOdoo.getRequestedTaskList$();

@@ -108,9 +108,11 @@ export class ChatOdooService {
                     messagesList = [];
                     for (let message of value) {
 
-                        let temp: MessageModel = new MessageModel(message['body'].slice(3, message['body'].length - 4),
+                        let temp: MessageModel = 
+                        new MessageModel(message['body'].slice(3, message['body'].length - 4),
                             message['author_id'][1],
-                            message['author_id'][0], message['res_id']);
+                            message['author_id'][0], 
+                            message['res_id']);
                         messagesList.push(temp);
                     }
                     messagesList$.next(messagesList);
