@@ -611,14 +611,14 @@ export class TaskOdooService {
         });
     } 
  
-    requestTask(id: number) {
+     requestTask(id: number) {
 
         let get_po_by_id = function () {
             const id_po = id
             let inParams = []
             inParams.push([['id', '=', id_po]])
             inParams.push(['partner_id', 'amount_total', 'user_id', 'origin', 'title',
-                'note', 'commitment_date', ''])
+                'note', 'commitment_date',])
             let params = []
             params.push(inParams)
             let fparams = [];
@@ -651,7 +651,7 @@ export class TaskOdooService {
             })
         }
 
-        let get_desc_so = function (id) {
+         let get_desc_so = function (id) {
             let inParams = []
             inParams.push([['name', '=', id]])
             inParams.push(['note'])
@@ -679,7 +679,7 @@ export class TaskOdooService {
                     task$.next(task);
                 }
             })
-        }
+        } 
 
         let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
@@ -691,7 +691,11 @@ export class TaskOdooService {
                 get_po_by_id();
             }
         });
-    }
+    } 
+
+
+  
+
 
     getRequestedTask$(): Observable<TaskModel> {
         return task$.asObservable();

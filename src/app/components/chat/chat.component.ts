@@ -44,10 +44,10 @@ export class ChatComponent implements OnInit {
       console.log(this.purchaseOrderID);
     })
 
-    //this._taskOdoo.requestTask(this.purchaseOrderID);  
+    this._taskOdoo.requestTask(this.purchaseOrderID);
 
     setInterval(() => {
-      this._chatOdoo.requestAllMessages(this.purchaseOrderID);
+    this._chatOdoo.requestAllMessages(this.purchaseOrderID);
     }, 3000);
 
   }
@@ -58,19 +58,21 @@ export class ChatComponent implements OnInit {
       this.ngZone.run(() => {
         console.log(messagesList, "mensajes recibidos");
 
-        let temp = (messagesList.find(element=>element.offer_id));
-        if(temp){
-        if(this.purchaseOrderID === temp.offer_id)
-        {
-        this.messagesList = messagesList;
-        }}
+        let temp = (messagesList.find(element => element.offer_id));
+        if (temp) {
+          if (this.purchaseOrderID === temp.offer_id) {
+            this.messagesList = messagesList;
+          }
+        }
       });
     });
 
     this.task$ = this._taskOdoo.getRequestedTask$();
     this.task$.subscribe(task => {
       this.ngZone.run(() => {
-        this.task = task;
+
+        if (task.id === this.purchaseOrderID)
+          this.task = task;
       });
     });
   }
@@ -82,7 +84,7 @@ export class ChatComponent implements OnInit {
   }
 
   acceptProvider() {
-    //this._taskOdoo.acceptProvider(this.purchaseOrderID);//Arreglar
+    this._taskOdoo.acceptProvider(this.purchaseOrderID,this.task.id);
     this.router.navigate(['/dashboard']);
   }
 
