@@ -51,8 +51,10 @@ export class TaskOdooService {
         let get_po_list = function (partnerId) {
             let inParams = []
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['user_id', 'partner_id', 'name', 'date_order', 'invoice_status'])
-
+            inParams.push(['product_id','note','user_id', 'partner_id', 'name', 'date_order','commitment_date', 'invoice_status','title','note','require_materials',
+            'commitment_date', 'address_street', 'address_floor', 'address_portal',
+            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+            'address_latitude', 'address_longitude'])
             let params = []
             params.push(inParams)
 
@@ -75,6 +77,8 @@ export class TaskOdooService {
                     tasksList = [];
                     for (let task of value) {
                         let temp = new TaskModel();
+                        temp.type=task['product_id'][1];
+                        temp.description = task['note'];
                         temp.client_id = task['user_id'][0];
                         temp.client_name = task['user_id'][1];
                         temp.provider_id = task['partner_id'][0];
@@ -82,7 +86,20 @@ export class TaskOdooService {
                         temp.id = task['id'];
                         temp.state = task['invoice_status'];
                         temp.id_string = task['name'];
-                        temp.date_planned = task['date_order'];
+                        temp.date = task['date_order'];
+                        temp.date_planned = String(task['commitment_date']).slice(0, 10);
+                        temp.time = String(task['commitment_date']).slice(10, String(task['commitment_date']).length);
+                        temp.title = task['title'];
+                        temp.address = new Address(task['address_street'],
+                        task['address_number'],
+                        task['address_portal'],
+                        task['address_stairs'],
+                        task['address_floor'],
+                        task['address_door'],
+                        task['address_zip_code'],
+                        task['address_latitude'],
+                        task['address_longitude'])
+                        
                         tasksList.push(temp);
                     }
                     tasksList$.next(tasksList);
@@ -141,10 +158,10 @@ export class TaskOdooService {
         let get_so_list = function (partnerId) {
             let inParams = []
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['partner_id', 'name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
-                'commitment_date', 'address_street', 'address_floor', 'address_portal',
-                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-                'address_latitude', 'address_longitude'])
+            inParams.push(['partner_id', 'date_order','name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
+            'commitment_date', 'address_street', 'address_floor', 'address_portal',
+            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+            'address_latitude', 'address_longitude'])
 
 
             let params = []
@@ -169,6 +186,7 @@ export class TaskOdooService {
                     tasksList = [];
                     for (let order of value) {
                         let temp = new TaskModel();
+                        //temp.type=order['product_id'][1];
                         temp.description = order['note'];
                         temp.type = order['client_order_ref'];
                         temp.client_id = order['partner_id'][0];
@@ -178,7 +196,8 @@ export class TaskOdooService {
                         temp.title = order['title'];
                         temp.require_materials = order['require_materials'];
                         temp.state = order['invoice_status'];
-                        temp.date = String(order['commitment_date']).slice(0, 10);
+                        temp.date = order['date_order'];
+                        temp.date_planned = String(order['commitment_date']).slice(0, 10);
                         temp.time = String(order['commitment_date']).slice(10, String(order['commitment_date']).length);
                         temp.address = new Address(order['address_street'],
                             order['address_number'],
@@ -246,10 +265,10 @@ export class TaskOdooService {
         let get_so_list = function (partnerId) {
             let inParams = []
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['partner_id', 'name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
-                'commitment_date', 'address_street', 'address_floor', 'address_portal',
-                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-                'address_latitude', 'address_longitude'])
+            inParams.push(['partner_id', 'date_order','name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
+            'commitment_date', 'address_street', 'address_floor', 'address_portal',
+            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+            'address_latitude', 'address_longitude'])
 
 
             let params = []
@@ -274,6 +293,7 @@ export class TaskOdooService {
                     tasksList = [];
                     for (let order of value) {
                         let temp = new TaskModel();
+                        //temp.type=order['product_id'][1];
                         temp.description = order['note'];
                         temp.type = order['client_order_ref'];
                         temp.client_id = order['partner_id'][0];
@@ -283,7 +303,8 @@ export class TaskOdooService {
                         temp.title = order['title'];
                         temp.require_materials = order['require_materials'];
                         temp.state = order['invoice_status'];
-                        temp.date = String(order['commitment_date']).slice(0, 10);
+                        temp.date = order['date_order'];
+                        temp.date_planned = String(order['commitment_date']).slice(0, 10);
                         temp.time = String(order['commitment_date']).slice(10, String(order['commitment_date']).length);
                         temp.address = new Address(order['address_street'],
                             order['address_number'],
