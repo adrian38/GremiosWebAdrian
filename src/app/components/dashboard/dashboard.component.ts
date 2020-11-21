@@ -58,7 +58,7 @@ export class DashboardComponent implements OnInit {
     this.tasksList$.subscribe((tasksList: TaskModel[]) => {
       this.ngZone.run(() => {
         this.solicitudesList = tasksList.filter(task => {
-          console.log('solicitadas');
+         
           if (this.usuario.type === "client") {
             return task.state === 'to invoice'; //Solicitadas
           } else if (this.usuario.type === "provider") { return task.state === 'no' };

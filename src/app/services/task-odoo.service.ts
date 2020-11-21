@@ -693,10 +693,6 @@ export class TaskOdooService {
         });
     } 
 
-
-  
-
-
     getRequestedTask$(): Observable<TaskModel> {
         return task$.asObservable();
     }
@@ -776,8 +772,7 @@ export class TaskOdooService {
         let get_po_list = function (partnerId) {
             let inParams = []
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['user_id', 'partner_id', 'name', 'date_order', 'invoice_status'])
-
+            inParams.push(['user_id', 'partner_id', 'name', 'date_order', 'invoice_status','title'])
             let params = []
             params.push(inParams)
 
@@ -808,8 +803,9 @@ export class TaskOdooService {
                         temp.state = task['invoice_status'];
                         temp.id_string = task['name'];
                         temp.date_planned = task['date_order'];
+                        temp.title = task['title'];
                         tasksList.push(temp);
-                    }
+                                                              }
                     tasksList$.next(tasksList);
                 }
             })
