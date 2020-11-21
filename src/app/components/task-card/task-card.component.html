@@ -22,7 +22,7 @@
                                 <div class="row">
                                     <span style="font-size: small;">
                                         <i class="far fa-calendar-alt"></i>
-                                        Fecha: {{task.date}}</span>
+                                        Fecha: {{task.date_planned}}</span>
                                 </div>
                                 <div class="row">
                                     <span style="font-size: small;">
@@ -58,7 +58,7 @@
                             <div>
                                 <div class="col">
                                     <p style="font-size: smaller;">Solicitado:</p>
-                                    <p style="font-size: smaller;">{{task.date_planned}}</p>
+                                    <p style="font-size: smaller;">{{task.date}}</p>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                         </div>
                         <div *ngIf="showDate" class="row">
                             <div class="col-md-7">
-                                <p>{{task.date}}</p>
+                                <p>{{task.date_planned}}</p>
                             </div>
                             <div class="col-md-5">
                                 <p>{{task.time}}</p>
