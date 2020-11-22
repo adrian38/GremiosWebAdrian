@@ -85,7 +85,12 @@ export class NavbarComponent implements OnInit {
   }
 
   newService (service:string){
-      this.task.type = service;  
+      this.task.type = service;
+     
+      if(service === 'Servicio de Fontaneria') {
+      this.task.product_id = 39;
+      
+      }
   }
 
   createNewService(){
@@ -98,6 +103,7 @@ export class NavbarComponent implements OnInit {
       })
     }
     document.getElementById('close-newService-modal').click();
+    
     this.task.title = this.newServiceForm.value['title'];
     this.task.date = this.newServiceForm.value['date'];
     this.task.time = this.newServiceForm.value['time'];
@@ -115,7 +121,7 @@ export class NavbarComponent implements OnInit {
     this.task.client_id = this.user.partner_id;
     console.log(this.task);
     this._taskOdoo.newTask(this.task);
-    //this.newServiceForm.reset();
+    this.createForm();
     this.task = new TaskModel();
   }
 

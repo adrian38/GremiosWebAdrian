@@ -31,7 +31,6 @@ export class TaskOdooService {
     constructor(private _authOdoo: AuthOdooService) {
         task = new TaskModel();
 
-        //odooClient = this._authOdoo.OdooInfo;
         jaysonServer = this._authOdoo.OdooInfoJayson;
     }
 
@@ -416,9 +415,9 @@ export class TaskOdooService {
                 'company_id': 1,
                 'client_order_ref': task.type,
                 'order_line': [[0, 0, {
-                    'name': 'Servicio de Fontaneria',
+                    'name': task.type,
                     'price_unit': 0.0,
-                    'product_id': 39,
+                    'product_id': task.product_id,
                     'product_uom': 1,
                     'product_uom_qty': 1.0,
                     'state': 'draft'
