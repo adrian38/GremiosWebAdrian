@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
-import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import { MessageModel } from '../models/message.model';
 import { UsuarioModel } from '../models/usuario.model'
 import { Observable, Subject } from 'rxjs';
 import { AuthOdooService } from '../services/auth-odoo.service';
 let jayson = require('../../../node_modules/jayson/lib/client/');
-
-let odooClient;
 
 let jaysonServer;
 
@@ -28,7 +25,6 @@ export class ChatOdooService {
 
     setUser(usuario: UsuarioModel) {
         user = usuario;
-        odooClient = this._authOdoo.OdooInfo;
         jaysonServer = this._authOdoo.OdooInfoJayson;
     }
 

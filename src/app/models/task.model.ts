@@ -42,12 +42,14 @@ export class TaskModel{
     address:Address
     require_materials:boolean;
     state:String;
+    offer_send:String;
 
-    constructor(type:string="",description:string="", id:number=0, id_string:string="",
+    constructor(offer_send:string="",type:string="",description:string="", id:number=0, id_string:string="",
                 client_id:number=0,client_name:string="", provider_id:number=0, provider_name:number=0,
                 budget:number=0,origin:string="",date_planned:string="", date:string="", 
                 time:string="", title:string="", require_materials:boolean=true){
 
+        this.offer_send=offer_send;
         this.type=type;
         this.description=description;
         this.id=id;
