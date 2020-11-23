@@ -1,0 +1,43 @@
+<p-dialog visible="true" [closable]="false" [modal]="true" [style]="{ width: '50vw' }" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+    <p-header>
+        <h3>NUEVA SOLICITUD DE {{ serviceName | uppercase }}</h3>
+    </p-header>
+    <!-- <div class="spinner-container" *ngIf="isLoading">
+      <div class="backdrop"></div>
+
+      <p-progressSpinner [style]="{ width: '150px', height: '150px' }"></p-progressSpinner>
+  </div> -->
+    <div class="form-container">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1">
+            <div fxFlex="45">
+                <span>¿Cuantas veces quiere el servicio?</span>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="space-between start" fxFlex="45">
+                <div class="p-field-radiobutton">
+                    <p-radioButton name="frecuency" value="once" [(ngModel)]="frequency" inputId="frecuency1"></p-radioButton>
+                    <label class="mb-0" for="frecuency1">Una vez (Servicio puntual)</label>
+                </div>
+                <div class="p-field-radiobutton">
+                    <p-radioButton name="frecuency" value="weekly" [(ngModel)]="frequency" inputId="frecuency2"></p-radioButton>
+                    <label class="mb-0" for="frecuency2">Semanalmente (Servicio recurrente)</label>
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1">
+            <div fxFlex="45">
+                <span>¿Cuando necesita el servicio?</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="45">
+                <div class="p-field" fxFlex="48">
+                    <h5>Fecha</h5>
+                    <p-calendar inputId="date" id="date" type="date"></p-calendar>
+                </div>
+                <div class="p-field" fxFlex="48">
+                    <h5>Hora</h5>
+                    <p-calendar inputId="time" id="time" [timeOnly]="true"></p-calendar>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>

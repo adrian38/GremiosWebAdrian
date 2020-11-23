@@ -1,0 +1,22 @@
+<ng-template appPlaceholder></ng-template>
+
+<div class="row m-0">
+    <div class="col-6 px-0">
+        <div class="left-container">
+            <p-carousel [value]="imgCarousel" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="3000">
+                <ng-template let-carouselImg pTemplate="item">
+                    <img class="img-carousel" [src]="carouselImg" alt="" />
+                </ng-template>
+            </p-carousel>
+        </div>
+    </div>
+    <div class="col-6 px-0">
+        <div class="right-container text-center">
+            <img class="mt-3 img-fluid" src="assets/img/logoHome.png" alt="homeLogo" />
+
+            <div class="button-container">
+                <button pButton pRipple type="button" label="EMPEZAR AHORA" class="p-button-raised" (click)="showLoginDialog()"></button>
+            </div>
+        </div>
+    </div>
+</div>

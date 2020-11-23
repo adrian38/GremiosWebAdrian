@@ -4,7 +4,7 @@ import { UsuarioModel } from '../models/usuario.model'
 import { Observable, Subject } from 'rxjs'
 let jayson = require('../../../node_modules/jayson/lib/client/');
 let jaysonServer = {
-  host: '192.168.0.106',
+  host: 'todoenunapp.com',
   port: '8069',
   db: 'demo',
   username: '',
@@ -13,7 +13,7 @@ let jaysonServer = {
 }
 
 let odooClient = new odoo_xmlrpc({
-  url: 'http://' + '192.168.0.106',
+  url: 'http://' + 'todoenunapp.com',
   port: 8069,
   db: 'demo',
   username: '',
@@ -85,7 +85,7 @@ export class AuthOdooService {
                         {
                           usuario.type = "client"
                           console.log("cliente");
-          
+
                         } else if(value[0].classification === "vendor")
                         {
                           usuario.type = "provider"
@@ -96,8 +96,8 @@ export class AuthOdooService {
                         {
                           usuario.type = "client"
                           console.log("cliente");
-          
-                        } else 
+
+                        } else
                         {
                           usuario.type = "provider"
                           console.log("proveedor");
@@ -169,7 +169,7 @@ export class AuthOdooService {
           console.log(err , "Error get_user");
         } else {
 
-          
+
 
                          if(value[0].classification === "custumer")
                         {
@@ -181,8 +181,8 @@ export class AuthOdooService {
                           usuario.partner_id = value[0].partner_id[0];
                           usuario.realname = value[0].name;
                           userLogin = usuario;
-          
-                        } else 
+
+                        } else
                         {
                           usuario.connected = false;
                           connected = usuario.connected;
@@ -202,7 +202,7 @@ export class AuthOdooService {
         user$.next(userLogin);;
       } else {
         console.log("Connected");
-        
+
         get_user(value);
       }
     });

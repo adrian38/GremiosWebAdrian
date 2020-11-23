@@ -1,0 +1,77 @@
+.navbar-dark {
+    background-color: rgb(49, 49, 58) !important;
+    border-radius: 0 0 30px 0;
+    height: 12vh;
+    // position: fixed;
+    // top: 0px;
+    .brand-logo {
+        height: 60px;
+    }
+    .p-dropdown {
+        background-color: rgb(246, 183, 118);
+        border-radius: 8px;
+        border-color: #f5bc82 !important;
+        .p-dropdown-label.p-placeholder,
+        .p-dropdown-trigger {
+            color: rgb(49, 49, 58);
+        }
+        span {
+            font-size: 14px;
+            padding: 4px;
+        }
+    }
+    .p-dropdown:not(.p-disabled):hover {
+        border-color: #f6b776 !important;
+        box-shadow: 0 0 0 0.2rem #f5bc82 !important;
+        border-color: #f5bc82 !important;
+    }
+    .go-to-btn {
+        color: #f6b776;
+    }
+    .button-nav {
+        cursor: pointer;
+        padding: 8px;
+        min-width: 100px;
+        span {
+            color: #f6b776;
+        }
+        svg {
+            font-size: 40px;
+            color: #f6b776;
+        }
+    }
+    .button-nav:hover {
+        cursor: pointer;
+        background-color: #f6b776;
+        border-radius: 12px;
+        box-shadow: 5px 5px 8px;
+        span {
+            color: rgb(49, 49, 58);
+        }
+        svg {
+            color: rgb(49, 49, 58);
+        }
+    }
+    .button-nav-go {
+        cursor: pointer;
+        padding: 8px;
+        min-width: 100px;
+        span {
+            color: #f6b776;
+        }
+        border-radius: 12px;
+        border: 2px solid #f6b776;
+        text-align: center;
+    }
+    .button-nav-go:hover {
+        background-color: #f6b776;
+        span {
+            color: rgb(49, 49, 58);
+        }
+        border-radius: 12px;
+        border: 2px solid rgb(49, 49, 58);
+    }
+    .p-dropdown .p-dropdown-clear-icon {
+        display: none;
+    }
+}

@@ -1,0 +1,28 @@
+.form-container {
+    height: 100%;
+    flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    place-content: flex-start space-evenly;
+    align-items: flex-start;
+    form {
+        width: 100%;
+    }
+}
+
+.p-field {
+    display: grid;
+    margin-top: 20px;
+    h5 {
+        font-size: 1rem;
+    }
+    input {
+        border: 1px solid #f6b776;
+    }
+    input:enabled:focus {
+        outline: 0 none;
+        outline-offset: 0;
+        box-shadow: 0 0 0 0.1rem #f6b7af;
+        border-color: #f6b776;
+    }
+}

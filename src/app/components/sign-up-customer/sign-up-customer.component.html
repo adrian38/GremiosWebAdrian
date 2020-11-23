@@ -1,0 +1,142 @@
+<!-- SIGNUP MODAL -->
+
+<p-dialog visible="true" [closable]="false" [modal]="true" [style]="{ width: '32vw' }" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+    <p-header>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <h3>Registro</h3>
+            <div fxFlex="40" class="button-nav-go" (click)="gotoWorker()">
+                <span>Ir a Trabajador</span>
+            </div>
+        </div>
+    </p-header>
+    <div class="spinner-container" *ngIf="isLoading">
+        <div class="backdrop"></div>
+
+        <p-progressSpinner [style]="{ width: '150px', height: '150px' }"></p-progressSpinner>
+    </div>
+    <div class="add-image" fxLayout="row" fxLayoutAlign="center center">
+        <i class="fas fa-user-circle"></i>
+    </div>
+    <div class="form-container">
+        <form autocomplete="off" [formGroup]="signupForm" (ngSubmit)="signup()">
+            <div class="p-field">
+                <h5>NOMBRE</h5>
+                <input id="nombre" type="text" aria-describedby="nombre-help" placeholder="Nombre" [class.p-invalid]="nombreNoValido" formControlName="nombre" pInputText />
+                <small *ngIf="nombreNoValido" id="nombre-help" class="p-invalid">Nombre no valido.</small
+        >
+      </div>
+      <div fxLayout="row">
+        <div class="p-field" fxFlex="48">
+          <h5>USUARIO</h5>
+          <input
+            id="username"
+            type="text"
+            aria-describedby="username-help"
+            placeholder="Usuario"
+            [class.p-invalid]="usuarioNoValido"
+            formControlName="usuario"
+            pInputText
+          />
+          <small *ngIf="usuarioNoValido" id="username-help" class="p-invalid"
+            >Usuario no valido.</small
+          >
+        </div>
+
+        <div class="p-field" fxFlexOffset="4" fxFlex="48">
+          <h5>CONTRASEÑA</h5>
+          <input
+            id="password"
+            type="password"
+            aria-describedby="password-help"
+            placeholder="Contraseña"
+            [class.p-invalid]="passwordNoValido"
+            formControlName="password"
+            pInputText
+          />
+          <small *ngIf="usuarioNoValido" id="username-help" class="p-invalid"
+            >Contraseña no valida.</small
+          >
+        </div>
+      </div>
+
+      <div fxLayout="row">
+        <div class="p-field" fxFlex="48">
+          <h5>FECHA DE NACIMIENTO</h5>
+          <p-calendar
+            inputId="basic"
+            formControlName="date"
+            id="date"
+            type="date"
+            aria-describedby="date-help"
+            placeholder="Fecha de Nacimiento"
+          ></p-calendar>
+        </div>
+
+        <div class="p-field" fxFlexOffset="4" fxFlex="48">
+          <h5>TELEFONO</h5>
+          <input
+            inputId="basic"
+            formControlName="phone"
+            id="phone"
+            type="text"
+            aria-describedby="phone-help"
+            placeholder="Numero telefonico"
+            pInputText
+          />
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div class="p-field" fxFlex="85">
+          <h5>DIRECCION</h5>
+          <input
+            id="address"
+            type="text"
+            aria-describedby="address-help"
+            placeholder="Direccion"
+            [class.p-invalid]="addressNoValido"
+            formControlName="address"
+            pInputText
+          />
+          <!-- <small *ngIf="addressNoValido" id="address-help" class="p-invalid"
+          >Direccion no valido.</small
+        > -->
+        </div>
+        <div
+          fxFlexOffset="3"
+          fxFlex="12"
+          fxFlexAlign="end"
+          class="location-btn"
+        >
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="fas fa-map-marker-alt"
+            class="p-button-rounded p-button-warning"
+          ></button>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="text-left">
+          <button
+            class="btn btn-primary text-black mt-4 text-center"
+            type="submit"
+            [disabled]="disabled"
+          >
+            ACEPTAR
+          </button>
+        </div>
+        <div class="text-right">
+          <button
+            class="btn btn-primary text-black mt-4 text-center"
+            type="button"
+            (click)="goHome()"
+          >
+            CANCELAR
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</p-dialog>
