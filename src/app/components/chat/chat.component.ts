@@ -46,9 +46,9 @@ export class ChatComponent implements OnInit {
 
     this._taskOdoo.requestTask(this.purchaseOrderID);
 
-    setInterval(() => {
+    /* setInterval(() => {
     this._chatOdoo.requestAllMessages(this.purchaseOrderID);
-    }, 3000);
+    }, 3000); */
 
   }
 
@@ -75,6 +75,12 @@ export class ChatComponent implements OnInit {
           this.task = task;
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    
   }
 
   sendMessage() {

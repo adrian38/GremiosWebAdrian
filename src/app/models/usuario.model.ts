@@ -1,3 +1,27 @@
+export class Address {
+  street:string;
+  number:string;
+  portal:string;
+  stair:string;
+  floor:string;
+  door:string;
+  cp:string;
+  latitude:string;
+  longitude:string;
+
+  constructor(street:string, number:string, portal:string, stair:string, floor:string,
+              door:string, cp:string, latitude:string, longitude:string) {
+      this.street=street;
+      this.number=number;
+      this.portal=portal;
+      this.stair=stair;
+      this.floor=floor;
+      this.door=door;
+      this.cp=cp;
+      this.latitude = latitude;
+      this.longitude = longitude;
+  }
+}
 
 export class UsuarioModel{
     username:string;
@@ -8,9 +32,9 @@ export class UsuarioModel{
     type: string;
     connected:boolean;
     phone:number;
-    address:string;
     id:number;
     realname:string;
+    address:Address;
 
     constructor(){
       this.username = "";
@@ -21,7 +45,6 @@ export class UsuarioModel{
       this.type  = "";
       this.connected = false;
       this.phone = 0;
-      this.address  = "";
       this.id = 0;
       this.realname  = "";
     }

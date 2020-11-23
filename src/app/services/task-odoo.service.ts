@@ -19,12 +19,15 @@ let tasksList$ = new Subject<TaskModel[]>();
 let offersList: TaskModel[];
 let offersList$ = new Subject<TaskModel[]>();
 
+let notificationSuplier$ = new Subject<boolean>();
+
 let user: UsuarioModel;
 
 @Injectable({
     providedIn: 'root'
 })
 export class TaskOdooService {
+    
     selectedTab: String;
     selectedTab$ = new Subject<String>();
 
@@ -42,15 +45,58 @@ export class TaskOdooService {
         return user;
     }
 
+     notificationPull() {
+
+        let poll = function(uid,partner_id) {
+            let path = '/longpolling/poll'
+            
+            client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + path });
+           
+            client.request('call', {context: {uid:uid}, channels:[jaysonServer.db + '_' + partner_id.toString()],last: 0},{context: {lang: 'es_ES', uid:uid}}, function(err, error, value) {
+                if(err){
+                    console.log(err, "Error poll");
+                } else {
+                    console.log(value);
+                    if (value.length){
+                        let mostrar:boolean = true
+                        notificationSuplier$.next(mostrar);
+                    }
+
+                    //poll(user.id,user.partner_id);
+                    setTimeout(() => {
+                        poll(user.id,user.partner_id);
+                      },
+                        2000); 
+                   }
+            });
+        }
+
+        let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+        client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
+
+            if (err || !value) {
+                console.log(err, "Error cancelPOsuplier");
+
+            } else {
+                poll(user.id,user.partner_id);
+            }
+        });
+
+    }
+
+    getRequestedNotificationSuplier$():Observable<boolean>{
+        return notificationSuplier$.asObservable();
+    } 
+
     cancelPOsuplier(id: number) {
 
         let get_po_list = function (partnerId) {
             let inParams = []
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['product_id','note','user_id', 'partner_id', 'name', 'date_order','commitment_date', 'invoice_status','title','note','require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
+            inParams.push(['product_id', 'note', 'user_id', 'partner_id', 'name', 'date_order', 'commitment_date', 'invoice_status', 'title', 'note', 'require_materials',
+                'commitment_date', 'address_street', 'address_floor', 'address_portal',
+                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+                'address_latitude', 'address_longitude'])
             let params = []
             params.push(inParams)
 
@@ -73,7 +119,7 @@ export class TaskOdooService {
                     tasksList = [];
                     for (let task of value) {
                         let temp = new TaskModel();
-                        temp.type=task['product_id'][1];
+                        temp.type = task['product_id'][1];
                         temp.description = task['note'];
                         temp.client_id = task['user_id'][0];
                         temp.client_name = task['user_id'][1];
@@ -87,15 +133,15 @@ export class TaskOdooService {
                         temp.time = String(task['commitment_date']).slice(10, String(task['commitment_date']).length);
                         temp.title = task['title'];
                         temp.address = new Address(task['address_street'],
-                        task['address_number'],
-                        task['address_portal'],
-                        task['address_stairs'],
-                        task['address_floor'],
-                        task['address_door'],
-                        task['address_zip_code'],
-                        task['address_latitude'],
-                        task['address_longitude'])
-                        
+                            task['address_number'],
+                            task['address_portal'],
+                            task['address_stairs'],
+                            task['address_floor'],
+                            task['address_door'],
+                            task['address_zip_code'],
+                            task['address_latitude'],
+                            task['address_longitude'])
+
                         tasksList.push(temp);
                     }
                     tasksList$.next(tasksList);
@@ -126,15 +172,15 @@ export class TaskOdooService {
                 if (err) {
                     console.log(err, "Error cancelPOsuplierSelected");
                 } else {
-                   // console.log(user.id);
-                   // console.log(id);
+                    // console.log(user.id);
+                    // console.log(id);
                     console.log(value);
                     get_po_list(user.partner_id);
 
                 }
             });
         }
-        
+
 
         let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
@@ -154,13 +200,13 @@ export class TaskOdooService {
         let tasksList = [];
         let SO_id = [];
 
-         let get_so_type = function(So_id){
-            
+        let get_so_type = function (So_id) {
+
             console.log(So_id);
             let inParams = [];
-            inParams.push([['order_id', 'in', SO_id ]]);
-            inParams.push(['product_id','order_id']);
-            
+            inParams.push([['order_id', 'in', SO_id]]);
+            inParams.push(['product_id', 'order_id']);
+
             let params = []
             params.push(inParams)
 
@@ -180,26 +226,26 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    
+
                     for (let task of tasksList) {
-                     let temp =  (value.find(element=>element.order_id[0] === task.id ));  
-                     task.type = temp.product_id[1];
+                        let temp = (value.find(element => element.order_id[0] === task.id));
+                        task.type = temp.product_id[1];
                     }
- 
+
                     tasksList$.next(tasksList);
-                  
+
                 }
             });
 
-        } 
- 
+        }
+
         let get_so_list = function (partnerId) {
             let inParams = [];
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['partner_id', 'date_order','name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
+            inParams.push(['partner_id', 'date_order', 'name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
+                'commitment_date', 'address_street', 'address_floor', 'address_portal',
+                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+                'address_latitude', 'address_longitude'])
 
 
             let params = []
@@ -221,7 +267,7 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    
+
                     for (let order of value) {
                         let temp = new TaskModel();
                         SO_id.push(order['id']);
@@ -248,9 +294,9 @@ export class TaskOdooService {
                             order['address_longitude'])
                         tasksList.push(temp);
                     }
-                      if(SO_id.length){
+                    if (SO_id.length) {
                         get_so_type(SO_id);
-                    }  
+                    }
                 }
             });
         }
@@ -279,13 +325,13 @@ export class TaskOdooService {
                     console.log(err, "Error cancelSOclientSelected");
                 } else {
                     console.log(user.id);
-                /*     console.log(id);
-                    console.log(value); */
+                    /*     console.log(id);
+                        console.log(value); */
                     get_so_list(user.partner_id);
                 }
             });
         }
-        
+
 
         let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
@@ -305,13 +351,13 @@ export class TaskOdooService {
         let tasksList = [];
         let SO_id = [];
 
-         let get_so_type = function(So_id){
-            
+        let get_so_type = function (So_id) {
+
             console.log(So_id);
             let inParams = [];
-            inParams.push([['order_id', 'in', SO_id ]]);
-            inParams.push(['product_id','order_id']);
-            
+            inParams.push([['order_id', 'in', SO_id]]);
+            inParams.push(['product_id', 'order_id']);
+
             let params = []
             params.push(inParams)
 
@@ -331,26 +377,26 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    
+
                     for (let task of tasksList) {
-                     let temp =  (value.find(element=>element.order_id[0] === task.id ));  
-                     task.type = temp.product_id[1];
+                        let temp = (value.find(element => element.order_id[0] === task.id));
+                        task.type = temp.product_id[1];
                     }
- 
+
                     tasksList$.next(tasksList);
-                  
+
                 }
             });
 
-        } 
- 
+        }
+
         let get_so_list = function (partnerId) {
             let inParams = [];
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['partner_id', 'date_order','name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
+            inParams.push(['partner_id', 'date_order', 'name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
+                'commitment_date', 'address_street', 'address_floor', 'address_portal',
+                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+                'address_latitude', 'address_longitude'])
 
 
             let params = []
@@ -372,7 +418,7 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    
+
                     for (let order of value) {
                         let temp = new TaskModel();
                         SO_id.push(order['id']);
@@ -399,9 +445,9 @@ export class TaskOdooService {
                             order['address_longitude'])
                         tasksList.push(temp);
                     }
-                      if(SO_id.length){
+                    if (SO_id.length) {
                         get_so_type(SO_id);
-                    }  
+                    }
                 }
             });
         }
@@ -486,7 +532,7 @@ export class TaskOdooService {
                             get_so_list(user.partner_id);
 
 
-                            
+
                         }
                     });
                 }
@@ -510,18 +556,18 @@ export class TaskOdooService {
 
     }
 
-    acceptProvider(PO_id: number, SO_id : number) {
+    acceptProvider(PO_id: number, SO_id: number) {
 
         let tasksList = [];
         let SO_id_list = [];
 
-         let get_so_type = function(So_id_list){
-            
+        let get_so_type = function (So_id_list) {
+
             console.log(So_id_list);
             let inParams = [];
-            inParams.push([['order_id', 'in', So_id_list ]]);
-            inParams.push(['product_id','order_id']);
-            
+            inParams.push([['order_id', 'in', So_id_list]]);
+            inParams.push(['product_id', 'order_id']);
+
             let params = []
             params.push(inParams)
 
@@ -541,26 +587,26 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    
+
                     for (let task of tasksList) {
-                     let temp =  (value.find(element=>element.order_id[0] === task.id ));  
-                     task.type = temp.product_id[1];
+                        let temp = (value.find(element => element.order_id[0] === task.id));
+                        task.type = temp.product_id[1];
                     }
- 
+
                     tasksList$.next(tasksList);
-                  
+
                 }
             });
 
-        } 
- 
+        }
+
         let get_so_list = function (partnerId) {
             let inParams = [];
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['partner_id', 'date_order','name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
+            inParams.push(['partner_id', 'date_order', 'name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
+                'commitment_date', 'address_street', 'address_floor', 'address_portal',
+                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+                'address_latitude', 'address_longitude'])
 
 
             let params = []
@@ -582,7 +628,7 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    
+
                     for (let order of value) {
                         let temp = new TaskModel();
                         SO_id_list.push(order['id']);
@@ -609,20 +655,20 @@ export class TaskOdooService {
                             order['address_longitude'])
                         tasksList.push(temp);
                     }
-                      if(SO_id_list.length){
+                    if (SO_id_list.length) {
                         get_so_type(SO_id_list);
-                    }  
+                    }
                 }
             });
         }
-        
-        let create_PO_invoice = function() {
+
+        let create_PO_invoice = function () {
 
             let inParams = []
             inParams.push([PO_id])
             let params = []
-            params.push(inParams) 
-            
+            params.push(inParams)
+
             let fparams = [];
             fparams.push(jaysonServer.db);
             fparams.push(user.id);
@@ -634,18 +680,18 @@ export class TaskOdooService {
                 fparams.push(params[i]);
             }
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-        
+
                 if (err || !value) {
-                console.log(err,"Error create_PO_invoice");
-            } else {
-                console.log("SO contratada");
-                get_so_list(user.partner_id);
+                    console.log(err, "Error create_PO_invoice");
+                } else {
+                    console.log("SO contratada");
+                    get_so_list(user.partner_id);
                 }
             });
 
         }
-        
-        let create_SO_invoice = function() {
+
+        let create_SO_invoice = function () {
 
             let inParams = []
             inParams.push([SO_id])
@@ -663,19 +709,19 @@ export class TaskOdooService {
                 fparams.push(params[i]);
             }
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-        
+
                 if (err || !value) {
-                console.log(err,"Error create_SO_invoice");
-            } else {
-                console.log("create_SO_invoice correcto");
-                create_PO_invoice();
-            }
+                    console.log(err, "Error create_SO_invoice");
+                } else {
+                    console.log("create_SO_invoice correcto");
+                    create_PO_invoice();
+                }
             });
 
         }
 
         let confirm_PO = function () {
-            
+
             let inParams = []
             inParams.push([PO_id])
             let params = []
@@ -695,7 +741,7 @@ export class TaskOdooService {
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
 
 
-                if (err ) {
+                if (err) {
                     console.log(err, "Error confirm_PO");
 
                 } else {
@@ -718,7 +764,7 @@ export class TaskOdooService {
         });
     }
 
-     declineProvider(id: number) {
+    declineProvider(id: number) {
 
         let cancel_PO = function () {
             const id_po = id
@@ -759,9 +805,9 @@ export class TaskOdooService {
                 cancel_PO();
             }
         });
-    } 
- 
-     requestTask(id: number) {
+    }
+
+    requestTask(id: number) {
 
         let get_po_by_id = function () {
             const id_po = id
@@ -801,7 +847,7 @@ export class TaskOdooService {
             })
         }
 
-         let get_desc_so = function (id) {
+        let get_desc_so = function (id) {
             let inParams = []
             inParams.push([['name', '=', id]])
             inParams.push(['note'])
@@ -829,7 +875,7 @@ export class TaskOdooService {
                     task$.next(task);
                 }
             })
-        } 
+        }
 
         let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
@@ -841,24 +887,24 @@ export class TaskOdooService {
                 get_po_by_id();
             }
         });
-    } 
+    }
 
     getRequestedTask$(): Observable<TaskModel> {
         return task$.asObservable();
     }
 
     requestTaskListClient() {
-        
+
         let tasksList = [];
         let SO_id = [];
 
-         let get_so_type = function(So_id){
-            
+        let get_so_type = function (So_id) {
+
             console.log(So_id);
             let inParams = [];
-            inParams.push([['order_id', 'in', SO_id ]]);
-            inParams.push(['product_id','order_id']);
-            
+            inParams.push([['order_id', 'in', SO_id]]);
+            inParams.push(['product_id', 'order_id']);
+
             let params = []
             params.push(inParams)
 
@@ -878,26 +924,26 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    
+
                     for (let task of tasksList) {
-                     let temp =  (value.find(element=>element.order_id[0] === task.id ));  
-                     task.type = temp.product_id[1];
+                        let temp = (value.find(element => element.order_id[0] === task.id));
+                        task.type = temp.product_id[1];
                     }
- 
+
                     tasksList$.next(tasksList);
-                  
+
                 }
             });
 
-        } 
- 
+        }
+
         let get_so_list = function (partnerId) {
             let inParams = [];
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['partner_id', 'date_order','name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
+            inParams.push(['partner_id', 'date_order', 'name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
+                'commitment_date', 'address_street', 'address_floor', 'address_portal',
+                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+                'address_latitude', 'address_longitude'])
 
 
             let params = []
@@ -919,7 +965,7 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    
+
                     for (let order of value) {
                         let temp = new TaskModel();
                         SO_id.push(order['id']);
@@ -946,9 +992,9 @@ export class TaskOdooService {
                             order['address_longitude'])
                         tasksList.push(temp);
                     }
-                      if(SO_id.length){
+                    if (SO_id.length) {
                         get_so_type(SO_id);
-                    }  
+                    }
                 }
             });
         }
@@ -969,10 +1015,10 @@ export class TaskOdooService {
         let get_po_list = function (partnerId) {
             let inParams = []
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['state','product_id','note','user_id', 'partner_id', 'name', 'date_order','commitment_date', 'invoice_status','title','note','require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
+            inParams.push(['state', 'product_id', 'note', 'user_id', 'partner_id', 'name', 'date_order', 'commitment_date', 'invoice_status', 'title', 'note', 'require_materials',
+                'commitment_date', 'address_street', 'address_floor', 'address_portal',
+                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+                'address_latitude', 'address_longitude'])
             let params = []
             params.push(inParams)
 
@@ -996,7 +1042,7 @@ export class TaskOdooService {
                     for (let task of value) {
                         let temp = new TaskModel();
                         temp.offer_send = task['state'];
-                        temp.type=task['product_id'][1];
+                        temp.type = task['product_id'][1];
                         temp.description = task['note'];
                         temp.client_id = task['user_id'][0];
                         temp.client_name = task['user_id'][1];
@@ -1010,17 +1056,17 @@ export class TaskOdooService {
                         temp.time = String(task['commitment_date']).slice(10, String(task['commitment_date']).length);
                         temp.title = task['title'];
                         temp.address = new Address(task['address_street'],
-                        task['address_number'],
-                        task['address_portal'],
-                        task['address_stairs'],
-                        task['address_floor'],
-                        task['address_door'],
-                        task['address_zip_code'],
-                        task['address_latitude'],
-                        task['address_longitude'])
-                        
+                            task['address_number'],
+                            task['address_portal'],
+                            task['address_stairs'],
+                            task['address_floor'],
+                            task['address_door'],
+                            task['address_zip_code'],
+                            task['address_latitude'],
+                            task['address_longitude'])
+
                         tasksList.push(temp);
-                                                              }
+                    }
                     tasksList$.next(tasksList);
                 }
             })
@@ -1049,7 +1095,7 @@ export class TaskOdooService {
             console.log(id);
             let inParams = []
             inParams.push([['origin', 'ilike', id]])
-            inParams.push(['partner_id', 'amount_total', 'user_id', 'origin','state'])
+            inParams.push(['partner_id', 'amount_total', 'user_id', 'origin', 'state'])
 
 
             let params = []
@@ -1073,7 +1119,7 @@ export class TaskOdooService {
                     console.log(value);
                     offersList = [];
                     for (let offer of value) {
-                         if (offer['state'] === 'sent') {
+                        if (offer['state'] === 'sent') {
                             let temp = new TaskModel();
                             temp.client_id = offer['user_id'][0];
                             temp.client_name = offer['user_id'][1];
@@ -1084,7 +1130,7 @@ export class TaskOdooService {
                             temp.budget = offer['amount_total'];
                             temp.origin = offer['origin'];
                             offersList.push(temp);
-                        } 
+                        }
 
                     }
                     offersList$.next(offersList);
@@ -1119,13 +1165,13 @@ export class TaskOdooService {
             'date_planned': offer.date_planned,
             'order_id': offer.id,
         };
-        let acept_PO = function() {
-         
+        let acept_PO = function () {
+
             let inParams = []
             let params = []
             inParams.push(offer.id)
             params.push(inParams)
-            
+
             let fparams = [];
             fparams.push(jaysonServer.db);
             fparams.push(user.id);
@@ -1137,14 +1183,14 @@ export class TaskOdooService {
                 fparams.push(params[i]);
             }
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-        
+
                 if (err) {
-                console.log(err);
-            } else {
-                console.log(value);
-            }
+                    console.log(err);
+                } else {
+                    console.log(value);
+                }
             });
-         
+
         }
         let addLinePO = function () {
 

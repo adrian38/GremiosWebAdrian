@@ -15,12 +15,20 @@ export class DashboardComponent implements OnInit {
   usuario: UsuarioModel;
   usuario$: Observable<UsuarioModel>;
   task: TaskModel;
+  
   solicitudesList: TaskModel[];
   contratadosList: TaskModel[];
+  
   historialList: TaskModel[];
   tasksList$: Observable<TaskModel[]>; // servicio comunicacion
+  
   tab: String;
   tab$: Observable<String>;
+  myVar;
+
+  
+  notificationSuplier:boolean;
+  notificationSuplier$: Observable<boolean>;
 
   constructor(private _taskOdoo: TaskOdooService,
     private _authOdoo: AuthOdooService,
@@ -31,22 +39,68 @@ export class DashboardComponent implements OnInit {
     this.observablesSubscriptions();
     this.tab = 'Solicitudes';
     //this._taskOdoo.notificationPullProvider();
-
-
+      
     if (this.usuario.type == "client") {
       this._taskOdoo.requestTaskListClient();
 
 
     } else if (this.usuario.type == "provider") {
       this._taskOdoo.requestTaskListProvider();
+
     }
 
   }
 
   ngOnInit(): void {
+
+  //this.initInterval();
+
+  //this.myVar = setInterval(() => {
+    this._taskOdoo.notificationPull();
+    //console.log("1");
+  //  }, 60000); 
+
+//clearInterval(this.myVar);
+}
+
+
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+
+    //this.counter = true;
+    //this.initInterval();
+   // clearInterval(this.myVar);
+    
   }
 
+/*   initInterval(){
+    if(this.counter) {
+      console.log(this.counter);
+      clearInterval(this.counter);
+    }
+  this.counter = setInterval(() => {
+    //this._taskOdoo.notificationPull();
+    console.log("1");
+    }, 10000); */
+
+//}
+
+
   observablesSubscriptions() {
+
+    if (this.usuario.type == "provider") {
+ this.notificationSuplier$ = this._taskOdoo.getRequestedNotificationSuplier$();
+ this.notificationSuplier$.subscribe((notificationSuplier:boolean)=>
+ {
+  this.ngZone.run(() => {
+    this.notificationSuplier = notificationSuplier;
+    console.log(this.notificationSuplier,"llego la notificacion");
+  });
+ });
+}
+
     this.tab$ = this._taskOdoo.getSelectedTab$();
     this.tab$.subscribe((tab: String) => {
       this.ngZone.run(() => {
