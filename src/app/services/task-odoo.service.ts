@@ -349,6 +349,7 @@ export class TaskOdooService {
 
     }
 
+    //////// De la forma de Michel
     newTask(task: TaskModel) {
 
         //let newTask:TaskModel;
@@ -910,10 +911,13 @@ export class TaskOdooService {
 
     requestTask(id: number) {
 
+        let id_po  = [];
+
         let get_po_by_id = function () {
-            const id_po = id
+            
+            id_po.push(id);
             let inParams = []
-            inParams.push([['id', '=', id_po]])
+            inParams.push([['id', 'in', id_po]])
             inParams.push(['partner_id', 'amount_total', 'user_id', 'origin', 'title',
                 'note', 'commitment_date','product_id','address_street'])
             let params = []
@@ -964,7 +968,7 @@ export class TaskOdooService {
 
                         tasksList.push(temp);
                 }
-                console.log(task);
+                console.log(tasksList);
                 task$.next(tasksList);
             }
             })
