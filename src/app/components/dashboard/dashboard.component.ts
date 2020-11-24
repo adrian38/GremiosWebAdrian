@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
   
   tab: String;
   tab$: Observable<String>;
-  myVar;
+  //myVar;
 
   
   notificationSuplier:boolean;
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
 
     this.observablesSubscriptions();
     this.tab = 'Solicitudes';
-    //this._taskOdoo.notificationPullProvider();
+    
       
     if (this.usuario.type == "client") {
       this._taskOdoo.requestTaskListClient();
@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
   //this.initInterval();
 
   //this.myVar = setInterval(() => {
-    this._taskOdoo.notificationPull();
+    //this._taskOdoo.notificationPull();
     //console.log("1");
   //  }, 60000); 
 
@@ -69,23 +69,10 @@ export class DashboardComponent implements OnInit {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
 
-    //this.counter = true;
-    //this.initInterval();
+   
    // clearInterval(this.myVar);
     
   }
-
-/*   initInterval(){
-    if(this.counter) {
-      console.log(this.counter);
-      clearInterval(this.counter);
-    }
-  this.counter = setInterval(() => {
-    //this._taskOdoo.notificationPull();
-    console.log("1");
-    }, 10000); */
-
-//}
 
 
   observablesSubscriptions() {
@@ -111,18 +98,32 @@ export class DashboardComponent implements OnInit {
     this.tasksList$ = this._taskOdoo.getRequestedTaskList$();
     this.tasksList$.subscribe((tasksList: TaskModel[]) => {
       this.ngZone.run(() => {
-        this.solicitudesList = tasksList.filter(task => {
-         
+          let temp:TaskModel[];
+        temp = tasksList.filter(task => {        
           if (this.usuario.type === "client") {
             return task.state === 'to invoice'; //Solicitadas
           } else if (this.usuario.type === "provider") { return task.state === 'no' };
         });
-        this.contratadosList = tasksList.filter(task => {
+                 
+        if(this.solicitudesList){
+          Array.prototype.push.apply(this.solicitudesList, temp);
+        }else{ this.solicitudesList = temp;}
+      
+        temp = tasksList.filter(task => {
           return task.state === 'invoiced'; //Contratadas
         });
-        this.historialList = tasksList.filter(task => {
+        if(this.contratadosList){
+          Array.prototype.push.apply(this.contratadosList, temp);
+        }else{ this.contratadosList = temp;}
+
+        
+         temp = tasksList.filter(task => {
           return task.state === ''; //Historial
         });
+        if(this.historialList){
+          Array.prototype.push.apply(this.historialList, temp);
+        }else{ this.historialList = temp;}
+
         console.log(this.solicitudesList);
       });
     });

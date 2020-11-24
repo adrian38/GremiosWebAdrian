@@ -11,7 +11,7 @@ let jaysonServer;
 
 
 let task: TaskModel;
-let task$ = new Subject<TaskModel>();
+let task$ = new Subject<TaskModel[]>();
 
 let tasksList: TaskModel[];
 let tasksList$ = new Subject<TaskModel[]>();
@@ -20,6 +20,8 @@ let offersList: TaskModel[];
 let offersList$ = new Subject<TaskModel[]>();
 
 let notificationSuplier$ = new Subject<boolean>();
+
+//let newTask$ = new Subject<TaskModel>();
 
 let user: UsuarioModel;
 
@@ -60,13 +62,14 @@ export class TaskOdooService {
                     if (value.length){
                         let mostrar:boolean = true
                         notificationSuplier$.next(mostrar);
-                    }
 
-                    //poll(user.id,user.partner_id);
-                    setTimeout(() => {
-                        poll(user.id,user.partner_id);
-                      },
-                        2000); 
+                        setTimeout(() => {
+                            poll(user.id,user.partner_id);
+                          },55000);
+
+                    }else{ poll(user.id,user.partner_id);}
+                   
+                      
                    }
             });
         }
@@ -348,6 +351,104 @@ export class TaskOdooService {
 
     newTask(task: TaskModel) {
 
+        //let newTask:TaskModel;
+       
+
+        let createService = function () {
+
+            console.log(task);
+            let SO = {
+                'company_id': 1,
+                'client_order_ref': task.type,
+                'order_line': [[0, 0, {
+                    'name': task.type,
+                    'price_unit': 0.0,
+                    'product_id': task.product_id,
+                    'product_uom': 1,
+                    'product_uom_qty': 1.0,
+                    'state': 'draft'
+                }]],
+                'note': task.description,
+                'partner_id': task.client_id,
+                'title': task.title,
+                'commitment_date': (task.date + ' ' + task.time),
+                'require_materials': task.require_materials,
+                'require_payment': false,
+                'require_signature': false,
+                'state': 'draft',
+                'address_street': task.address.street,
+                'address_floor': task.address.floor,
+                'address_portal': task.address.portal,
+                'address_number': task.address.number,
+                'address_door': task.address.door,
+                'address_stairs': task.address.stair,
+                'address_zip_code': task.address.cp,
+                'address_latitude': '',
+                'address_longitude': '',
+            }
+            let inParams = [];
+            inParams.push(SO);
+            let params = [];
+            params.push(inParams)
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('sale.order');//model
+            fparams.push('create');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+
+                if (err || !value) {
+                    console.log(err, "createService");
+
+                } else {
+                    console.log(value, "createService");
+                    inParams = []
+                    inParams.push(value)
+                    params = []
+                    params.push(inParams)
+                    let fparams = [];
+                    fparams.push(jaysonServer.db);
+                    fparams.push(user.id);
+                    fparams.push(jaysonServer.password);
+                    fparams.push('sale.order');//model
+                    fparams.push('action_confirm');//method
+
+                    for (let i = 0; i < params.length; i++) {
+                        fparams.push(params[i]);
+                    }
+
+                    client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+                        if (err || !value) {
+                            console.log(err, "Error Confirmar Servicio Creado");
+                        } else {
+                            console.log(value, "Confirmar Servicio Creado");
+                        }
+                    });
+                }
+            });
+        }
+
+        let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+        client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
+
+            if (err || !value) {
+                console.log(err, "newTask");
+
+            } else {
+                createService();
+            }
+        });
+
+    }
+
+    /* newTask(task: TaskModel) {
+
         let tasksList = [];
         let SO_id = [];
 
@@ -550,7 +651,7 @@ export class TaskOdooService {
             }
         });
 
-    }
+    } */
 
     editTask(desc: string) {
 
@@ -814,7 +915,7 @@ export class TaskOdooService {
             let inParams = []
             inParams.push([['id', '=', id_po]])
             inParams.push(['partner_id', 'amount_total', 'user_id', 'origin', 'title',
-                'note', 'commitment_date',])
+                'note', 'commitment_date','product_id','address_street'])
             let params = []
             params.push(inParams)
             let fparams = [];
@@ -833,21 +934,43 @@ export class TaskOdooService {
                 if (err || !value) {
                     console.log(err, "Error get_po_by_id");
                 } else {
-                    console.log(value);
-                    task.budget = value[0]['amount_total'];
-                    task.client_id = value[0]['user_id'][0];
-                    task.client_name = value[0]['user_id'][1];
-                    task.provider_id = value[0]['partner_id'][0];
-                    task.provider_name = value[0]['partner_id'][1];
-                    task.id = id;
-                    task.origin = value[0]['origin'];
-                    console.log(task);
-                    get_desc_so(task.origin);
+                    tasksList = [];
+                    for ( let task of value) {
+                        let temp = new TaskModel();
+                        //temp.offer_send = task['state'];
+                        temp.budget = task['amount_total'];
+                        temp.type = task['product_id'][1];
+                        temp.description = task['note'];
+                        temp.client_id = task['user_id'][0];
+                        temp.client_name = task['user_id'][1];
+                        temp.provider_id = task['partner_id'][0];
+                        temp.provider_name = task['partner_id'][1];
+                        temp.id = id;
+                        //temp.state = task['invoice_status'];
+                        //temp.id_string = task['name'];
+                        //temp.date = task['date_order'];
+                        temp.date_planned = String(task['commitment_date']).slice(0, 10);
+                        //temp.time = String(task['commitment_date']).slice(10, String(task['commitment_date']).length);
+                        temp.title = task['title'];
+                        temp.address = new Address(task['address_street'],
+                            task['address_number'],
+                            task['address_portal'],
+                            task['address_stairs'],
+                            task['address_floor'],
+                            task['address_door'],
+                            task['address_zip_code'],
+                            task['address_latitude'],
+                            task['address_longitude'])
+
+                        tasksList.push(temp);
                 }
+                console.log(task);
+                task$.next(tasksList);
+            }
             })
         }
 
-        let get_desc_so = function (id) {
+       /*  let get_desc_so = function (id) {
             let inParams = []
             inParams.push([['name', '=', id]])
             inParams.push(['note'])
@@ -875,7 +998,7 @@ export class TaskOdooService {
                     task$.next(task);
                 }
             })
-        }
+        } */
 
         let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
@@ -889,7 +1012,7 @@ export class TaskOdooService {
         });
     }
 
-    getRequestedTask$(): Observable<TaskModel> {
+    getRequestedTask$(): Observable<TaskModel[]> {
         return task$.asObservable();
     }
 
