@@ -19,7 +19,7 @@ export class ChatComponent implements OnInit {
   purchaseOrderID: number;
 
   task: TaskModel;
-  task$: Observable<TaskModel>;
+  task$: Observable<TaskModel[]>;
   message: MessageModel;
   messagesList: MessageModel[];
   messagesList$: Observable<MessageModel[]>;
@@ -46,9 +46,9 @@ export class ChatComponent implements OnInit {
 
     this._taskOdoo.requestTask(this.purchaseOrderID);
 
-    setInterval(() => {
+    /* setInterval(() => {
     this._chatOdoo.requestAllMessages(this.purchaseOrderID);
-    }, 3000);
+    }, 3000); */
 
   }
 
@@ -71,10 +71,19 @@ export class ChatComponent implements OnInit {
     this.task$.subscribe(task => {
       this.ngZone.run(() => {
 
-        if (task.id === this.purchaseOrderID)
-          this.task = task;
+        //console.log(task,"chat component");
+        //console.log(this.purchaseOrderID,"chat component id")
+        let temp = (task.find(element => element.id));
+        if (this.purchaseOrderID === temp.id)
+          this.task = temp;
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    
   }
 
   sendMessage() {

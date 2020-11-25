@@ -1,5 +1,4 @@
 import { Injectable, Testability } from '@angular/core';
-import * as xmlrpc from 'node_modules/xmlrpc/lib/client'
 import { UsuarioModel } from '../models/usuario.model'
 import { Address, TaskModel } from '../models/task.model'
 import { Observable, Subject } from 'rxjs';
@@ -8,13 +7,11 @@ import { HttpClient } from '@angular/common/http';
 import { StringDecoder } from 'string_decoder';
 let jayson = require('../../../node_modules/jayson/lib/client/');
 
-let odooClient;
-
 let jaysonServer;
 
 
 let task: TaskModel;
-let task$ = new Subject<TaskModel>();
+let task$ = new Subject<TaskModel[]>();
 
 let tasksList: TaskModel[];
 let tasksList$ = new Subject<TaskModel[]>();
@@ -22,19 +19,37 @@ let tasksList$ = new Subject<TaskModel[]>();
 let offersList: TaskModel[];
 let offersList$ = new Subject<TaskModel[]>();
 
+let notificationPoCancelled$ = new Subject<number[]>();  ////Proveedor
+
+let notificationOffertCancelled$ = new Subject<number[]>(); //////cliente
+
+let notificationSoCancelled$ = new Subject<number>(); ////// cliente 
+
+//////////////////////////////////////////////////////////////////////////////
+
+let notificationNewPoSuplier$ = new Subject<number[]>(); ///////Proveedor
+
+let notificationNewSoClient$ = new Subject<boolean>(); ///////cliente
+
+let notificationNewOffertSuplier$ = new Subject<boolean>(); ///////cliente
+
+////////////////////////////////////////////////////////////////////////////
+
+let notificationError$ = new Subject<boolean>();
+
 let user: UsuarioModel;
 
 @Injectable({
     providedIn: 'root'
 })
 export class TaskOdooService {
+
     selectedTab: String;
     selectedTab$ = new Subject<String>();
 
     constructor(private _authOdoo: AuthOdooService) {
         task = new TaskModel();
 
-        odooClient = this._authOdoo.OdooInfo;
         jaysonServer = this._authOdoo.OdooInfoJayson;
     }
 
@@ -46,66 +61,79 @@ export class TaskOdooService {
         return user;
     }
 
-    cancelPOsuplier(id: number) {
+    getNotificationError$(): Observable<boolean> {
+        return notificationError$.asObservable();
+    }
 
-        let get_po_list = function (partnerId) {
-            let inParams = []
-            inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['product_id','note','user_id', 'partner_id', 'name', 'date_order','commitment_date', 'invoice_status','title','note','require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
-            let params = []
-            params.push(inParams)
+    notificationPull() {
 
-            let fparams = [];
-            fparams.push(jaysonServer.db);
-            fparams.push(user.id);
-            fparams.push(jaysonServer.password);
-            fparams.push('purchase.order');//model
-            fparams.push('search_read');//method
+        let id_po = [];
+        let id_messg = [];
 
-            for (let i = 0; i < params.length; i++) {
-                fparams.push(params[i]);
-            }
+        let poll = function (uid, partner_id, last) {
+            let path = '/longpolling/poll'
 
-            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-                if (err || !value) {
-                    console.log(err, "get_po_list");
+            client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + path });
+
+            client.request('call', { context: { uid: uid }, channels: [jaysonServer.db + '_' + partner_id.toString()], last: last }, { context: { lang: 'es_ES', uid: uid } }, function (err, error, value) {
+                if (err) {
+                    console.log(err, "Error poll");
                 } else {
                     console.log(value);
-                    tasksList = [];
-                    for (let task of value) {
-                        let temp = new TaskModel();
-                        temp.type=task['product_id'][1];
-                        temp.description = task['note'];
-                        temp.client_id = task['user_id'][0];
-                        temp.client_name = task['user_id'][1];
-                        temp.provider_id = task['partner_id'][0];
-                        temp.provider_name = task['partner_id'][1];
-                        temp.id = task['id'];
-                        temp.state = task['invoice_status'];
-                        temp.id_string = task['name'];
-                        temp.date = task['date_order'];
-                        temp.date_planned = String(task['commitment_date']).slice(0, 10);
-                        temp.time = String(task['commitment_date']).slice(10, String(task['commitment_date']).length);
-                        temp.title = task['title'];
-                        temp.address = new Address(task['address_street'],
-                        task['address_number'],
-                        task['address_portal'],
-                        task['address_stairs'],
-                        task['address_floor'],
-                        task['address_door'],
-                        task['address_zip_code'],
-                        task['address_latitude'],
-                        task['address_longitude'])
-                        
-                        tasksList.push(temp);
-                    }
-                    tasksList$.next(tasksList);
+                    id_po = [];
+                    id_messg = [];
+
+                    if (value.length) {
+
+                   /*     setTimeout(() => {
+                            poll(user.id, user.partner_id, value[value.length - 1].id);
+                        }, 55000); */
+                        for (let task of value) {
+                            if (task['message']['type'] === 'purchase_order_notification' ){
+
+                                console.log("se ha creado una nueva So");
+                                id_po.push(task['message']['order_id'])
+                           }
+
+                           if (task['message']['type'] === 'message_notification' ){
+
+                            console.log("nuevo mensaje So");
+                            id_messg.push(task['message']['message_id'])
+                            }
+
+                        }
+                        if (id_po){
+                        // console.log(id_po,"lo q se esta mandando")   
+                        notificationNewPoSuplier$.next(id_po);
+                        }
+
+                        poll(user.id, user.partner_id, value[value.length - 1].id);
+
+                    } else { poll(user.id, user.partner_id, 0); }
+
+
                 }
-            })
+            });
         }
+
+        let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+        client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
+
+            if (err || !value) {
+                console.log(err, "Error cancelPOsuplier");
+
+            } else {
+                poll(user.id, user.partner_id,0);
+            }
+        });
+
+    }
+
+    getRequestedNotificationNewPoSuplier$(): Observable<number[]> {
+        return notificationNewPoSuplier$.asObservable();
+    }
+  
+    cancelPOsuplier(id: number) {
 
         let cancelPOsuplierSelected = function () {
 
@@ -130,15 +158,15 @@ export class TaskOdooService {
                 if (err) {
                     console.log(err, "Error cancelPOsuplierSelected");
                 } else {
-                   // console.log(user.id);
-                   // console.log(id);
+                    
                     console.log(value);
-                    get_po_list(user.partner_id);
+                    notificationPoCancelled$.next([id]);
+                    
 
                 }
             });
         }
-        
+
 
         let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
@@ -153,72 +181,16 @@ export class TaskOdooService {
 
     }
 
-    cancelSOclient(id: number) {
+    getRequestedNotificationPoCancelled$(): Observable<number[]> {
+        return notificationPoCancelled$.asObservable();
+    }
 
-        let get_so_list = function (partnerId) {
-            let inParams = []
-            inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['partner_id', 'date_order','name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
-
-
-            let params = []
-            params.push(inParams)
-
-            let fparams = [];
-            fparams.push(jaysonServer.db);
-            fparams.push(user.id);
-            fparams.push(jaysonServer.password);
-            fparams.push('sale.order');//model
-            fparams.push('search_read');//method
-
-            for (let i = 0; i < params.length; i++) {
-                fparams.push(params[i]);
-            }
-
-            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-                if (err) {
-                    console.log(err || !value, "get_so_list");
-                } else {
-                    console.log(value);
-                    tasksList = [];
-                    for (let order of value) {
-                        let temp = new TaskModel();
-                        //temp.type=order['product_id'][1];
-                        temp.description = order['note'];
-                        temp.type = order['client_order_ref'];
-                        temp.client_id = order['partner_id'][0];
-                        temp.client_name = order['partner_id'][1];
-                        temp.id_string = order['name'];
-                        temp.id = order['id'];
-                        temp.title = order['title'];
-                        temp.require_materials = order['require_materials'];
-                        temp.state = order['invoice_status'];
-                        temp.date = order['date_order'];
-                        temp.date_planned = String(order['commitment_date']).slice(0, 10);
-                        temp.time = String(order['commitment_date']).slice(10, String(order['commitment_date']).length);
-                        temp.address = new Address(order['address_street'],
-                            order['address_number'],
-                            order['address_portal'],
-                            order['address_stairs'],
-                            order['address_floor'],
-                            order['address_door'],
-                            order['address_zip_code'],
-                            order['address_latitude'],
-                            order['address_longitude'])
-                        tasksList.push(temp);
-                    }
-                    tasksList$.next(tasksList);
-                }
-            })
-        }
+    cancelSOclient(SO_id: number) {
 
         let cancelSOclientSelected = function () {
 
             let inParams = []
-            inParams.push([id])
+            inParams.push([SO_id])
             let params = []
             params.push(inParams)
 
@@ -238,14 +210,13 @@ export class TaskOdooService {
                 if (err || !value) {
                     console.log(err, "Error cancelSOclientSelected");
                 } else {
-                    console.log(user.id);
-                /*     console.log(id);
-                    console.log(value); */
-                    get_so_list(user.partner_id);
+                    console.log("Exito eliminando SO");
+                   
+                    notificationSoCancelled$.next(SO_id);
                 }
             });
         }
-        
+
 
         let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
@@ -260,15 +231,169 @@ export class TaskOdooService {
 
     }
 
+    getNotificationSoCancelled$(): Observable<number> {
+        return notificationSoCancelled$.asObservable();
+    }
+
+    //////// De la forma de Michel
     newTask(task: TaskModel) {
 
+        //let newTask:TaskModel;
+
+
+        let createService = function () {
+
+            console.log(task);
+            let SO = {
+                'company_id': 1,
+                'client_order_ref': task.type,
+                'order_line': [[0, 0, {
+                    'name': task.type,
+                    'price_unit': 0.0,
+                    'product_id': task.product_id,
+                    'product_uom': 1,
+                    'product_uom_qty': 1.0,
+                    'state': 'draft'
+                }]],
+                'note': task.description,
+                'partner_id': task.client_id,
+                'title': task.title,
+                'commitment_date': (task.date + ' ' + task.time),
+                'require_materials': task.require_materials,
+                'require_payment': false,
+                'require_signature': false,
+                'state': 'draft',
+                'address_street': task.address.street,
+                'address_floor': task.address.floor,
+                'address_portal': task.address.portal,
+                'address_number': task.address.number,
+                'address_door': task.address.door,
+                'address_stairs': task.address.stair,
+                'address_zip_code': task.address.cp,
+                'address_latitude': '',
+                'address_longitude': '',
+            }
+            let inParams = [];
+            inParams.push(SO);
+            let params = [];
+            params.push(inParams)
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('sale.order');//model
+            fparams.push('create');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+
+                if (err || !value) {
+                    console.log(err, "createService");
+
+                } else {
+                    console.log(value, "createService");
+                    inParams = []
+                    inParams.push(value)
+                    params = []
+                    params.push(inParams)
+                    let fparams = [];
+                    fparams.push(jaysonServer.db);
+                    fparams.push(user.id);
+                    fparams.push(jaysonServer.password);
+                    fparams.push('sale.order');//model
+                    fparams.push('action_confirm');//method
+
+                    for (let i = 0; i < params.length; i++) {
+                        fparams.push(params[i]);
+                    }
+
+                    client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+                        if (err || !value) {
+                            console.log(err, "Error Confirmar Servicio Creado");
+                            notificationError$.next(true);
+                        } else {
+                            console.log(value, "Confirmar Servicio Creado");
+                            notificationNewSoClient$.next(true);
+
+                        }
+                    });
+                }
+            });
+        }
+
+        let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+        client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
+
+            if (err || !value) {
+                console.log(err, "newTask");
+
+            } else {
+                createService();
+            }
+        });
+
+    }
+
+    getNotificationNewSoClient$(): Observable<boolean> {
+        return notificationNewSoClient$.asObservable();
+    }
+
+    ///////// De mi forma aun por arreglar ver con cesar para la apk
+
+    /* newTask(task: TaskModel) {
+
+        let tasksList = [];
+        let SO_id = [];
+
+        let get_so_type = function (So_id) {
+
+            console.log(So_id);
+            let inParams = [];
+            inParams.push([['order_id', 'in', SO_id]]);
+            inParams.push(['product_id', 'order_id']);
+
+            let params = []
+            params.push(inParams)
+
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('sale.order.line');//model
+            fparams.push('search_read');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+                if (err) {
+                    console.log(err || !value, "get_so_list");
+                } else {
+                    console.log(value);
+
+                    for (let task of tasksList) {
+                        let temp = (value.find(element => element.order_id[0] === task.id));
+                        task.type = temp.product_id[1];
+                    }
+
+                    tasksList$.next(tasksList);
+
+                }
+            });
+
+        }
+
         let get_so_list = function (partnerId) {
-            let inParams = []
+            let inParams = [];
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['partner_id', 'date_order','name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
+            inParams.push(['partner_id', 'date_order', 'name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
+                'commitment_date', 'address_street', 'address_floor', 'address_portal',
+                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+                'address_latitude', 'address_longitude'])
 
 
             let params = []
@@ -290,10 +415,10 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    tasksList = [];
+
                     for (let order of value) {
                         let temp = new TaskModel();
-                        //temp.type=order['product_id'][1];
+                        SO_id.push(order['id']);
                         temp.description = order['note'];
                         temp.type = order['client_order_ref'];
                         temp.client_id = order['partner_id'][0];
@@ -317,9 +442,11 @@ export class TaskOdooService {
                             order['address_longitude'])
                         tasksList.push(temp);
                     }
-                    tasksList$.next(tasksList);
+                    if (SO_id.length) {
+                        get_so_type(SO_id);
+                    }
                 }
-            })
+            });
         }
 
         let createService = function () {
@@ -331,9 +458,9 @@ export class TaskOdooService {
                 'company_id': 1,
                 'client_order_ref': task.type,
                 'order_line': [[0, 0, {
-                    'name': 'Servicio de Fontaneria',
+                    'name': task.type,
                     'price_unit': 0.0,
-                    'product_id': 39,
+                    'product_id': task.product_id,
                     'product_uom': 1,
                     'product_uom_qty': 1.0,
                     'state': 'draft'
@@ -402,7 +529,7 @@ export class TaskOdooService {
                             get_so_list(user.partner_id);
 
 
-                            
+
                         }
                     });
                 }
@@ -420,18 +547,60 @@ export class TaskOdooService {
             }
         });
 
-    }
+    } */
 
     editTask(desc: string) {
 
     }
 
-    acceptProvider(PO_id: number, SO_id : number) {
+    acceptProvider(PO_id: number, SO_id: number) {
+
+        let tasksList = [];
+        let SO_id_list = [];
+
+        let get_so_type = function (So_id_list) {
+
+            console.log(So_id_list);
+            let inParams = [];
+            inParams.push([['order_id', 'in', So_id_list]]);
+            inParams.push(['product_id', 'order_id']);
+
+            let params = []
+            params.push(inParams)
+
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('sale.order.line');//model
+            fparams.push('search_read');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+                if (err) {
+                    console.log(err || !value, "get_so_list");
+                } else {
+                    console.log(value);
+
+                    for (let task of tasksList) {
+                        let temp = (value.find(element => element.order_id[0] === task.id));
+                        task.type = temp.product_id[1];
+                    }
+
+                    tasksList$.next(tasksList);
+
+                }
+            });
+
+        }
 
         let get_so_list = function (partnerId) {
-            let inParams = []
+            let inParams = [];
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['partner_id', 'name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
+            inParams.push(['partner_id', 'date_order', 'name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
                 'commitment_date', 'address_street', 'address_floor', 'address_portal',
                 'address_number', 'address_door', 'address_stairs', 'address_zip_code',
                 'address_latitude', 'address_longitude'])
@@ -456,9 +625,10 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    tasksList = [];
+
                     for (let order of value) {
                         let temp = new TaskModel();
+                        SO_id_list.push(order['id']);
                         temp.description = order['note'];
                         temp.type = order['client_order_ref'];
                         temp.client_id = order['partner_id'][0];
@@ -468,7 +638,8 @@ export class TaskOdooService {
                         temp.title = order['title'];
                         temp.require_materials = order['require_materials'];
                         temp.state = order['invoice_status'];
-                        temp.date = String(order['commitment_date']).slice(0, 10);
+                        temp.date = order['date_order'];
+                        temp.date_planned = String(order['commitment_date']).slice(0, 10);
                         temp.time = String(order['commitment_date']).slice(10, String(order['commitment_date']).length);
                         temp.address = new Address(order['address_street'],
                             order['address_number'],
@@ -481,19 +652,20 @@ export class TaskOdooService {
                             order['address_longitude'])
                         tasksList.push(temp);
                     }
-                    tasksList$.next(tasksList);
+                    if (SO_id_list.length) {
+                        get_so_type(SO_id_list);
+                    }
                 }
-            })
+            });
         }
-        
-        
-        let create_PO_invoice = function() {
+
+        let create_PO_invoice = function () {
 
             let inParams = []
             inParams.push([PO_id])
             let params = []
-            params.push(inParams) 
-            
+            params.push(inParams)
+
             let fparams = [];
             fparams.push(jaysonServer.db);
             fparams.push(user.id);
@@ -505,18 +677,18 @@ export class TaskOdooService {
                 fparams.push(params[i]);
             }
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-        
+
                 if (err || !value) {
-                console.log(err,"Error create_PO_invoice");
-            } else {
-                console.log("SO contratada");
-                get_so_list(user.partner_id);
+                    console.log(err, "Error create_PO_invoice");
+                } else {
+                    console.log("SO contratada");
+                    get_so_list(user.partner_id);
                 }
             });
 
         }
-        
-        let create_SO_invoice = function() {
+
+        let create_SO_invoice = function () {
 
             let inParams = []
             inParams.push([SO_id])
@@ -534,19 +706,19 @@ export class TaskOdooService {
                 fparams.push(params[i]);
             }
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-        
+
                 if (err || !value) {
-                console.log(err,"Error create_SO_invoice");
-            } else {
-                console.log("create_SO_invoice correcto");
-                create_PO_invoice();
-            }
+                    console.log(err, "Error create_SO_invoice");
+                } else {
+                    console.log("create_SO_invoice correcto");
+                    create_PO_invoice();
+                }
             });
 
         }
 
         let confirm_PO = function () {
-            
+
             let inParams = []
             inParams.push([PO_id])
             let params = []
@@ -566,7 +738,7 @@ export class TaskOdooService {
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
 
 
-                if (err || !value) {
+                if (err) {
                     console.log(err, "Error confirm_PO");
 
                 } else {
@@ -589,7 +761,7 @@ export class TaskOdooService {
         });
     }
 
-     declineProvider(id: number) {
+    declineProvider(id: number) {
 
         let cancel_PO = function () {
             const id_po = id
@@ -630,16 +802,98 @@ export class TaskOdooService {
                 cancel_PO();
             }
         });
-    } 
- 
-     requestTask(id: number) {
+    }
+
+    requestTaskPoUpdate(id_po:number[]){
+
+              
+        let get_po_by_id = function () {
+
+            //console.log(id_po);    
+            let inParams = []
+            inParams.push([['id', 'in', id_po]])
+            inParams.push(['partner_id', 'amount_total', 'user_id', 'origin', 'title',
+                'note', 'commitment_date', 'product_id', 'address_street','state','invoice_status','name','date_order'])
+            let params = []
+            params.push(inParams)
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('purchase.order');//model
+            fparams.push('search_read');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+
+                if (err || !value) {
+                    console.log(err, "Error get_po_by_id");
+                } else {
+                    tasksList = [];
+                    for (let task of value) {
+                        let temp = new TaskModel();
+                        temp.offer_send = task['state'];
+                        temp.budget = task['amount_total'];
+                        temp.type = task['product_id'][1];
+                        temp.description = task['note'];
+                        temp.client_id = task['user_id'][0];
+                        temp.client_name = task['user_id'][1];
+                        temp.provider_id = task['partner_id'][0];
+                        temp.provider_name = task['partner_id'][1];
+                        temp.id = task['id'];
+                        temp.state = task['invoice_status'];
+                        temp.id_string = task['name'];
+                        temp.date = task['date_order'];
+                        temp.date_planned = String(task['commitment_date']).slice(0, 10);
+                        temp.time = String(task['commitment_date']).slice(10, String(task['commitment_date']).length);
+                        temp.title = task['title'];
+                        temp.address = new Address(task['address_street'],
+                            task['address_number'],
+                            task['address_portal'],
+                            task['address_stairs'],
+                            task['address_floor'],
+                            task['address_door'],
+                            task['address_zip_code'],
+                            task['address_latitude'],
+                            task['address_longitude'])
+
+                        tasksList.push(temp);
+                    }
+                    console.log(tasksList,"reques por notifications");
+                    tasksList$.next(tasksList);
+                }
+            })
+        }
+
+        let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+        client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
+
+            if (err || !value) {
+                console.log(err, "Error  requestTaskPoUpdate");
+
+            } else {
+                get_po_by_id();
+            }
+        });
+
+    }
+
+    ///////////////////Para el chat //////aunque se puede cambiar
+    requestTask(id: number) {
+
+        let id_po = [];
 
         let get_po_by_id = function () {
-            const id_po = id
+
+            id_po.push(id);
             let inParams = []
-            inParams.push([['id', '=', id_po]])
+            inParams.push([['id', 'in', id_po]])
             inParams.push(['partner_id', 'amount_total', 'user_id', 'origin', 'title',
-                'note', 'commitment_date',])
+                'note', 'commitment_date', 'product_id', 'address_street'])
             let params = []
             params.push(inParams)
             let fparams = [];
@@ -658,51 +912,45 @@ export class TaskOdooService {
                 if (err || !value) {
                     console.log(err, "Error get_po_by_id");
                 } else {
-                    console.log(value);
-                    task.budget = value[0]['amount_total'];
-                    task.client_id = value[0]['user_id'][0];
-                    task.client_name = value[0]['user_id'][1];
-                    task.provider_id = value[0]['partner_id'][0];
-                    task.provider_name = value[0]['partner_id'][1];
-                    task.id = id;
-                    task.origin = value[0]['origin'];
-                    console.log(task);
-                    get_desc_so(task.origin);
+                    
+                    id_po = [];
+                    tasksList = [];
+                    for (let task of value) {
+                        let temp = new TaskModel();
+                        //temp.offer_send = task['state'];
+                        temp.budget = task['amount_total'];
+                        temp.type = task['product_id'][1];
+                        temp.description = task['note'];
+                        temp.client_id = task['user_id'][0];
+                        temp.client_name = task['user_id'][1];
+                        temp.provider_id = task['partner_id'][0];
+                        temp.provider_name = task['partner_id'][1];
+                        temp.id = id;
+                        //temp.state = task['invoice_status'];
+                        //temp.id_string = task['name'];
+                        //temp.date = task['date_order'];
+                        temp.date_planned = String(task['commitment_date']).slice(0, 10);
+                        //temp.time = String(task['commitment_date']).slice(10, String(task['commitment_date']).length);
+                        temp.title = task['title'];
+                        temp.address = new Address(task['address_street'],
+                            task['address_number'],
+                            task['address_portal'],
+                            task['address_stairs'],
+                            task['address_floor'],
+                            task['address_door'],
+                            task['address_zip_code'],
+                            task['address_latitude'],
+                            task['address_longitude'])
+
+                        tasksList.push(temp);
+                    }
+                    console.log(tasksList);
+                    task$.next(tasksList);
                 }
             })
         }
 
-         let get_desc_so = function (id) {
-            let inParams = []
-            inParams.push([['name', '=', id]])
-            inParams.push(['note'])
-            let params = []
-            params.push(inParams)
-
-            let fparams = [];
-            fparams.push(jaysonServer.db);
-            fparams.push(user.id);
-            fparams.push(jaysonServer.password);
-            fparams.push('sale.order');//model
-            fparams.push('search_read');//method
-
-            for (let i = 0; i < params.length; i++) {
-                fparams.push(params[i]);
-            }
-            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-
-                if (err || !value) {
-                    console.log(err, "Error get_desc_so");
-                } else {
-                    console.log(value);
-                    task.description = value[0]['note'];
-                    console.log(task);
-                    task$.next(task);
-                }
-            })
-        } 
-
-        let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+       let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
 
             if (err || !value) {
@@ -712,20 +960,63 @@ export class TaskOdooService {
                 get_po_by_id();
             }
         });
-    } 
+    }
 
-    getRequestedTask$(): Observable<TaskModel> {
+    getRequestedTask$(): Observable<TaskModel[]> {
         return task$.asObservable();
     }
 
     requestTaskListClient() {
+
+        let tasksList = [];
+        let SO_id = [];
+
+        let get_so_type = function (So_id) {
+
+            console.log(So_id);
+            let inParams = [];
+            inParams.push([['order_id', 'in', SO_id]]);
+            inParams.push(['product_id', 'order_id']);
+
+            let params = []
+            params.push(inParams)
+
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('sale.order.line');//model
+            fparams.push('search_read');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+                if (err) {
+                    console.log(err || !value, "get_so_list");
+                } else {
+                    console.log(value);
+
+                    for (let task of tasksList) {
+                        let temp = (value.find(element => element.order_id[0] === task.id));
+                        task.type = temp.product_id[1];
+                    }
+
+                    tasksList$.next(tasksList);
+
+                }
+            });
+
+        }
+
         let get_so_list = function (partnerId) {
-            let inParams = []
+            let inParams = [];
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['partner_id', 'date_order','name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
+            inParams.push(['partner_id', 'date_order', 'name', 'note', 'invoice_status', 'client_order_ref', 'title', 'require_materials',
+                'commitment_date', 'address_street', 'address_floor', 'address_portal',
+                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+                'address_latitude', 'address_longitude'])
 
 
             let params = []
@@ -747,10 +1038,10 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     console.log(value);
-                    tasksList = [];
+
                     for (let order of value) {
                         let temp = new TaskModel();
-                        //temp.type=order['product_id'][1];
+                        SO_id.push(order['id']);
                         temp.description = order['note'];
                         temp.type = order['client_order_ref'];
                         temp.client_id = order['partner_id'][0];
@@ -774,9 +1065,11 @@ export class TaskOdooService {
                             order['address_longitude'])
                         tasksList.push(temp);
                     }
-                    tasksList$.next(tasksList);
+                    if (SO_id.length) {
+                        get_so_type(SO_id);
+                    }
                 }
-            })
+            });
         }
 
         let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
@@ -795,10 +1088,10 @@ export class TaskOdooService {
         let get_po_list = function (partnerId) {
             let inParams = []
             inParams.push([['partner_id', '=', partnerId]])
-            inParams.push(['product_id','note','user_id', 'partner_id', 'name', 'date_order','commitment_date', 'invoice_status','title','note','require_materials',
-            'commitment_date', 'address_street', 'address_floor', 'address_portal',
-            'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-            'address_latitude', 'address_longitude'])
+            inParams.push(['state', 'product_id', 'note', 'user_id', 'partner_id', 'name', 'date_order', 'commitment_date', 'invoice_status', 'title', 'note', 'require_materials',
+                'commitment_date', 'address_street', 'address_floor', 'address_portal',
+                'address_number', 'address_door', 'address_stairs', 'address_zip_code',
+                'address_latitude', 'address_longitude'])
             let params = []
             params.push(inParams)
 
@@ -821,7 +1114,8 @@ export class TaskOdooService {
                     tasksList = [];
                     for (let task of value) {
                         let temp = new TaskModel();
-                        temp.type=task['product_id'][1];
+                        temp.offer_send = task['state'];
+                        temp.type = task['product_id'][1];
                         temp.description = task['note'];
                         temp.client_id = task['user_id'][0];
                         temp.client_name = task['user_id'][1];
@@ -835,17 +1129,17 @@ export class TaskOdooService {
                         temp.time = String(task['commitment_date']).slice(10, String(task['commitment_date']).length);
                         temp.title = task['title'];
                         temp.address = new Address(task['address_street'],
-                        task['address_number'],
-                        task['address_portal'],
-                        task['address_stairs'],
-                        task['address_floor'],
-                        task['address_door'],
-                        task['address_zip_code'],
-                        task['address_latitude'],
-                        task['address_longitude'])
-                        
+                            task['address_number'],
+                            task['address_portal'],
+                            task['address_stairs'],
+                            task['address_floor'],
+                            task['address_door'],
+                            task['address_zip_code'],
+                            task['address_latitude'],
+                            task['address_longitude'])
+
                         tasksList.push(temp);
-                                                              }
+                    }
                     tasksList$.next(tasksList);
                 }
             })
@@ -874,7 +1168,7 @@ export class TaskOdooService {
             console.log(id);
             let inParams = []
             inParams.push([['origin', 'ilike', id]])
-            inParams.push(['partner_id', 'amount_total', 'user_id', 'origin','state'])
+            inParams.push(['partner_id', 'amount_total', 'user_id', 'origin', 'state'])
 
 
             let params = []
@@ -898,7 +1192,7 @@ export class TaskOdooService {
                     console.log(value);
                     offersList = [];
                     for (let offer of value) {
-                         if (offer['state'] === 'sent') {
+                        if (offer['state'] === 'sent') {
                             let temp = new TaskModel();
                             temp.client_id = offer['user_id'][0];
                             temp.client_name = offer['user_id'][1];
@@ -909,7 +1203,7 @@ export class TaskOdooService {
                             temp.budget = offer['amount_total'];
                             temp.origin = offer['origin'];
                             offersList.push(temp);
-                        } 
+                        }
 
                     }
                     offersList$.next(offersList);
@@ -944,13 +1238,13 @@ export class TaskOdooService {
             'date_planned': offer.date_planned,
             'order_id': offer.id,
         };
-        let acept_PO = function() {
-         
+        let acept_PO = function () {
+
             let inParams = []
             let params = []
             inParams.push(offer.id)
             params.push(inParams)
-            
+
             let fparams = [];
             fparams.push(jaysonServer.db);
             fparams.push(user.id);
@@ -962,14 +1256,14 @@ export class TaskOdooService {
                 fparams.push(params[i]);
             }
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-        
+
                 if (err) {
-                console.log(err);
-            } else {
-                console.log(value);
-            }
+                    console.log(err);
+                } else {
+                    console.log(value);
+                }
             });
-         
+
         }
         let addLinePO = function () {
 

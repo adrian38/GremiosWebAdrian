@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import * as odoo_xmlrpc from 'odoo-xmlrpc'
 import { UsuarioModel } from '../models/usuario.model'
 import { Observable, Subject } from 'rxjs'
 let jayson = require('../../../node_modules/jayson/lib/client/');
 let jaysonServer = {
-  host: 'todoenunapp.com',
+  host: '192.168.0.106',
+ // host: 'todoenunapp.com',
   port: '8069',
   db: 'demo',
   username: '',
@@ -12,13 +12,6 @@ let jaysonServer = {
   pathConnection: '/jsonrpc'
 }
 
-let odooClient = new odoo_xmlrpc({
-  url: 'http://' + 'todoenunapp.com',
-  port: 8069,
-  db: 'demo',
-  username: '',
-  password: '',
-});
 
 let user$ = new Subject<UsuarioModel>();
 let connected: boolean = false;
@@ -31,7 +24,6 @@ export class AuthOdooService {
 
   userType: string = "";
 
-  public OdooInfo = odooClient;
   public OdooInfoJayson = jaysonServer;
 
   constructor() {
@@ -41,10 +33,7 @@ export class AuthOdooService {
   ///////////////login desde la web
   login(usuario: UsuarioModel): void {
 
-    odooClient.username = usuario.username;
-    odooClient.password = usuario.password;
-
-    jaysonServer.username = usuario.username;
+     jaysonServer.username = usuario.username;
     jaysonServer.password = usuario.password;
 
     let get_user = function (id: number) {
@@ -131,9 +120,6 @@ export class AuthOdooService {
   //Login desde la apk de cliente
 
   loginClientApk(usuario: UsuarioModel): void {
-
-    odooClient.username = usuario.username;
-    odooClient.password = usuario.password;
 
     jaysonServer.username = usuario.username;
     jaysonServer.password = usuario.password;
