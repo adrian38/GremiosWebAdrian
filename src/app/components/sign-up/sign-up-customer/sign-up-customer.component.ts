@@ -69,7 +69,7 @@ export class SignUpCustomerComponent implements OnInit {
   }
 
   gotoWorker(){
-    this.router.navigate(['/signup-provider'])
+    this.router.navigate(['/signup/provider'])
   }
   goHome(){
     this.router.navigate(['/home'])

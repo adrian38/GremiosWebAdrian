@@ -38,7 +38,7 @@ export class SignUpProviderComponent implements OnInit {
   }
 
   gotoCustomer(){
-    this.router.navigate(['/signup-customer'])
+    this.router.navigate(['/signup/customer'])
   }
 
 }

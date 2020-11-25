@@ -5,14 +5,14 @@ import { Observable } from 'rxjs';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
-import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { ChatOdooService } from 'src/app/services/chat-odoo.service';
 declare const $:any;
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
 

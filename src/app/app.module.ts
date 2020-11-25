@@ -15,6 +15,7 @@ import {TabViewModule} from 'primeng/tabview';
 import {FieldsetModule} from 'primeng/fieldset';
 import {StepsModule} from 'primeng/steps';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 //pipes
 
@@ -26,9 +27,7 @@ import { TaskOdooService } from './services/task-odoo.service';
 
 // Components
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { TaskCardComponent } from './components/task-card/task-card.component';
@@ -42,28 +41,21 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { NavbarGremioComponent } from './components/shared/navbar-gremio/navbar-gremio.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { SignUpCustomerComponent } from './components/sign-up-customer/sign-up-customer.component';
-import { SignUpProviderComponent } from './components/sign-up-provider/sign-up-provider.component';
-import { CompanyDataComponent } from './components/sign-up-provider/company-data/company-data.component';
-import { SignUpProviderRoutingModule } from './components/sign-up-provider/sign-up-provider.routing';
-import { SignUpProviderModule } from './components/sign-up-provider/sign-up-provider.module';
 import { NewRequestComponent } from './components/new-request/new-request.component';
+import { SignUpModule } from './components/sign-up/sign-up.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     NavbarComponent,
     NavbarGremioComponent,
-    SignUpComponent,
     DashboardComponent,
     ChatComponent,
     TaskCardComponent,
     LoginComponent,
     HomeGremioComponent,
     PlaceHolderDirective,
-    SignUpCustomerComponent,
     NewRequestComponent
 
 
@@ -89,8 +81,9 @@ import { NewRequestComponent } from './components/new-request/new-request.compon
     CalendarModule,
     TabViewModule,
     StepsModule,
-    SignUpProviderModule,
-    RadioButtonModule
+    SignUpModule,
+    RadioButtonModule,
+    InputTextareaModule
 
   ],
   providers: [

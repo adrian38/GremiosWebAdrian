@@ -16,6 +16,13 @@
 
 .p-dialog {
     border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    top: 50px;
+    position: relative;
+    background-color: white;
+    width: 50vw;
     .p-dialog-header {
         background-color: #f6b776;
         color: black;
@@ -77,5 +84,17 @@
     .section-1 {
         padding-bottom: 15px;
         border-bottom: 3px solid #f6b776;
+    }
+}
+
+.location-btn {
+    button {
+        height: 100% !important;
+        width: 80%;
+        border-radius: 10px !important;
+        background-color: #f6b776;
+        svg {
+            color: white;
+        }
     }
 }
