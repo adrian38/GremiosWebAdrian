@@ -1,193 +1,131 @@
-<div class="p-dialog">
-    <div class="p-dialog-header">
-        <h5>NUEVA SOLICITUD DE {{ serviceName | uppercase }}</h5>
-    </div>
-    <!-- <div class="spinner-container" *ngIf="isLoading">
+<div class="view-container">
+    <div class="p-dialog">
+        <div class="p-dialog-header">
+            <h5>NUEVA SOLICITUD DE {{ serviceName | uppercase }}</h5>
+        </div>
+        <!-- <div class="spinner-container" *ngIf="isLoading">
       <div class="backdrop"></div>
 
       <p-progressSpinner [style]="{ width: '150px', height: '150px' }"></p-progressSpinner>
   </div> -->
-    <div class="form-container">
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1">
-            <div fxFlex="45">
-                <span>¿Cuantas veces quiere el servicio?</span>
-            </div>
-            <div fxLayout="column" fxLayoutAlign="space-between start" fxFlex="45">
-                <div class="p-field-radiobutton">
-                    <p-radioButton name="frecuency" value="once" [(ngModel)]="frequency" inputId="frecuency1"></p-radioButton>
-                    <label class="mb-0" for="frecuency1">Una vez (Servicio puntual)</label
-          >
-        </div>
-        <div class="p-field-radiobutton">
-          <p-radioButton
-            name="frecuency"
-            value="weekly"
-            [(ngModel)]="frequency"
-            inputId="frecuency2"
-          ></p-radioButton>
-          <label class="mb-0" for="frecuency2"
-            >Semanalmente (Servicio recurrente)</label
-          >
-        </div>
-      </div>
-    </div>
 
-    <div
-      fxLayout="row"
-      fxLayoutAlign="space-evenly center"
-      class="w-100 mt-3 section-1"
-    >
-      <div fxFlex="45">
-        <span>¿Cuando necesita el servicio?</span>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="45">
-        <div class="p-field" fxFlex="48">
-          <h5>Fecha</h5>
-          <p-calendar inputId="date" id="date" type="date"></p-calendar>
-        </div>
-        <div class="p-field" fxFlex="48">
-          <h5>Hora</h5>
-          <p-calendar inputId="time" id="time" [timeOnly]="true"></p-calendar>
-        </div>
-      </div>
-    </div>
-    <div
-      fxLayout="row"
-      fxLayoutAlign="space-evenly center"
-      class="w-100 mt-3 section-1"
-    >
-      <div fxFlex="45">
-        <span>Describa el servicio que necesita (Opcional)</span>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="45">
-        <div class="p-field w-100">
-          <textarea
-            rows="5"
-            cols="30"
-            pInputTextarea
-            autoResize="autoResize"
-          ></textarea>
-        </div>
-      </div>
-    </div>
-    <div
-      fxLayout="row"
-      fxLayoutAlign="space-evenly center"
-      class="w-100 mt-3 section-1"
-    >
-      <div fxFlex="45">
-        <span>Direccion en que se realiza el servicio</span>
-      </div>
-      <div
-        fxLayout="row wrap"
-        fxLayoutAlign="space-between start"
-        fxFlex="45"
-        fxLayoutGap
-      >
-        <div class="p-field" fxFlex="48">
-          <input
-            class="w-100"
-            inputId="street"
-            id="street"
-            pInputText
-            placeholder="No. de calle"
-          />
-        </div>
-        <div class="p-field" fxFlex="48" fxFlexOffset="4">
-          <input
-            class="w-100"
-            inputId="floor"
-            id="floor"
-            pInputText
-            placeholder="Piso"
-          />
-        </div>
-        <br />
-        <div class="p-field" fxFlex="48">
-          <input
-            class="w-100"
-            inputId="num"
-            id="num"
-            pInputText
-            placeholder="Numero"
-          />
-        </div>
-        <div class="p-field" fxFlex="48">
-          <input
-            class="w-100"
-            inputId="door"
-            id="door"
-            pInputText
-            placeholder="Puerta"
-          />
-        </div>
-        <div class="p-field" fxFlex="48">
-          <input
-            class="w-100"
-            inputId="portal"
-            id="portal"
-            pInputText
-            placeholder="Portal"
-          />
-        </div>
-        <div class="p-field" fxFlex="48">
-          <input
-            class="w-100"
-            inputId="cod"
-            id="cod"
-            pInputText
-            placeholder="Cod. Postal"
-          />
-        </div>
-        <div class="p-field" fxFlex="48">
-          <input
-            class="w-100"
-            inputId="stairs"
-            id="stairs"
-            pInputText
-            placeholder="Escaleras"
-          />
-        </div>
-        <div
-          fxFlexOffset="3"
-          fxFlex="12"
-          fxFlexAlign="end"
-          class="location-btn"
-        >
-          <button
-            pButton
-            pRipple
-            type="button"
-            icon="fas fa-map-marker-alt"
-            class="p-button-rounded p-button-warning"
-          ></button>
-        </div>
-      </div>
+        <div class="form-container">
+            <form autocomplete="off" [formGroup]="newServiceForm" (ngSubmit)="createNewService()">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1">
+                    <div fxFlex="45">
+                        <span>Titulo del servicio</span>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="space-between start" fxFlex="45">
+                        <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="45" class="w-100">
+                            <div class="p-field w-100">
+                                <textarea rows="3" cols="30" pInputTextarea autoResize="autoResize" formControlName="title" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <small class="p-invalid" *ngIf="tituloNoValido">*Este campo es requerido.</small>
 
+                    </div>
+                </div>
 
-    </div>
-    <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3">
-        <div fxFlex="45">
-            <span>¿Dispone de los materiales?</span>
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 m t-3 section-1">
+                    <div fxFlex="45">
+                        <span>¿Cuando necesita el servicio?</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="45">
+                        <div class="p-field" fxFlex="48">
+                            <h5>Fecha</h5>
+                            <p-calendar inputId="date" id="date" type="date" formControlName="date"></p-calendar>
+                            <small class="p-invalid" *ngIf="fechaNoValido">*Este campo es requerido.</small>
+                        </div>
+                        <div class="p-field" fxFlex="48">
+                            <h5>Hora</h5>
+                            <p-calendar inputId="time" id="time" [timeOnly]="true" formControlName="time"></p-calendar>
+                            <small class="p-invalid" *ngIf="horaNoValido">*Este campo es requerido.</small>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1">
+                    <div fxFlex="45">
+                        <span>Describa el servicio que necesita (Opcional)</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="45">
+                        <div class="p-field w-100">
+                            <textarea rows="5" cols="30" pInputTextarea autoResize="autoResize" formControlName="description" class="form-control"></textarea>
+                            <small class="p-invalid" *ngIf="descriptionNoValido">*Este campo es requerido.</small>
+
+                        </div>
+
+                    </div>
+                </div>
+                <form [formGroup]="this.newServiceForm.get('address')">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1">
+                        <div fxFlex="45">
+                            <span>Direccion en que se realiza el servicio</span>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between start" fxFlex="45" fxLayoutGap>
+                            <div class="p-field" fxFlex="48">
+                                <input class="w-100" inputId="street" id="street" pInputText placeholder="No. de calle" formControlName="calle" />
+                                <small class="p-invalid" *ngIf="calleNoValido">*Este campo es requerido.</small>
+                            </div>
+                            <div class="p-field" fxFlex="48" fxFlexOffset="4">
+                                <input class="w-100" inputId="floor" id="floor" pInputText placeholder="Piso" formControlName="piso" />
+                                <small class="p-invalid" *ngIf="pisoNoValido">*Este campo es requerido.</small>
+
+                            </div>
+                            <br />
+                            <div class="p-field" fxFlex="48">
+                                <input class="w-100" inputId="num" id="num" pInputText placeholder="Numero" formControlName="numero" />
+                                <small class="p-invalid" *ngIf="numeroNoValido">*Este campo es requerido.</small>
+
+                            </div>
+                            <div class="p-field" fxFlex="48">
+                                <input class="w-100" inputId="door" id="door" pInputText placeholder="Puerta" formControlName="puerta" />
+                                <small class="p-invalid" *ngIf="puertaNoValido">*Este campo es requerido.</small>
+
+                            </div>
+                            <div class="p-field" fxFlex="48">
+                                <input class="w-100" inputId="portal" id="portal" pInputText placeholder="Portal" formControlName="portal" />
+                                <small class="p-invalid" *ngIf="portalNoValido">*Este campo es requerido.</small>
+
+                            </div>
+                            <div class="p-field" fxFlex="48">
+                                <input class="w-100" inputId="cod" id="cod" pInputText placeholder="Cod. Postal" formControlName="cp" />
+                                <small class="p-invalid" *ngIf="cpNoValido">*Este campo es requerido.</small>
+
+                            </div>
+                            <div class="p-field" fxFlex="48">
+                                <input class="w-100" inputId="stairs" id="stairs" pInputText placeholder="Escaleras" formControlName="escalera" />
+                                <small class="p-invalid" *ngIf="escaleraNoValido">*Este campo es requerido.</small>
+
+                            </div>
+                            <div fxFlexOffset="3" fxFlex="12" fxFlexAlign="end" class="location-btn">
+                                <button pButton pRipple type="button" icon="fas fa-map-marker-alt" class="p-button-rounded p-button-warning"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3">
+                    <div fxFlex="45">
+                        <span>¿Dispone de los materiales?</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="45">
+                        <div class="p-field-radiobutton">
+                            <p-radioButton name="available" inputId="available1" name="materials" formControlName="materials" value="1" [class.is-invalid]="materialsNoValido"></p-radioButton>
+                            <label class="mb-0" for="available1">Si</label>
+                        </div>
+                        <div class="p-field-radiobutton ml-3">
+                            <p-radioButton name="available" inputId="available2" name="materials" formControlName="materials" value="0" [class.is-invalid]="materialsNoValido"></p-radioButton>
+                            <label class="mb-0" for="available2">No</label>
+                        </div>
+                        <small class="p-invalid" *ngIf="materialsNoValido">*Este campo es requerido.</small>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="45">
-            <div class="p-field-radiobutton">
-                <p-radioButton name="frecuency" value="once" [(ngModel)]="frequency" inputId="frecuency1"></p-radioButton>
-                <label class="mb-0" for="frecuency1">Si</label
-      >
+
+        <div class="button-container" div fxLayout="row" fxLayoutAlign="space-evenly center">
+            <button pButton pRipple type="button" label="ACEPTAR" class="p-button-raised" type="submit" [disabled]=""></button>
+            <button pButton pRipple type="button" label="CANCELAR" class="p-button-raised"></button>
+        </div>
     </div>
-    <div class="p-field-radiobutton ml-3">
-      <p-radioButton
-        name="frecuency"
-        value="weekly"
-        [(ngModel)]="frequency"
-        inputId="frecuency2"
-      ></p-radioButton>
-      <label class="mb-0" for="frecuency2"
-        >No</label
-      >
-    </div>
-  </div>
-  </div>
-  </div>
 </div>

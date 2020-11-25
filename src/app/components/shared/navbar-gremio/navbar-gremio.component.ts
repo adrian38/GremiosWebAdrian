@@ -39,6 +39,7 @@ export class NavbarGremioComponent implements OnInit {
     this.task = new TaskModel();
     this.selectedTab = 'Solicitudes';
     this._taskOdoo.setSelectedTab(this.selectedTab);
+
   }
 
   ngOnInit() {
