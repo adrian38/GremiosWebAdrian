@@ -27,8 +27,8 @@ export class TaskCardComponent implements OnInit {
 
   offersList:TaskModel[];
   offersList$: Observable<TaskModel[]>;
-
   
+   
   constructor(private router:Router,
               private _taskOdoo:TaskOdooService,
               private _authOdoo:AuthOdooService,
@@ -40,6 +40,11 @@ export class TaskCardComponent implements OnInit {
    }
 
   ngOnInit(): void {
+
+   
+
+   
+    /////////////////////////////////////////////////////
     this.offersList$ = this._taskOdoo.getOffers$();
     this.offersList$.subscribe(offersList =>{
       

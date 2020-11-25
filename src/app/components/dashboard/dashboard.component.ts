@@ -15,20 +15,29 @@ export class DashboardComponent implements OnInit {
   usuario: UsuarioModel;
   usuario$: Observable<UsuarioModel>;
   task: TaskModel;
-  
+
   solicitudesList: TaskModel[];
   contratadosList: TaskModel[];
-  
+
   historialList: TaskModel[];
   tasksList$: Observable<TaskModel[]>; // servicio comunicacion
-  
+
   tab: String;
   tab$: Observable<String>;
-  //myVar;
-
   
-  notificationSuplier:boolean;
-  notificationSuplier$: Observable<boolean>;
+
+  notificationNewPoSuplier: number[];
+  notificationNewPoSuplier$: Observable<number[]>;
+
+  notificationSoCancelled$: Observable<number>;
+
+  notificationPoCancelled$: Observable<number[]>;
+
+  notificationNewSoClient$: Observable<boolean>;
+
+  notificationError$: Observable<boolean>;
+
+  inicio = true;
 
   constructor(private _taskOdoo: TaskOdooService,
     private _authOdoo: AuthOdooService,
@@ -38,8 +47,8 @@ export class DashboardComponent implements OnInit {
 
     this.observablesSubscriptions();
     this.tab = 'Solicitudes';
-    
-      
+
+
     if (this.usuario.type == "client") {
       this._taskOdoo.requestTaskListClient();
 
@@ -53,79 +62,139 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-  //this.initInterval();
-
-  //this.myVar = setInterval(() => {
-    //this._taskOdoo.notificationPull();
-    //console.log("1");
-  //  }, 60000); 
-
-//clearInterval(this.myVar);
-}
-
-
+ 
+  }
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
 
-   
-   // clearInterval(this.myVar);
-    
   }
 
 
   observablesSubscriptions() {
 
+    ////////////////////////////////Para el Cliente
+
+    if (this.usuario.type == "client") {
+
+
+      this.notificationNewSoClient$ = this._taskOdoo.getNotificationNewSoClient$();
+      this.notificationNewSoClient$.subscribe(notificationNewSoClient => {
+        this.ngZone.run(() => {
+
+          if (notificationNewSoClient) {
+            console.log("Se creo correctamente la tarea");
+          }
+
+        });
+
+      });
+
+      this.notificationSoCancelled$ = this._taskOdoo.getNotificationSoCancelled$();
+      this.notificationSoCancelled$.subscribe(notificationSoCancelled => {
+        this.ngZone.run(() => {
+
+          let temp = (this.solicitudesList.findIndex(element => element.id === notificationSoCancelled));
+          this.solicitudesList.splice(temp, 1);
+        });
+
+      });
+    }
+
+    ////////////////////////////////Para el proveedor
+
     if (this.usuario.type == "provider") {
- this.notificationSuplier$ = this._taskOdoo.getRequestedNotificationSuplier$();
- this.notificationSuplier$.subscribe((notificationSuplier:boolean)=>
- {
-  this.ngZone.run(() => {
-    this.notificationSuplier = notificationSuplier;
-    console.log(this.notificationSuplier,"llego la notificacion");
-  });
- });
-}
+
+     
+      this.notificationPoCancelled$ = this._taskOdoo.getRequestedNotificationPoCancelled$();
+      this.notificationPoCancelled$.subscribe(notificationPoCancelled => {
+        this.ngZone.run(() => {
+          for (let Po_id of notificationPoCancelled){
+          console.log("PO Cancelled por notificacion");
+          let temp = (this.solicitudesList.findIndex(element => element.id === Po_id ));
+          this.solicitudesList.splice(temp, 1);
+          }
+        });
+
+      });
+    
+      this.notificationNewPoSuplier$ = this._taskOdoo.getRequestedNotificationNewPoSuplier$();
+      this.notificationNewPoSuplier$.subscribe((notificationNewPoSuplier: number[]) => {
+        this.ngZone.run(() => {
+
+         for (let Po_id of notificationNewPoSuplier){
+
+            let temp = (this.solicitudesList.findIndex(element => element.id === Po_id ));
+            if (temp !== -1){
+              console.log(temp,"temp");
+              notificationNewPoSuplier.splice(temp,1);
+            }
+          } 
+               
+          //console.log(this.notificationNewPoSuplier, "llego la notificacion");
+          this._taskOdoo.requestTaskPoUpdate(notificationNewPoSuplier);
+       
+        });
+      });
+    }
+
+    //////////////////Para Todos
+
+    this.notificationError$ = this._taskOdoo.getNotificationError$();
+    this.notificationError$.subscribe(notificationError =>{
+      this.ngZone.run(()=>{
+
+        if(notificationError){
+        console.log("Error!!!!!!!!!!!");
+        }
+      });
+
+    });
+
 
     this.tab$ = this._taskOdoo.getSelectedTab$();
     this.tab$.subscribe((tab: String) => {
       this.ngZone.run(() => {
-      this.tab = tab;
-    });
+        this.tab = tab;
+      });
     });
 
     this.tasksList$ = this._taskOdoo.getRequestedTaskList$();
     this.tasksList$.subscribe((tasksList: TaskModel[]) => {
       this.ngZone.run(() => {
-          let temp:TaskModel[];
-        temp = tasksList.filter(task => {        
+        let temp: TaskModel[];
+        temp = tasksList.filter(task => {
           if (this.usuario.type === "client") {
             return task.state === 'to invoice'; //Solicitadas
           } else if (this.usuario.type === "provider") { return task.state === 'no' };
         });
-                 
-        if(this.solicitudesList){
+
+        if (this.solicitudesList) {
           Array.prototype.push.apply(this.solicitudesList, temp);
-        }else{ this.solicitudesList = temp;}
-      
+        } else { this.solicitudesList = temp; }
+
         temp = tasksList.filter(task => {
           return task.state === 'invoiced'; //Contratadas
         });
-        if(this.contratadosList){
+        if (this.contratadosList) {
           Array.prototype.push.apply(this.contratadosList, temp);
-        }else{ this.contratadosList = temp;}
+        } else { this.contratadosList = temp; }
 
-        
-         temp = tasksList.filter(task => {
+
+        temp = tasksList.filter(task => {
           return task.state === ''; //Historial
         });
-        if(this.historialList){
+        if (this.historialList) {
           Array.prototype.push.apply(this.historialList, temp);
-        }else{ this.historialList = temp;}
+        } else { this.historialList = temp; }
 
         console.log(this.solicitudesList);
       });
+      if (this.inicio){
+        this.inicio = false;
+        this._taskOdoo.notificationPull();
+      }
     });
   }
 
