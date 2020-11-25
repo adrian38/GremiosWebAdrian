@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, NgZone, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Address, TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 
 @Component({
   selector: 'app-new-request',
@@ -66,18 +67,52 @@ export class NewRequestComponent implements OnInit {
     return this.newServiceForm.get('photos') as FormArray;
   }
 
+  notificationNewSoClient$: Observable<boolean>;
+  notificationError$: Observable<boolean>;
+
   constructor(private route: ActivatedRoute,
     private fb: FormBuilder,
-    private _taskOdoo: TaskOdooService) {
+    private _taskOdoo: TaskOdooService,
+    private _authGuard: AuthGuardService,
+    private ngZone: NgZone) {
 
-    this.serviceName = this.route.snapshot.queryParams.service;
+    this.serviceName = "Servicio de " + this.route.snapshot.queryParams.service;
     this.task = new TaskModel();
+    this.task.type = this.serviceName;
+    if(this.route.snapshot.queryParams.service === 'Fontaneria') {
+      this.task.product_id = 39;
+        }
     this.selectedTab = 'Solicitudes';
     this._taskOdoo.setSelectedTab(this.selectedTab);
     this.createForm();
   }
 
   ngOnInit() {
+
+    this.notificationNewSoClient$ = this._taskOdoo.getNotificationNewSoClient$();
+      this.notificationNewSoClient$.subscribe(notificationNewSoClient => {
+        this.ngZone.run(() => {
+
+          if (notificationNewSoClient) {
+            console.log("Se creo correctamente la tarea");
+          }
+
+        });
+
+      });
+
+      this.notificationError$ = this._taskOdoo.getNotificationError$();
+    this.notificationError$.subscribe(notificationError =>{
+      this.ngZone.run(()=>{
+
+        if(notificationError){
+        console.log("Error!!!!!!!!!!!");
+        }
+      });
+
+    });
+
+
   }
 
   createForm() {

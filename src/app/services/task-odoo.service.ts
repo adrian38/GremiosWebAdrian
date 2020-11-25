@@ -246,7 +246,6 @@ export class TaskOdooService {
             console.log(task);
             let SO = {
                 'company_id': 1,
-                'client_order_ref': task.type,
                 'order_line': [[0, 0, {
                     'name': task.type,
                     'price_unit': 0.0,
