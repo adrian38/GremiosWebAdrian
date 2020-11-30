@@ -27,13 +27,13 @@ export class TaskCardComponent implements OnInit {
 
   offersList:TaskModel[];
   offersList$: Observable<TaskModel[]>;
-  
-   
+
+
   constructor(private router:Router,
               private _taskOdoo:TaskOdooService,
               private _authOdoo:AuthOdooService,
               private ngZone: NgZone) {
-    
+
     this.user = this._authOdoo.getUser();
     this.offersList =[];
     this.userType = this.user.type
@@ -41,26 +41,23 @@ export class TaskCardComponent implements OnInit {
 
   ngOnInit(): void {
 
-   
-
-   
     /////////////////////////////////////////////////////
     this.offersList$ = this._taskOdoo.getOffers$();
     this.offersList$.subscribe(offersList =>{
-      
+
       this.ngZone.run( () => {
-        
+
         if(offersList.find(element=>element.origin))
         {
         let temp = (offersList.find(element=>element.origin));
-        
+
         if(this.task.id_string === temp.origin)
         {
           this.offersList= offersList;
           this.showOffers = true;
-        } 
+        }
       }
-      });      
+      });
     });
   }
 
@@ -69,7 +66,7 @@ export class TaskCardComponent implements OnInit {
       this.showOffers = false;
     }
       else
-      this._taskOdoo.requestOffersForTask(this.task.id_string);   
+      this._taskOdoo.requestOffersForTask(this.task.id_string);
   }
 
   ////Hacer en el HTML
@@ -83,12 +80,12 @@ export class TaskCardComponent implements OnInit {
   //////////////////////
   cancelSOclient(){
     console.log("CancelarSo");
-    this._taskOdoo.cancelSOclient(this.task.id); 
+    this._taskOdoo.cancelSOclient(this.task.id);
   }
 
   cancelPOsuplier(){
     console.log("CancelarPo");
-    this._taskOdoo.cancelPOsuplier(this.task.id); 
+    this._taskOdoo.cancelPOsuplier(this.task.id);
   }
 
   details(){
@@ -115,14 +112,14 @@ export class TaskCardComponent implements OnInit {
     }
   }
 
-  openChat(id){    
+  openChat(id){
     this.router.navigate(['/chat', id]);
   }
 
   acceptProvider(PO_id){
     let SO_id = this.task.id;
-    this._taskOdoo.acceptProvider(PO_id,SO_id);
-    
+    this._taskOdoo.acceptProvider(PO_id, SO_id);
+
   }
 
   declineProvider(id){

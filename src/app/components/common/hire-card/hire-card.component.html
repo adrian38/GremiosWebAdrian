@@ -1,0 +1,45 @@
+<div class="container list-card">
+    <div class="pcard-container">
+        <p-card>
+            <div class="container p-0">
+                <div class="row m-0">
+                    <div class="col-3 p-0">
+                        <div class="image-left">
+                            <img src="assets/img/home1.jpg" class="heaven" />
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <div class="container py-2">
+                            <h3>FONTANERIA</h3>
+                            <span><i class="far fa-calendar mr-2"></i>Miercoles, 9 de septiembre 2020</span>
+                            <br>
+                            <span><i class="far fa-clock mr-2"></i>Horario de servicio, 9:00am - 10:00am</span>
+                            <br>
+                            <span><i class="fas fa-wallet mr-2"></i>20€</span>
+                            <div class="buttons-cont" fxLayout="row">
+                                <button class="btn btn-primary" fxFlex="15">FACTURA</button>
+                                <button class="btn btn-primary" fxFlex="15" fxFlexOffset="3" (click)="onShowSubCard(true)">DETALLES</button>
+                                <button class="btn btn-primary" fxFlex="16" fxFlexOffset="3">FINALIZAR</button>
+                                <div class="chat-button" fxLayout="column" fxFlexOffset="10" fxLayoutAlign="space-around center">
+                                    <i class="far fa-comment-alt"></i>
+                                    <span>Chat</span>
+                                </div>
+                                <div fxFlex="10" fxFlexOffset="20">
+                                    <p>Solicitado:</p>
+                                    <p>08.09.2020</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-card>
+        <div class="fade-down" *ngIf="showSubCard">
+            <p-card>
+                <app-hire-sub-card [mode]="offersDetail"></app-hire-sub-card>
+            </p-card>
+        </div>
+
+    </div>
+</div>

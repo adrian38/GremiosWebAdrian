@@ -81,8 +81,9 @@ export class LoginComponent implements OnInit {
     if(this.usuario.connected){
       this._taskOdoo.setUser(this.usuario);
       this._chatOdoo.setUser(this.usuario);
-      this.router.navigate(['/dashboard']);
       this.isLoading = false;
+      this.displayModal=false;
+      this.router.navigate(['/dashboard'],{queryParams:{tab:'request'}});
 
       // document.getElementById('close-loginModal').click();
     }

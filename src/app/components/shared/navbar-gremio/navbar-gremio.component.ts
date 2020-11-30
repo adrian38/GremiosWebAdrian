@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ViewEncapsulation, NgZone } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
@@ -22,6 +22,7 @@ export class NavbarGremioComponent implements OnInit {
 
   selectedService: any;
   selectedTab: String;
+  tabActive: string;
 
   services = [
     {
@@ -34,6 +35,7 @@ export class NavbarGremioComponent implements OnInit {
   constructor(private router: Router,
     private fb: FormBuilder,
     private _authOdoo: AuthOdooService,
+    private route: ActivatedRoute,
     private _taskOdoo: TaskOdooService, private ngZone: NgZone) {
 
     this.task = new TaskModel();
@@ -51,10 +53,14 @@ export class NavbarGremioComponent implements OnInit {
       });
 
     });
+    this.route.queryParams.subscribe(params =>{
+      this.tabActive = params.tab;
+    })
   }
 
   userConnected() {
     return this.user.connected;
+    // return true;
   }
 
   emitRequest(){

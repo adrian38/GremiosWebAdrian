@@ -12,19 +12,19 @@
         <div fxFlex="15" fxFlexOffset="20" class="button-nav-go" *ngIf="userConnected()">
             <span>Ir a Trabajador</span>
         </div>
-        <div fxFlex="8" fxFlexOffset="5" class="button-nav" fxLayout="column" fxLayoutAlign="space-around center" *ngIf="userConnected()">
+        <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'request' }" fxFlex="8" fxFlexOffset="5" class="button-nav" [ngClass]="{ active: tabActive === 'request' }" fxLayout="column" fxLayoutAlign="space-around center" *ngIf="userConnected()">
             <i class="fas fa-circle-notch"></i>
             <span>Solicitudes</span>
         </div>
-        <div fxFlex="8" class="button-nav" fxLayout="column" fxLayoutAlign="space-around center" *ngIf="userConnected()">
+        <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'hired' }" fxFlex="8" fxFlexOffset="1" class="button-nav" [ngClass]="{ active: tabActive === 'hired' }" fxLayout="column" fxLayoutAlign="space-around center" *ngIf="userConnected()">
             <i class="far fa-check-circle"></i>
             <span>Contratados</span>
         </div>
-        <div fxFlex="8" class="button-nav" fxLayout="column" fxLayoutAlign="space-around center" *ngIf="userConnected()">
+        <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'history' }" fxFlex="8" fxFlexOffset="1" class="button-nav" [ngClass]="{ active: tabActive === 'history' }" fxLayout="column" fxLayoutAlign="space-around center" *ngIf="userConnected()">
             <i class="fas fa-history"></i>
             <span>Historial</span>
         </div>
-        <div fxFlex="8" class="button-nav" fxLayout="column" fxLayoutAlign="space-around center" *ngIf="userConnected()">
+        <div fxFlex="8" class="button-nav" fxLayout="column" fxLayoutAlign="space-around center" fxFlexOffset="1" *ngIf="userConnected()">
             <i class="far fa-user-circle"></i>
             <span>Perfil</span>
         </div>

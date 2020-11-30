@@ -1,7 +1,7 @@
 .navbar-dark {
     position: fixed;
     width: 100%;
-    z-index: 99999;
+    z-index: 1000;
     background-color: rgb(49, 49, 58) !important;
     border-radius: 0 0 30px 0;
     height: 10vh;
@@ -33,6 +33,7 @@
     }
     .button-nav {
         cursor: pointer;
+        outline: none !important;
         padding: 8px;
         min-width: 100px;
         span {
@@ -45,6 +46,18 @@
     }
     .button-nav:hover {
         cursor: pointer;
+        background-color: #f6b776;
+        border-radius: 12px;
+        box-shadow: 5px 5px 8px;
+        span {
+            color: rgb(49, 49, 58);
+        }
+        svg {
+            color: rgb(49, 49, 58);
+        }
+    }
+    .button-nav.active {
+        outline: none;
         background-color: #f6b776;
         border-radius: 12px;
         box-shadow: 5px 5px 8px;

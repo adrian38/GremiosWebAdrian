@@ -16,6 +16,7 @@ import {FieldsetModule} from 'primeng/fieldset';
 import {StepsModule} from 'primeng/steps';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import {RatingModule} from 'primeng/rating';
 
 //pipes
 
@@ -27,7 +28,6 @@ import { TaskOdooService } from './services/task-odoo.service';
 
 // Components
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { TaskCardComponent } from './components/task-card/task-card.component';
@@ -43,12 +43,17 @@ import { NavbarGremioComponent } from './components/shared/navbar-gremio/navbar-
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NewRequestComponent } from './components/new-request/new-request.component';
 import { SignUpModule } from './components/sign-up/sign-up.module';
-
+import { RequestCardComponent } from './components/request-card/request-card.component';
+import { RequestSubCardComponent } from './components/request-card/request-sub-card/request-sub-card.component';
+import { DashboardGremioComponent } from './components/dashboard-gremio/dashboard-gremio.component';
+import { HireSubCardComponent } from './components/common/hire-card/hire-sub-card/hire-sub-card.component';
+import { HireCardComponent } from './components/common/hire-card/hire-card.component';
+import { HistoryCardComponent } from './components/common/history-card/history-card.component';
+import { HistorySubCardComponent } from './components/common/history-card/history-sub-card/history-sub-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
     NavbarGremioComponent,
     DashboardComponent,
     ChatComponent,
@@ -56,7 +61,18 @@ import { SignUpModule } from './components/sign-up/sign-up.module';
     LoginComponent,
     HomeGremioComponent,
     PlaceHolderDirective,
-    NewRequestComponent
+    NewRequestComponent,
+    DashboardGremioComponent,
+
+
+    ////////////////////
+
+    RequestCardComponent,
+    RequestSubCardComponent,
+    HireCardComponent,
+    HireSubCardComponent,
+    HistoryCardComponent,
+    HistorySubCardComponent
 
 
   ],
@@ -83,7 +99,8 @@ import { SignUpModule } from './components/sign-up/sign-up.module';
     StepsModule,
     SignUpModule,
     RadioButtonModule,
-    InputTextareaModule
+    InputTextareaModule,
+    RatingModule
 
   ],
   providers: [
