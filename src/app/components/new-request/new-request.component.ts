@@ -7,6 +7,7 @@ import { UsuarioModel } from 'src/app/models/usuario.model';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { MessageService } from 'primeng/api';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-new-request',
@@ -24,9 +25,18 @@ export class NewRequestComponent implements OnInit {
   task: TaskModel;
   user: UsuarioModel = new UsuarioModel();
   user$: Observable<UsuarioModel>;
+  base64textString = null;
+
 
   selectedTab: String;
   isLoading: boolean;
+  loadImage: boolean;
+  urlImage = 'data:type/example;base64,';
+
+  imageSizeLimit: number = 120000;
+  imageSizeLimitKb = Math.round(this.imageSizeLimit / 1000);
+  errorMessageImage: string = 'La imagen sobrepasa los ';
+  imageArticle: any;
 
   get tituloNoValido() {
     return this.newServiceForm.get('title').invalid && this.newServiceForm.get('title').touched;
@@ -77,6 +87,7 @@ export class NewRequestComponent implements OnInit {
     private _taskOdoo: TaskOdooService,
     private _authGuard: AuthGuardService,
     private messageService: MessageService,
+    public sanitizer: DomSanitizer,
     private ngZone: NgZone) {
 
     this.serviceName = "Servicio de " + this.route.snapshot.queryParams.service;
@@ -179,4 +190,48 @@ export class NewRequestComponent implements OnInit {
     this.createForm();
     this.task = new TaskModel();
   }
+
+  openFileBrowser(event) {
+    event.preventDefault();
+
+    const element: HTMLElement = document.getElementById('filePicker') as HTMLElement;
+    element.click();
+  }
+
+  handleFileSelect(evt) {
+    const files = evt.target.files;
+    const file = files[0];
+    ///data:type/example;base64,
+    this.urlImage = `data:${file.type};base64,`;
+    if (files[0].size < this.imageSizeLimit) {
+      if (files && file) {
+        const reader = new FileReader();
+        reader.onload = this.handleReaderLoaded.bind(this);
+        reader.readAsBinaryString(file);
+      }
+    } else {
+      this.messageService.add({severity:'error', summary: 'Error', detail: this.errorMessageImage + this.imageSizeLimitKb + 'kB'});
+
+    }
+  }
+
+  async handleReaderLoaded(readerEvt) {
+    const binaryString = readerEvt.target.result;
+    this.base64textString = btoa(binaryString);
+    this.imageArticle = this.urlImage + this.base64textString;
+    try {
+      this.imageArticle = this.imageArticle;
+      console.log(this.imageArticle)
+      this.loadImage = true;
+      // this.imageArticleChange = true;
+    } catch (error) {
+      this.loadImage = true;
+      // this.imageArticleChange = true;
+    }
+  }
+
+  public getSafeImage(url: string) {
+    return this.sanitizer.bypassSecurityTrustStyle(`url(${url})`);
+  }
+
 }
