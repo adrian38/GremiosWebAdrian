@@ -1,13 +1,14 @@
+<p-toast></p-toast>
 <div class="view-container">
     <div class="p-dialog">
         <div class="p-dialog-header">
             <h5>NUEVA SOLICITUD DE {{ serviceName | uppercase }}</h5>
         </div>
-        <!-- <div class="spinner-container" *ngIf="isLoading">
-      <div class="backdrop"></div>
+        <div class="spinner-container" *ngIf="isLoading">
+            <div class="backdrop"></div>
 
-      <p-progressSpinner [style]="{ width: '150px', height: '150px' }"></p-progressSpinner>
-  </div> -->
+            <p-progressSpinner [style]="{ width: '150px', height: '150px' }"></p-progressSpinner>
+        </div>
 
         <div class="form-container">
             <form autocomplete="off" [formGroup]="newServiceForm" (ngSubmit)="createNewService()">
@@ -124,7 +125,7 @@
         </div>
 
         <div class="button-container" div fxLayout="row" fxLayoutAlign="space-evenly center">
-            <button pButton pRipple type="button" label="ACEPTAR" class="p-button-raised" type="submit" [disabled]=""></button>
+            <button pButton pRipple type="button" label="ACEPTAR" class="p-button-raised" type="submit" (click)="createNewService()" [disabled]="this.newServiceForm.invalid"></button>
             <button pButton pRipple type="button" label="CANCELAR" class="p-button-raised"></button>
         </div>
     </div>

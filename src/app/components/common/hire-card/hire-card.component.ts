@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { TaskModel } from 'src/app/models/task.model';
 
 @Component({
   selector: 'app-hire-card',
@@ -10,6 +11,7 @@ export class HireCardComponent implements OnInit {
 
   showSubCard= false;
   offersDetail= false;
+  @Input() task: TaskModel;
 
   constructor() { }
 

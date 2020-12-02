@@ -17,6 +17,7 @@ import {StepsModule} from 'primeng/steps';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {RatingModule} from 'primeng/rating';
+import {ToastModule} from 'primeng/toast';
 
 //pipes
 
@@ -43,13 +44,14 @@ import { NavbarGremioComponent } from './components/shared/navbar-gremio/navbar-
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NewRequestComponent } from './components/new-request/new-request.component';
 import { SignUpModule } from './components/sign-up/sign-up.module';
-import { RequestCardComponent } from './components/request-card/request-card.component';
-import { RequestSubCardComponent } from './components/request-card/request-sub-card/request-sub-card.component';
 import { DashboardGremioComponent } from './components/dashboard-gremio/dashboard-gremio.component';
 import { HireSubCardComponent } from './components/common/hire-card/hire-sub-card/hire-sub-card.component';
 import { HireCardComponent } from './components/common/hire-card/hire-card.component';
 import { HistoryCardComponent } from './components/common/history-card/history-card.component';
 import { HistorySubCardComponent } from './components/common/history-card/history-sub-card/history-sub-card.component';
+import { RequestCardComponent } from './components/common/request-card/request-card.component';
+import { RequestSubCardComponent } from './components/common/request-card/request-sub-card/request-sub-card.component';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -100,7 +102,8 @@ import { HistorySubCardComponent } from './components/common/history-card/histor
     SignUpModule,
     RadioButtonModule,
     InputTextareaModule,
-    RatingModule
+    RatingModule,
+    ToastModule
 
   ],
   providers: [
@@ -108,6 +111,7 @@ import { HistorySubCardComponent } from './components/common/history-card/histor
     HttpClientModule,
     AuthGuardService,
     TaskOdooService,
+    MessageService
 
 
 

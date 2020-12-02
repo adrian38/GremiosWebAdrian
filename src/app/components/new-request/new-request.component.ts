@@ -6,6 +6,7 @@ import { Address, TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-new-request',
@@ -25,6 +26,7 @@ export class NewRequestComponent implements OnInit {
   user$: Observable<UsuarioModel>;
 
   selectedTab: String;
+  isLoading: boolean;
 
   get tituloNoValido() {
     return this.newServiceForm.get('title').invalid && this.newServiceForm.get('title').touched;
@@ -74,6 +76,7 @@ export class NewRequestComponent implements OnInit {
     private fb: FormBuilder,
     private _taskOdoo: TaskOdooService,
     private _authGuard: AuthGuardService,
+    private messageService: MessageService,
     private ngZone: NgZone) {
 
     this.serviceName = "Servicio de " + this.route.snapshot.queryParams.service;
@@ -95,6 +98,8 @@ export class NewRequestComponent implements OnInit {
 
           if (notificationNewSoClient) {
             console.log("Se creo correctamente la tarea");
+            this.messageService.add({severity:'success', summary: 'Completado', detail: 'Se creo correctamente la tarea.'});
+
           }
 
         });
@@ -106,7 +111,7 @@ export class NewRequestComponent implements OnInit {
       this.ngZone.run(()=>{
 
         if(notificationError){
-        console.log("Error!!!!!!!!!!!");
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error creando tarea.'});
         }
       });
 
@@ -139,6 +144,8 @@ export class NewRequestComponent implements OnInit {
     });
   }
   createNewService() {
+    this.isLoading = true;
+
     if (this.newServiceForm.invalid) {
       return Object.values(this.newServiceForm.controls).forEach(control => {
         if (control instanceof FormGroup) {
@@ -147,7 +154,7 @@ export class NewRequestComponent implements OnInit {
         control.markAsTouched();
       })
     }
-    document.getElementById('close-newService-modal').click();
+    // document.getElementById('close-newService-modal').click();
 
     this.task.title = this.newServiceForm.value['title'];
     this.task.date = this.newServiceForm.value['date'];
@@ -166,9 +173,10 @@ export class NewRequestComponent implements OnInit {
     this.task.client_id = this.user.partner_id;
     console.log(this.task);
     this._taskOdoo.newTask(this.task);
+    this.isLoading = false;
+    // this.messageService.add({severity:'success', summary: 'Completado', detail: 'Se creo correctamente la tarea.'});
+
     this.createForm();
     this.task = new TaskModel();
   }
-
-
 }

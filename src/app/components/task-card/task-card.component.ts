@@ -36,7 +36,7 @@ export class TaskCardComponent implements OnInit {
 
     this.user = this._authOdoo.getUser();
     this.offersList =[];
-    this.userType = this.user.type
+    this.userType = this.user.type;
    }
 
   ngOnInit(): void {

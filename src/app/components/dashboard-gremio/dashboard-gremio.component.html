@@ -1,9 +1,9 @@
-<div *ngIf="activateTab == 'request'">
-    <app-request-card></app-request-card>
+<div *ngIf="activateTab == 'request'" class="align-cards">
+    <app-request-card *ngFor="let task of solicitudesList; let i= index" [task]="task"></app-request-card>
 </div>
-<div *ngIf="activateTab == 'hired'">
-    <app-hire-card></app-hire-card>
+<div *ngIf="activateTab == 'hired'" class="align-cards">
+    <app-hire-card *ngFor="let task of contratadosList; let i= index" [task]="task"></app-hire-card>
 </div>
-<div *ngIf="activateTab == 'history'">
-    <app-history-card></app-history-card>
+<div *ngIf="activateTab == 'history'" class="align-cards">
+    <app-history-card *ngFor="let task of historialList; let i= index" [task]="task"></app-history-card>
 </div>
