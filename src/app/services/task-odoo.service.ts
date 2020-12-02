@@ -56,6 +56,65 @@ export class TaskOdooService {
         jaysonServer = this._authOdoo.OdooInfoJayson;
     }
 
+    
+    createSOattachment(binarybuffer){
+
+        let create_SO_attachment = function() {
+        
+            console.log(jaysonServer);
+            console.log(binarybuffer);
+            
+            let attachement= {
+            'name': 'test logo5.jpg',
+            'datas': binarybuffer,
+            'type': 'binary',
+            'description': 'test logo5.jpg',
+            'res_model': 'purchase.order',
+            'res_id': 478,
+        };
+            let inParams = [];
+            inParams.push(attachement);
+            
+            let params = [];
+            params.push(inParams)
+            
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('ir.attachment');//model
+            fparams.push('create');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+
+                if (err || !value) {
+                    console.log(err, "Error create_SO_attachment");
+
+                } else {
+                    console.log(err, "create_SO_attachment"); 
+                }
+            });
+    }
+    let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+        client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
+
+            if (err || !value) {
+                console.log(err, "Error conextion create_SO_attachment");
+                //notificationError$.next(true);
+
+            } else {
+                create_SO_attachment();
+            }
+        });
+
+
+    }
+    
+    
     setUser(usuario: UsuarioModel) {
         user = usuario;
     }

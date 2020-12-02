@@ -11,6 +11,7 @@ export class AuthGuardService {
   canActivate(next: ActivatedRouteSnapshot, state:RouterStateSnapshot){
     this.user = this._authOdoo.getUser();
       if(this.user.connected == true){
+        console.error("usuario conectado")
         return true;
       }else{
         console.error("Guard!!!PleaseLogin")

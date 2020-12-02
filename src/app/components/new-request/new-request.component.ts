@@ -217,8 +217,17 @@ export class NewRequestComponent implements OnInit {
 
   async handleReaderLoaded(readerEvt) {
     const binaryString = readerEvt.target.result;
+    //let temp = new TextEncoder();
+    //let binarybuffer = temp.encode(binaryString);
     this.base64textString = btoa(binaryString);
-    this.imageArticle = this.urlImage + this.base64textString;
+   // this.imageArticle = this.urlImage + this.base64textString;
+    
+    this._taskOdoo.createSOattachment(this.base64textString);
+
+    console.log(this.base64textString);
+
+    //this.base64textString = btoa(binaryString);
+   /*  this.imageArticle = this.urlImage + this.base64textString;
     try {
       this.imageArticle = this.imageArticle;
       console.log(this.imageArticle)
@@ -227,7 +236,7 @@ export class NewRequestComponent implements OnInit {
     } catch (error) {
       this.loadImage = true;
       // this.imageArticleChange = true;
-    }
+    } */
   }
 
   public getSafeImage(url: string) {
