@@ -65,12 +65,12 @@ export class TaskOdooService {
             console.log(binarybuffer);
             
             let attachement= {
-            'name': 'test logo5.jpg',
+            'name': 'test logo6.jpg',
             'datas': binarybuffer,
             'type': 'binary',
-            'description': 'test logo5.jpg',
+            'description': 'test logo6.jpg',
             'res_model': 'purchase.order',
-            'res_id': 478,
+            'res_id': 146,
         };
             let inParams = [];
             inParams.push(attachement);
@@ -95,7 +95,7 @@ export class TaskOdooService {
                     console.log(err, "Error create_SO_attachment");
 
                 } else {
-                    console.log(err, "create_SO_attachment"); 
+                    console.log(value, "create_SO_attachment"); 
                 }
             });
     }
