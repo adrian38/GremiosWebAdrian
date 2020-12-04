@@ -26,6 +26,7 @@ import {ToastModule} from 'primeng/toast';
 import { AuthOdooService } from './services/auth-odoo.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { TaskOdooService } from './services/task-odoo.service';
+import { SignUpOdooService } from './services/signup-odoo.service';
 
 // Components
 import { AppComponent } from './app.component';
@@ -111,7 +112,8 @@ import { MessageService } from 'primeng/api';
     HttpClientModule,
     AuthGuardService,
     TaskOdooService,
-    MessageService
+    MessageService,
+    SignUpOdooService
 
 
 
