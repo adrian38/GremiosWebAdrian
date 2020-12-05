@@ -39,6 +39,8 @@ export class RequestSubCardComponent implements OnInit {
 
       this.ngZone.run( () => {
 
+       
+
         if(offersList.find(element=>element.origin))
         {
         let temp = (offersList.find(element=>element.origin));

@@ -118,7 +118,7 @@ export class NewRequestComponent implements OnInit {
       });
 
       this.notificationError$ = this._taskOdoo.getNotificationError$();
-    this.notificationError$.subscribe(notificationError =>{
+      this.notificationError$.subscribe(notificationError =>{
       this.ngZone.run(()=>{
 
         if(notificationError){

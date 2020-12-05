@@ -37,6 +37,8 @@ export class DashboardGremioComponent implements OnInit {
   notificationPoCancelled$: Observable<number[]>;
 
   notificationNewSoClient$: Observable<boolean>;
+  
+  notificationOffertCancelled$: Observable<number[]>;
 
   notificationError$: Observable<boolean>;
 
@@ -67,7 +69,6 @@ export class DashboardGremioComponent implements OnInit {
       this.activateTab = params.tab;
     });
   }
-
   observablesSubscriptions() {
 
     ////////////////////////////////Para el Cliente
@@ -92,29 +93,38 @@ export class DashboardGremioComponent implements OnInit {
         this.ngZone.run(() => {
 
           let temp = (this.solicitudesList.findIndex(element => element.id === notificationSoCancelled));
-          this.solicitudesList.splice(temp, 1);
-        });
-
-      });
-    }
-
-    ////////////////////////////////Para el proveedor
-
-    if (this.usuario.type == "provider") {
-
-
-      this.notificationPoCancelled$ = this._taskOdoo.getRequestedNotificationPoCancelled$();
-      this.notificationPoCancelled$.subscribe(notificationPoCancelled => {
-        this.ngZone.run(() => {
-          for (let Po_id of notificationPoCancelled){
-          console.log("PO Cancelled por notificacion");
-          let temp = (this.solicitudesList.findIndex(element => element.id === Po_id ));
+          if(temp !== -1){
           this.solicitudesList.splice(temp, 1);
           }
         });
 
       });
 
+
+  
+
+
+    }
+
+    ////////////////////////////////Para el proveedor
+
+    if (this.usuario.type == "provider") {
+
+     
+      this.notificationPoCancelled$ = this._taskOdoo.getRequestedNotificationPoCancelled$();
+      this.notificationPoCancelled$.subscribe(notificationPoCancelled => {
+        this.ngZone.run(() => {
+          for (let Po_id of notificationPoCancelled){
+          console.log("PO Cancelled por notificacion");
+          let temp = (this.solicitudesList.findIndex(element => element.id === Po_id ));
+          if(temp !== -1){
+          this.solicitudesList.splice(temp, 1);
+          }
+          }
+        });
+
+      });
+    
       this.notificationNewPoSuplier$ = this._taskOdoo.getRequestedNotificationNewPoSuplier$();
       this.notificationNewPoSuplier$.subscribe((notificationNewPoSuplier: number[]) => {
         this.ngZone.run(() => {
@@ -123,19 +133,39 @@ export class DashboardGremioComponent implements OnInit {
 
             let temp = (this.solicitudesList.findIndex(element => element.id === Po_id ));
             if (temp !== -1){
-              console.log(temp,"temp");
+              
               notificationNewPoSuplier.splice(temp,1);
             }
-          }
-
+          } 
+               
           //console.log(this.notificationNewPoSuplier, "llego la notificacion");
           this._taskOdoo.requestTaskPoUpdate(notificationNewPoSuplier);
-
+       
         });
       });
+
+      this.notificationOffertCancelled$ = this._taskOdoo.getRequestedNotificationOffertCancelled$();
+      this.notificationOffertCancelled$.subscribe(notificationOffertCancelled =>{
+      this.ngZone.run(()=>{
+
+        for (let Po_id of notificationOffertCancelled){
+          console.log("PO Cancelled por notificacionOffert");
+          let temp = (this.solicitudesList.findIndex(element => element.id === Po_id ));
+          if(temp !== -1){
+          this.solicitudesList.splice(temp, 1);
+          }
+          }
+        
+      });
+
+    });
+
+
     }
 
     //////////////////Para Todos
+
+    
 
     this.notificationError$ = this._taskOdoo.getNotificationError$();
     this.notificationError$.subscribe(notificationError =>{
@@ -166,14 +196,14 @@ export class DashboardGremioComponent implements OnInit {
           } else if (this.usuario.type === "provider") { return task.state === 'no' };
         });
 
-        if (this.solicitudesList) {
+        if (typeof this.solicitudesList !== 'undefined' && this.solicitudesList.length > 0) {
           Array.prototype.push.apply(this.solicitudesList, temp);
         } else { this.solicitudesList = temp; }
 
         temp = tasksList.filter(task => {
           return task.state === 'invoiced'; //Contratadas
         });
-        if (this.contratadosList) {
+        if (typeof this.contratadosList !== 'undefined' && this.contratadosList.length > 0) {
           Array.prototype.push.apply(this.contratadosList, temp);
         } else { this.contratadosList = temp; }
 
@@ -181,7 +211,7 @@ export class DashboardGremioComponent implements OnInit {
         temp = tasksList.filter(task => {
           return task.state === ''; //Historial
         });
-        if (this.historialList) {
+        if (typeof this.historialList !== 'undefined' && this.historialList.length > 0) {
           Array.prototype.push.apply(this.historialList, temp);
         } else { this.historialList = temp; }
 
@@ -193,5 +223,8 @@ export class DashboardGremioComponent implements OnInit {
       }
     });
   }
+
+
+  
 
 }
