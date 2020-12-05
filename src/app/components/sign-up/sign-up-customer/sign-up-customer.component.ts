@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, NgZone, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UsuarioModel } from 'src/app/models/usuario.model';
@@ -46,14 +46,42 @@ export class SignUpCustomerComponent implements OnInit {
     return this.signupForm.get('password').invalid && this.signupForm.get('password').touched;
   }
 
+  notificationOK$: Observable<boolean>;
+  notificationError$: Observable<boolean>;
+
   constructor(private fb:FormBuilder,
      private router: Router,
-     private _signupOdoo: SignUpOdooService) {
+     private _signupOdoo: SignUpOdooService,
+     private ngZone: NgZone) {
    }
 
   ngOnInit() {
     this.createForms();
     this.isLoading =false;
+
+    this.notificationError$ = this._signupOdoo.getNotificationError$();
+      this.notificationError$.subscribe(notificationError =>{
+      this.ngZone.run(()=>{
+
+        if(notificationError){
+          console.log("Error creando Usuario");
+        }
+      });
+
+    });
+
+    this.notificationOK$ = this._signupOdoo.getNotificationOK$();
+      this.notificationOK$.subscribe(notificationOK => {
+        this.ngZone.run(() => {
+
+          if (notificationOK) {
+            
+            console.log("Usuario Creado");
+          }
+
+        });
+
+      });
 
   }
 
@@ -87,7 +115,7 @@ export class SignUpCustomerComponent implements OnInit {
     this.usuario.type = 'client';
     
         
-    this._signupOdoo.newUserClient(this.usuario);
+    this._signupOdoo.newUser(this.usuario);
     this.createForms();
     this.usuario = new UsuarioModel; 
     
