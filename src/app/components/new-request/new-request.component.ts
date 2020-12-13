@@ -158,14 +158,14 @@ export class NewRequestComponent implements OnInit {
   createNewService() {
     this.isLoading = true;
 
-    if (this.newServiceForm.invalid) {
+     if (this.newServiceForm.invalid) {
       return Object.values(this.newServiceForm.controls).forEach(control => {
         if (control instanceof FormGroup) {
           Object.values(control.controls).forEach(control => control.markAsTouched());
         }
         control.markAsTouched();
       })
-    }
+    } 
     // document.getElementById('close-newService-modal').click();
 
     this.task.title = this.newServiceForm.value['title'];
