@@ -14,9 +14,11 @@
                             <span><i class="far fa-calendar mr-2"></i>{{task.date_planned}}</span>
                             <br>
                             <span><i class="far fa-clock mr-2"></i>{{task.time}}</span>
+                            <br>
+                            <span><i class="far fa-user mr-2" *ngIf="role == 'provider'" ></i>Cliente: Adrian J.</span>
 
                             <div class="buttons-cont" fxLayout="row">
-                                <div class="btn btn-primary" fxFlex="20" (click)="onShowSubCard(false)">OFERTAS</div>
+                                <div class="btn btn-primary" fxFlex="role =='client' ? 20 : 24" (click)="onShowSubCard(false)">{{role == 'client' ? 'OFERTAS': 'PRESUPUESTAR'}}</div>
                                 <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)="onShowSubCard(true)">DETALLES</div>
                                 <div fxFlex="20" fxFlexOffset="35">
                                     <span>Solicitado:</span><br>
@@ -31,7 +33,7 @@
         </p-card>
         <div class="fade-down" *ngIf="showSubCard">
             <p-card>
-                <app-request-sub-card [mode]="offersDetail" [taskSub]="task"></app-request-sub-card>
+                <app-request-sub-card [mode]="offersDetail" [role]='role' [taskSub]="task"></app-request-sub-card>
             </p-card>
         </div>
     </div>

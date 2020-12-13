@@ -12,6 +12,8 @@ export class HireCardComponent implements OnInit {
   showSubCard= false;
   offersDetail= false;
   @Input() task: TaskModel;
+  @Input() role: 'client' | 'provider';
+
 
   constructor() { }
 

@@ -14,11 +14,13 @@ import { TaskModel } from '../../../../models/task.model';
 export class RequestSubCardComponent implements OnInit {
 
   @Input() mode: boolean;
+  @Input() role: string;
   @Input() taskSub: TaskModel;
   displayModal = false;
 
   userType: string = "";
   user: UsuarioModel;
+
 
   offersList:TaskModel[];
   offersList$: Observable<TaskModel[]>;

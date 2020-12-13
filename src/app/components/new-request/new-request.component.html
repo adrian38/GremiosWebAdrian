@@ -41,7 +41,6 @@
               <p-calendar
                 inputId="date"
                 id="date"
-                type="date"
                 formControlName="date"
                 dateFormat="yy-mm-dd"
               ></p-calendar>
@@ -215,14 +214,14 @@
         <div
           fxLayout="row"
           fxLayoutAlign="space-evenly center"
-          class="w-100 mt-3"
+          class="w-100 mt-3 section-1"
         >
           <div fxFlex="45">
             <span>Fotos del Proyecto</span>
           </div>
-          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="45">
+          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="15" *ngFor="let i of [0,1,2]" >
             <div
-              *ngIf="loadImage"
+              *ngIf="loadImage[i]"
               class="avatar-profile"
               fxFlex="row"
               fxLayoutAlign="center center"
@@ -231,28 +230,34 @@
                 background-position: center center;
                 flex: none;
               "
-              [style.background-image]="getSafeImage(imageArticle)"
+              [style.background-image]="getSafeImage(imageArticle[i])"
 
             >
               <button
                 id="photoCameraBtn"
                 mat-icon-button
-                (click)="openFileBrowser($event)"
+                (click)="openFileBrowser($event,i)"
               >
               <i class="fas fa-camera"></i>
               </button>
             </div>
             <div
-              *ngIf="!loadImage"
+              *ngIf="!loadImage[i]"
               class="avatar-profile"
               fxFlex="row"
               fxLayoutAlign="center center"
+              style="
+                background-size: cover;
+                background-position: center center;
+                flex: none;
+              "
+              [style.background-image] = "getSafeImage('../../../assets/img/noImage.png')"
             >
               <button
                 id="photoCameraBtn"
                 style="position: absolute"
                 mat-icon-button
-                (click)="openFileBrowser($event)"
+                (click)="openFileBrowser($event,i)"
               >
               <i class="fas fa-camera"></i>
               </button>
@@ -260,8 +265,8 @@
             <input
               type="file"
               class="hide-style"
-              id="filePicker"
-              (change)="handleFileSelect($event)"
+              [id]="'filePicker'+i"
+              (change)="handleFileSelect($event,i)"
             />
           </div>
         </div>
