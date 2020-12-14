@@ -152,10 +152,7 @@ export class TaskOdooService {
                     if (typeof value !== 'undefined' && value.length > 0) {
 
                         console.log(value, "esta fue la notificacion q llego");
-
-                        /*     setTimeout(() => {
-                                 poll(user.id, user.partner_id, value[value.length - 1].id);
-                             }, 55000); */
+                      
                         for (let task of value) {
                             if (task['message']['type'] === 'purchase_order_notification' && task['message']['action'] === 'created') {
 
@@ -353,8 +350,8 @@ export class TaskOdooService {
                 'title':task.title,
                 'require_materials':task.require_materials,
                 'note':task.description,//descripcion del servicio
-                //'commitment_date':task.time + ' ' + task.date,//fecha y hora del pedido
-                'commitment_date':'2020-10-20 07:30:30',
+                'commitment_date':task.date + ' ' + task.time,
+                //'commitment_date':'2020-10-20 07:30:30',
                 'require_payment': false, 
                 'require_signature': false,
                 'state': 'draft',
