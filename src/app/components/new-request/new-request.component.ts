@@ -22,7 +22,7 @@ export class NewRequestComponent implements OnInit {
   frequency: string;
   available: string;
   newServiceForm: FormGroup;
-  task: TaskModel;
+  task: any;
   user: UsuarioModel = new UsuarioModel();
   user$: Observable<UsuarioModel>;
   base64textString = null;
@@ -30,13 +30,14 @@ export class NewRequestComponent implements OnInit {
 
   selectedTab: String;
   isLoading: boolean;
-  loadImage: boolean;
+  loadImage: boolean[] = [false,false,false];
   urlImage = 'data:type/example;base64,';
 
-  imageSizeLimit: number = 120000;
+  imageSizeLimit: number = 12000000;
   imageSizeLimitKb = Math.round(this.imageSizeLimit / 1000);
   errorMessageImage: string = 'La imagen sobrepasa los ';
-  imageArticle: any;
+  imageArticle = ['','',''];
+  currentIndex: number;
 
   get tituloNoValido() {
     return this.newServiceForm.get('title').invalid && this.newServiceForm.get('title').touched;
@@ -134,7 +135,7 @@ export class NewRequestComponent implements OnInit {
   createForm() {
     this.newServiceForm = this.fb.group({
       title: ['', [Validators.required]],
-      date: ['', [Validators.required]],
+      date: [new Date(), [Validators.required]],
       time: ['', [Validators.required]],
       description: ['',[Validators.required]],
       photos: this.fb.array([
@@ -182,7 +183,7 @@ export class NewRequestComponent implements OnInit {
       'longitude');
     this.task.require_materials = Boolean(Number(this.newServiceForm.value['materials']));
     this.task.client_id = this.user.partner_id;
-    console.log(this.task);
+    console.log(this.task.date);
     this._taskOdoo.newTask(this.task);
     this.isLoading = false;
     // this.messageService.add({severity:'success', summary: 'Completado', detail: 'Se creo correctamente la tarea.'});
@@ -191,14 +192,15 @@ export class NewRequestComponent implements OnInit {
     this.task = new TaskModel();
   }
 
-  openFileBrowser(event) {
+  openFileBrowser(event,index) {
     event.preventDefault();
 
-    const element: HTMLElement = document.getElementById('filePicker') as HTMLElement;
+    const element: HTMLElement = document.getElementById('filePicker'+index) as HTMLElement;
     element.click();
   }
 
-  handleFileSelect(evt) {
+  handleFileSelect(evt,index) {
+    this.currentIndex =index;
     const files = evt.target.files;
     const file = files[0];
     ///data:type/example;base64,
@@ -229,12 +231,10 @@ export class NewRequestComponent implements OnInit {
     //this.base64textString = btoa(binaryString);
    /*  this.imageArticle = this.urlImage + this.base64textString;
     try {
-      this.imageArticle = this.imageArticle;
-      console.log(this.imageArticle)
-      this.loadImage = true;
+      this.loadImage[this.currentIndex] = true;
       // this.imageArticleChange = true;
     } catch (error) {
-      this.loadImage = true;
+      this.loadImage[this.currentIndex] = true;
       // this.imageArticleChange = true;
     } */
   }

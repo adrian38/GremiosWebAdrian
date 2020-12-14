@@ -13,6 +13,7 @@ export class RequestCardComponent implements OnInit {
   offersDetail= false;
 
   @Input() task: TaskModel;
+  @Input() role: 'client' | 'provider';
 
 
   constructor() { }

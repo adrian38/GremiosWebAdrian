@@ -53,6 +53,7 @@ import { HistorySubCardComponent } from './components/common/history-card/histor
 import { RequestCardComponent } from './components/common/request-card/request-card.component';
 import { RequestSubCardComponent } from './components/common/request-card/request-sub-card/request-sub-card.component';
 import { MessageService } from 'primeng/api';
+import {NgxImageCompressService} from 'ngx-image-compress';
 
 @NgModule({
   declarations: [

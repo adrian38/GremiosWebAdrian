@@ -13,18 +13,19 @@
                             <h3>FONTANERIA</h3>
                             <div fxLayout="row" fxLayoutAlign="space-between center">
                                 <span><i class="far fa-calendar mr-2"></i>Miercoles, 9 de septiembre 2020</span>
-                                <button class="btn btn-primary p-0" fxFlex="16">Calificar</button>
+                                <button class="btn btn-primary p-0" fxFlex="16" *ngIf="role == 'client'">Calificar</button>
                             </div>
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="my-2">
                                 <span><i class="far fa-clock mr-2"></i>Horario de servicio, 9:00am - 10:00am</span>
-                                <button class="btn btn-primary p-0" fxFlex="16">Denunciar</button>
+                                <button class="btn btn-primary p-0" fxFlex="16" *ngIf="role == 'client'">Denunciar</button>
                             </div>
-                            <span><i class="fas fa-wallet mr-2"></i>20€</span>
+                            <span *ngIf="role == 'provider'"><i class="far fa-user mr-2" ></i>Cliente: Adrian J.</span>
+                            <span *ngIf="role == 'client'"><i class="fas fa-wallet mr-2"></i>20€</span>
                             <div class="buttons-cont" fxLayout="row">
                                 <button class="btn btn-primary" fxFlex="15">FACTURA</button>
-                                <button class="btn btn-primary" fxFlex="15" fxFlexOffset="3" (click)="onShowSubCard(true)">DETALLES</button>
+                                <button class="btn btn-primary" fxFlex="role =='client' ? 15 : 25" fxFlexOffset="3" (click)="onShowSubCard(true)">{{role == 'client' ? 'DETALLES': 'COSTOS EXTRAS'}}</button>
                                 <button class="btn btn-primary" fxFlex="16" fxFlexOffset="3">FINALIZAR</button>
-                                <div class="chat-button" fxLayout="column" fxFlexOffset="10" fxLayoutAlign="space-around center">
+                                <div class="chat-button" fxLayout="column" fxFlexOffset="5" fxLayoutAlign="space-around center">
                                     <i class="far fa-comment-alt"></i>
                                     <span>Chat</span>
                                 </div>

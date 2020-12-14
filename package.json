@@ -30,6 +30,7 @@
     "jayson": "github:tedeh/jayson#typescript",
     "jquery": "^3.5.1",
     "ng2-date-picker": "^10.0.1",
+    "ngx-image-compress": "^11.0.3",
     "odoo-xmlrpc": "^1.0.8",
     "popper.js": "^1.16.1",
     "primeicons": "^4.1.0",
