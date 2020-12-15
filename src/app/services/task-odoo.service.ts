@@ -883,9 +883,9 @@ export class TaskOdooService {
         let tasksList = [];
         let SO_id = [];
 
-        let get_so_type = function (So_id) {
+        let get_so_type = function () {
 
-            console.log(So_id);
+
             let inParams = [];
             inParams.push([['order_id', 'in', SO_id]]);
             inParams.push(['product_id', 'order_id']);
@@ -908,7 +908,7 @@ export class TaskOdooService {
                 if (err) {
                     console.log(err || !value, "get_so_list");
                 } else {
-                    console.log(value);
+                    // console.log(value);
 
                     for (let task of tasksList) {
                         let temp = (value.find(element => element.order_id[0] === task.id));
@@ -949,7 +949,7 @@ export class TaskOdooService {
                 if (err) {
                     console.log(err || !value, "get_so_list");
                 } else {
-                    console.log(value);
+                    //console.log(value);
 
                     for (let order of value) {
                         let temp = new TaskModel();
@@ -978,7 +978,7 @@ export class TaskOdooService {
                         tasksList.push(temp);
                     }
                     if (SO_id.length) {
-                        get_so_type(SO_id);
+                        get_so_type();
                     }
                 }
             });
@@ -1118,7 +1118,17 @@ export class TaskOdooService {
                         }
 
                     }
-                    offersList$.next(offersList);
+                    if (typeof offersList !== 'undefined' && offersList.length > 0) {
+                        //console.log(id_po_offert,"lo q se esta mandando oferta eliminada")   
+                        offersList$.next(offersList);
+                    }else{
+                        let temp = new TaskModel();
+                        temp.origin = id;
+                        temp.budget = 0;
+                        offersList[0]= temp;
+                        offersList$.next(offersList);
+                    }
+                    
                 }
             })
         }

@@ -9,12 +9,18 @@
                         </div>
                     </div>
                     <div class="col-9">
+
                         <div class="container py-2">
+                            <div class="spinner-container-card" *ngIf="isLoading">
+                                <p-progressSpinner [style]="{ width: '150px', height: '150px' }"></p-progressSpinner>
+                            </div>
                             <h3>{{task.title}}</h3>
-                            <span><i class="far fa-calendar mr-2"></i>{{task.date_planned}}</span>
-                            <span type="button" (click)="selectTypeCancel()" class="text-green mt-1">Cancelar</span>
+                            <span><i class="far fa-calendar mr-2"></i>{{task.date_planned | date : 'EEEE, MMMM d, y'}}</span>
+                            
+                                <span type="button" (click)="selectTypeCancel()"class="derecha">Cancelar</span>
+                           
                             <br>
-                            <span><i class="far fa-clock mr-2"></i>{{task.time}}</span>
+                            <span><i class="far fa-clock mr-2"></i>{{task.time }}</span>
                             <br>
                             <span><i class="far fa-user mr-2" *ngIf="role == 'provider'" ></i>Cliente: Adrian J.</span>
 
@@ -31,10 +37,14 @@
                     </div>
                 </div>
             </div>
+           
         </p-card>
+
+        
+
         <div class="fade-down" *ngIf="showSubCard">
             <p-card>
-                <app-request-sub-card [mode]="offersDetail" [role]='role' [taskSub]="task"></app-request-sub-card>
+                <app-request-sub-card [mode]="offersDetail" [role]='role' [taskSub]="task" [offersList]='offersList'></app-request-sub-card>
             </p-card>
         </div>
     </div>

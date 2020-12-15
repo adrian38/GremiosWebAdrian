@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { app_routing } from './app.routes';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -22,6 +22,10 @@ import { ToastModule } from 'primeng/toast';
 
 //pipes
 import { DatePipe } from '@angular/common'
+import localeEsAr from '@angular/common/locales/es-AR';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeEsAr, 'es')
+
 
 // Services
 import { AuthOdooService } from './services/auth-odoo.service';
@@ -53,6 +57,7 @@ import { RequestCardComponent } from './components/common/request-card/request-c
 import { RequestSubCardComponent } from './components/common/request-card/request-sub-card/request-sub-card.component';
 import { MessageService } from 'primeng/api';
 import { NgxImageCompressService } from 'ngx-image-compress';
+
 
 @NgModule({
   declarations: [
@@ -113,9 +118,8 @@ import { NgxImageCompressService } from 'ngx-image-compress';
     AuthGuardService,
     TaskOdooService,
     MessageService,
-    SignUpOdooService
-
-
+    SignUpOdooService,
+    { provide: LOCALE_ID, useValue: 'es' },
 
   ],
   bootstrap: [AppComponent]
