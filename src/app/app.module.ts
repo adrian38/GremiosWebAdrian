@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms'
 
+
 import { CarouselModule } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -20,7 +21,7 @@ import { RatingModule } from 'primeng/rating';
 import { ToastModule } from 'primeng/toast';
 
 //pipes
-
+import { DatePipe } from '@angular/common'
 
 // Services
 import { AuthOdooService } from './services/auth-odoo.service';
@@ -84,6 +85,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
     FlexLayoutModule,
     FieldsetModule,
 
+
     app_routing,
 
     ///////////////////
@@ -107,6 +109,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
   providers: [
     AuthOdooService,
     HttpClientModule,
+    DatePipe,
     AuthGuardService,
     TaskOdooService,
     MessageService,

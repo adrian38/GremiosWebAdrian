@@ -12,6 +12,7 @@
                         <div class="container py-2">
                             <h3>{{task.title}}</h3>
                             <span><i class="far fa-calendar mr-2"></i>{{task.date_planned}}</span>
+                            <span type="button" (click)="selectTypeCancel()" class="text-green mt-1">Cancelar</span>
                             <br>
                             <span><i class="far fa-clock mr-2"></i>{{task.time}}</span>
                             <br>

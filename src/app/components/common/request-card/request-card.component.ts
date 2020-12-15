@@ -9,8 +9,8 @@ import { TaskModel } from 'src/app/models/task.model';
 })
 export class RequestCardComponent implements OnInit {
 
-  showSubCard= false;
-  offersDetail= false;
+  showSubCard = false;
+  offersDetail = false;
 
   @Input() task: TaskModel;
   @Input() role: 'client' | 'provider';
@@ -22,14 +22,16 @@ export class RequestCardComponent implements OnInit {
     console.log(this.task)
   }
 
-  onShowSubCard(offerDetail:boolean){
-    if(!this.showSubCard){
+  selectTypeCancel() { };
+
+  onShowSubCard(offerDetail: boolean) {
+    if (!this.showSubCard) {
       this.showSubCard = true;
       this.offersDetail = offerDetail;
-    }else{
-      if(this.offersDetail == offerDetail){
+    } else {
+      if (this.offersDetail == offerDetail) {
         this.showSubCard = false;
-      }else{
+      } else {
         this.offersDetail = offerDetail;
       }
     }

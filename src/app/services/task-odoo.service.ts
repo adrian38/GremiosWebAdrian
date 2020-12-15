@@ -364,7 +364,6 @@ export class TaskOdooService {
 
         let createService = function () {
 
-            console.log(task);
             let SO = {
                 'company_id': 1,
                 'order_line': [[0, 0, {
