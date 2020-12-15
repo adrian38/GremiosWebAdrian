@@ -5,19 +5,19 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms'
 
-import {CarouselModule} from 'primeng/carousel';
-import {ButtonModule} from 'primeng/button';
-import {DialogModule} from 'primeng/dialog';
-import {CardModule} from 'primeng/card';
-import {DropdownModule} from 'primeng/dropdown';
-import {CalendarModule} from 'primeng/calendar';
-import {TabViewModule} from 'primeng/tabview';
-import {FieldsetModule} from 'primeng/fieldset';
-import {StepsModule} from 'primeng/steps';
-import {RadioButtonModule} from 'primeng/radiobutton';
-import {InputTextareaModule} from 'primeng/inputtextarea';
-import {RatingModule} from 'primeng/rating';
-import {ToastModule} from 'primeng/toast';
+import { CarouselModule } from 'primeng/carousel';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { CardModule } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { TabViewModule } from 'primeng/tabview';
+import { FieldsetModule } from 'primeng/fieldset';
+import { StepsModule } from 'primeng/steps';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { RatingModule } from 'primeng/rating';
+import { ToastModule } from 'primeng/toast';
 
 //pipes
 
@@ -30,16 +30,14 @@ import { SignUpOdooService } from './services/signup-odoo.service';
 
 // Components
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ChatComponent } from './components/chat/chat.component';
-import { TaskCardComponent } from './components/task-card/task-card.component';
 import { LoginComponent } from './components/home-gremio/login/login.component';
 import { HomeGremioComponent } from './components/home-gremio/home-gremio.component';
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {InputTextModule} from 'primeng/inputtext';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InputTextModule } from 'primeng/inputtext';
 import { PlaceHolderDirective } from './components/shared/placeholder/placeholder.directive';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NavbarGremioComponent } from './components/shared/navbar-gremio/navbar-gremio.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -53,15 +51,13 @@ import { HistorySubCardComponent } from './components/common/history-card/histor
 import { RequestCardComponent } from './components/common/request-card/request-card.component';
 import { RequestSubCardComponent } from './components/common/request-card/request-sub-card/request-sub-card.component';
 import { MessageService } from 'primeng/api';
-import {NgxImageCompressService} from 'ngx-image-compress';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarGremioComponent,
-    DashboardComponent,
     ChatComponent,
-    TaskCardComponent,
     LoginComponent,
     HomeGremioComponent,
     PlaceHolderDirective,

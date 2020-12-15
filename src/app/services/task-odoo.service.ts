@@ -31,13 +31,17 @@ let notificationNewPoSuplier$ = new Subject<number[]>(); ///////Proveedor
 
 let notificationNewSoClient$ = new Subject<boolean>(); ///////cliente
 
-let notificationNewOffertSuplier$ = new Subject<number[]>(); ///////cliente
+let notificationNewOffertSuplier$ = new Subject<any[]>(); ///////cliente
 
 ////////////////////////////////////////////////////////////////////////////
+
+let notificationNewMessg$ = new Subject<number[]>(); ///////Proveedor
 
 let notificationError$ = new Subject<boolean>();
 
 let notificationOK$ = new Subject<boolean>();
+
+let notificationPoAcepted$ = new Subject<any[]>();
 
 
 let user: UsuarioModel;
@@ -56,28 +60,47 @@ export class TaskOdooService {
         jaysonServer = this._authOdoo.OdooInfoJayson;
     }
 
-    
-    createSOattachment(binarybuffer){
+    setUser(usuario: UsuarioModel) {
+        user = usuario;
+    }
 
-        let create_SO_attachment = function() {
-        
+    getUser() {
+        return user;
+    }
+
+    getNotificationError$(): Observable<boolean> {
+        return notificationError$.asObservable();
+    }
+
+    getRequestedNotificationPoAcepted$(): Observable<any[]> {
+        return notificationPoAcepted$.asObservable();
+    }
+
+    getRequestedNotificationNewMessg$(): Observable<number[]> {
+        return notificationNewMessg$.asObservable();
+    }
+
+    createSOattachment(binarybuffer) {
+
+        let create_SO_attachment = function () {
+
             console.log(jaysonServer);
             console.log(binarybuffer);
-            
-            let attachement= {
-            'name': 'test logo6.jpg',
-            'datas': binarybuffer,
-            'type': 'binary',
-            'description': 'test logo6.jpg',
-            'res_model': 'purchase.order',
-            'res_id': 146,
-        };
+
+            let attachement = {
+                'name': 'test logo6.jpg',
+                'datas': binarybuffer,
+                'type': 'binary',
+                'description': 'test logo6.jpg',
+                'res_model': 'purchase.order',
+                'res_id': 146,
+            };
             let inParams = [];
             inParams.push(attachement);
-            
+
             let params = [];
             params.push(inParams)
-            
+
             let fparams = [];
             fparams.push(jaysonServer.db);
             fparams.push(user.id);
@@ -95,11 +118,11 @@ export class TaskOdooService {
                     console.log(err, "Error create_SO_attachment");
 
                 } else {
-                    console.log(value, "create_SO_attachment"); 
+                    console.log(value, "create_SO_attachment");
                 }
             });
-    }
-    let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+        }
+        let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
 
             if (err || !value) {
@@ -113,19 +136,6 @@ export class TaskOdooService {
 
 
     }
-    
-    
-    setUser(usuario: UsuarioModel) {
-        user = usuario;
-    }
-
-    getUser() {
-        return user;
-    }
-
-    getNotificationError$(): Observable<boolean> {
-        return notificationError$.asObservable();
-    }
 
     notificationPull() {
 
@@ -133,6 +143,7 @@ export class TaskOdooService {
         let id_po_offert = [];
         let id_messg = [];
         let new_offert = [];
+        let id_offert_acepted = [];
 
         let poll = function (uid, partner_id, last) {
             let path = '/longpolling/poll'
@@ -143,16 +154,15 @@ export class TaskOdooService {
                 if (err) {
                     console.log(err, "Error poll");
                 } else {
-                    console.log(value);
+                    //console.log(value,"Notificaciones");
                     id_po = [];
                     id_messg = [];
-                    id_po_offert = [];
                     new_offert = [];
 
                     if (typeof value !== 'undefined' && value.length > 0) {
 
                         console.log(value, "esta fue la notificacion q llego");
-                      
+
                         for (let task of value) {
                             if (task['message']['type'] === 'purchase_order_notification' && task['message']['action'] === 'created') {
 
@@ -160,28 +170,48 @@ export class TaskOdooService {
                                 id_po.push(task['message']['order_id'])
                             }
 
-                            if (task['message']['type'] === 'purchase_order_notification' && task['message']['action'] === 'canceled' || task['message']['action'] === 'calceled' ) {
+                            if (task['message']['type'] === 'purchase_order_notification' && task['message']['action'] === 'canceled' || task['message']['action'] === 'calceled') {
 
                                 console.log("se ha eliminado una oferta");
                                 id_po_offert.push(task['message']['order_id'])
                             }
 
-                            if (task['message']['type'] === 'purchase_order_notification' && task['message']['action'] === 'accepted'  ) {
+                            if (task['message']['type'] === 'purchase_order_notification' && task['message']['action'] === 'confirmed') {
 
-                                console.log("se ha creado una nueva oferta una oferta");
-                                new_offert.push(task['message']['order_id']);
+                                console.log("se ha contratado Servicio");
+                                id_offert_acepted.push({ po_id: task['message']['order_id'], so_origin: task['message']['origin'] });
+
                             }
 
-                            if (task['message']['type'] === 'message_notification') {
+                            if (task['message']['type'] === 'purchase_order_notification' && task['message']['action'] === 'accepted') {
+
+                                console.log("se ha creado una nueva oferta una oferta");
+                                new_offert.push({ order_id: task['message']['order_id'], origin: task['message']['origin'] });
+                            }
+
+                            if (task['message']['type'] === 'message_notification' && task['message']['action'] === 'new') {
 
                                 console.log("nuevo mensaje So");
                                 id_messg.push(task['message']['message_id'])
                             }
 
                         }
+
+                        if (typeof id_messg !== 'undefined' && id_messg.length > 0) {
+                            // console.log(id_messg,"nuevo mensaje id")   
+                            notificationNewMessg$.next(id_messg);
+
+                        }
+
+
                         if (typeof id_po !== 'undefined' && id_po.length > 0) {
-                            // console.log(id_po,"lo q se esta mandando nueva solicitud")   
+                            console.log(id_po, "lo q se esta mandando nueva solicitud")
                             notificationNewPoSuplier$.next(id_po);
+                        }
+
+                        if (typeof id_offert_acepted !== 'undefined' && id_offert_acepted.length > 0) {
+                            // console.log(id_offert_acepted,"lo q se esta mandando oferta aceptada")   
+                            notificationPoAcepted$.next(id_offert_acepted);
                         }
 
                         if (typeof id_po_offert !== 'undefined' && id_po_offert.length > 0) {
@@ -215,7 +245,7 @@ export class TaskOdooService {
 
     }
 
-    getRequestedNotificationNewOffertSuplier$(): Observable<number[]> {
+    getRequestedNotificationNewOffertSuplier$(): Observable<any[]> {
         return notificationNewOffertSuplier$.asObservable();
     }
 
@@ -329,43 +359,40 @@ export class TaskOdooService {
         return notificationSoCancelled$.asObservable();
     }
 
+    //////// De la forma de Michel
     newTask(task: TaskModel) {
-    
-       
+
         let createService = function () {
 
-            console.log(task.time + ' ' + task.date);
-
+            console.log(task);
             let SO = {
-                'company_id': 1, 
-                'order_line': [[0,0,{
-                    'name': task.type, 
-                    'price_unit': 0.0, 
-                    'product_id': task.product_id, 
-                    'product_uom': 1, 
-                    'product_uom_qty': 1.0, 
+                'company_id': 1,
+                'order_line': [[0, 0, {
+                    'name': task.type,
+                    'price_unit': 0.0,
+                    'product_id': task.product_id,
+                    'product_uom': 1,
+                    'product_uom_qty': 1.0,
                     'state': 'draft'
                 }]],
-                'partner_id': user.partner_id,
-                'title':task.title,
-                'require_materials':task.require_materials,
-                'note':task.description,//descripcion del servicio
-                'commitment_date':task.date + ' ' + task.time,
-                //'commitment_date':'2020-10-20 07:30:30',
-                'require_payment': false, 
+                'note': task.description,
+                'partner_id': task.client_id,
+                'title': task.title,
+                'commitment_date': (task.date + ' ' + task.time),
+                'require_materials': task.require_materials,
+                'require_payment': false,
                 'require_signature': false,
                 'state': 'draft',
-                'address_street' : task.address.street,
-                'address_floor' : task.address.floor,
-                'address_portal' : task.address.portal,
-                'address_number' : task.address.number,
-                'address_door' : task.address.door,
-                'address_stairs' : task.address.stair,
-                'address_zip_code' : task.address.cp,
-                'address_latitude' : '40,47558',
-                'address_longitude' : '-3,68992',
+                'address_street': task.address.street,
+                'address_floor': task.address.floor,
+                'address_portal': task.address.portal,
+                'address_number': task.address.number,
+                'address_door': task.address.door,
+                'address_stairs': task.address.stair,
+                'address_zip_code': task.address.cp,
+                'address_latitude': '',
+                'address_longitude': '',
             }
-           
             let inParams = [];
             inParams.push(SO);
             let params = [];
@@ -384,8 +411,7 @@ export class TaskOdooService {
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
 
                 if (err || !value) {
-                    console.log(err, "Error createService");
-                    notificationError$.next(true);
+                    console.log(err, "createService");
 
                 } else {
                     console.log(value, "createService");
@@ -422,8 +448,7 @@ export class TaskOdooService {
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
 
             if (err || !value) {
-                console.log(err, "Error conextion newTask");
-                notificationError$.next(true);
+                console.log(err, "newTask");
 
             } else {
                 createService();
@@ -436,7 +461,7 @@ export class TaskOdooService {
         return notificationNewSoClient$.asObservable();
     }
 
-    
+
     editTask(desc: string) {
 
     }
@@ -751,7 +776,7 @@ export class TaskOdooService {
 
                         tasksList.push(temp);
                     }
-                    console.log(tasksList, "reques por notifications");
+                    //      console.log(tasksList, "reques por notifications");
                     tasksList$.next(tasksList);
                 }
             })

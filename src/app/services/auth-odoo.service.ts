@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { UsuarioModel ,Address} from '../models/usuario.model'
+import { UsuarioModel } from '../models/usuario.model'
 import { Observable, Subject } from 'rxjs'
-import { HttpClient } from '@angular/common/http';
-
 let jayson = require('../../../node_modules/jayson/lib/client/');
 let jaysonServer = {
   host: '192.168.0.106',
- // host: 'todoenunapp.com',
+  //host: 'todoenunapp.com',
   port: '8069',
   db: 'demo',
   username: '',
