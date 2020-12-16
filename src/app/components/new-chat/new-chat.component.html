@@ -1,0 +1,87 @@
+<p-toast></p-toast>
+<div class="view-container" fxLayout="row" fxLayoutAlign="space-around center">
+    <div class="p-dialog left">
+        <div class="p-dialog-header">
+            <h5>NUEVA SOLICITUD DE FONTANERIA</h5>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%;">
+            <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
+                <div class="p-field" fxFlex="100">
+                    <h5>Fecha</h5>
+                    <p-calendar inputId="date" id="date" dateFormat="yy-mm-dd" class="w-100"></p-calendar>
+                    <!-- <small class="p-invalid" *ngIf="fechaNoValido"
+                >*Este campo es requerido.</small
+              > -->
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%;">
+            <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
+                <div class="p-field" fxFlex="100">
+                    <h5>Hora</h5>
+                    <p-calendar inputId="time" id="time" [timeOnly]="true" class="w-100"></p-calendar>
+                    <!-- <small class="p-invalid" *ngIf="horaNoValido"
+                  >*Este campo es requerido.</small
+                > -->
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%;">
+            <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
+                <div class="p-field" fxFlex="100">
+                    <h5>Direccion</h5>
+                    <input class="w-100" inputId="address" id="address" pInputText placeholder="Direccion" />
+                    <!-- <small class="p-invalid" *ngIf="horaNoValido"
+                  >*Este campo es requerido.</small
+                > -->
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%;">
+            <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
+                <div class="p-field" fxFlex="100">
+                    <h5>Descripcion</h5>
+                    <input class="w-100" inputId="description" id="description" pInputText placeholder="Description" />
+                    <!-- <small class="p-invalid" *ngIf="horaNoValido"
+                  >*Este campo es requerido.</small
+                > -->
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 container" style="width: 80%;">
+            <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
+                <div class="p-field" fxFlex="100">
+                    <h5>Presupuesto</h5>
+                    <input class="w-100" inputId="budget" id="budget" pInputText placeholder="Presupuesto" />
+                    <!-- <small class="p-invalid" *ngIf="horaNoValido"
+                  >*Este campo es requerido.</small
+                > -->
+                </div>
+            </div>
+        </div>
+        <div class="button-container" div fxLayout="row" fxLayoutAlign="space-evenly center">
+            <button pButton pRipple type="button" label="ACTUALIZAR" class="p-button-raised" type="submit"></button>
+            <button pButton pRipple type="button" icon="pi pi-check" class="p-button-raised" type="submit"></button>
+            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-raised"></button>
+        </div>
+    </div>
+    <div class="p-dialog right" fxFlexAlign="stretch" fxLayout="column">
+        <div class="p-dialog-header">
+            <h5>Pedro J.</h5>
+        </div>
+
+        <div fxLayout="column" style="height: 100%;">
+
+        </div>
+        <div class="card-footer send-area" style="border-radius: 0 0 30px 30px;">
+            <div class="input-group" style="height: min-content;">
+                <input [(ngModel)]="message.message" height="30px" type="text" class="form-control input-sendM" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <div class="input-group-append btn-send">
+                    <button (click)="sendMessage()" class="btn btn-secondary btn-send" type="button" id="button-addon2">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
