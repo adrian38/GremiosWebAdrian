@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
@@ -14,60 +14,96 @@ import { TaskOdooService } from 'src/app/services/task-odoo.service';
 export class DashboardGremioComponent implements OnInit {
 
   activateTab: string;
+  isLoading: boolean;
 
   usuario: UsuarioModel;
-  usuario$: Observable<UsuarioModel>;
   task: TaskModel;
-
   solicitudesList: TaskModel[];
   contratadosList: TaskModel[];
-
   historialList: TaskModel[];
-  tasksList$: Observable<TaskModel[]>; // servicio comunicacion
-
   tab: String;
+
+
+  tasksList$: Observable<TaskModel[]>; // servicio comunicacion
   tab$: Observable<String>;
-
-
-  notificationNewPoSuplier: number[];
   notificationNewPoSuplier$: Observable<number[]>;
-
   notificationSoCancelled$: Observable<number>;
-
   notificationPoCancelled$: Observable<number[]>;
-
   notificationNewSoClient$: Observable<boolean>;
-
   notificationError$: Observable<boolean>;
+  notificationOffertCancelled$: Observable<number[]>;
+  notificationPoAcepted$: Observable<any[]>;
 
-  inicio = true;
+
+  subscriptioNewPoSuplier: Subscription;
+  subscriptioSoCancelled: Subscription;
+  subscriptioPoCancelled: Subscription;
+  subscriptioNewSoClient: Subscription;
+  subscriptionError: Subscription;
+  subscriptionOffertCancelled: Subscription;
+  subscriptionPoAcepted: Subscription;
+  subscriptionTab: Subscription;
+  subscriptiontasksList: Subscription;
+
 
   constructor(private route: ActivatedRoute,
     private _taskOdoo: TaskOdooService,
     private _authOdoo: AuthOdooService,
     private ngZone: NgZone) {
-      this.usuario = this._authOdoo.getUser();
 
-      this.observablesSubscriptions();
-      this.tab = 'Solicitudes';
+    this.isLoading = true;
 
+    this.usuario = this._authOdoo.getUser();
 
-      if (this.usuario.type == "client") {
-        this._taskOdoo.requestTaskListClient();
+    this.tab = 'Solicitudes';
 
 
-      } else if (this.usuario.type == "provider") {
-        this._taskOdoo.requestTaskListProvider();
+    if (this.usuario.type == "client") {
+      this._taskOdoo.requestTaskListClient();
 
-      }
-     }
 
-  ngOnInit() {
-    this.route.queryParams.subscribe(params=>{
-      this.activateTab = params.tab;
-    });
+    } else if (this.usuario.type == "provider") {
+      this._taskOdoo.requestTaskListProvider();
+
+    }
+
   }
 
+  ngOnInit(): void {
+
+    this.route.queryParams.subscribe(params => {
+      this.activateTab = params.tab;
+    });
+
+    this.observablesSubscriptions();
+
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+
+    if (this.usuario.type == "client") {
+      this.subscriptioSoCancelled.unsubscribe();
+      this.subscriptioNewSoClient.unsubscribe();
+    }
+
+    if (this.usuario.type == "provider") {
+
+      this.subscriptioPoCancelled.unsubscribe();
+      this.subscriptioNewPoSuplier.unsubscribe();
+      this.subscriptionOffertCancelled.unsubscribe();
+      this.subscriptionPoAcepted.unsubscribe();
+
+
+    }
+
+    this.subscriptionError.unsubscribe();
+    this.subscriptionTab.unsubscribe();
+    this.subscriptiontasksList.unsubscribe();
+
+
+  }
   observablesSubscriptions() {
 
     ////////////////////////////////Para el Cliente
@@ -76,7 +112,7 @@ export class DashboardGremioComponent implements OnInit {
 
 
       this.notificationNewSoClient$ = this._taskOdoo.getNotificationNewSoClient$();
-      this.notificationNewSoClient$.subscribe(notificationNewSoClient => {
+      this.subscriptioNewSoClient = this.notificationNewSoClient$.subscribe(notificationNewSoClient => {
         this.ngZone.run(() => {
 
           if (notificationNewSoClient) {
@@ -88,11 +124,13 @@ export class DashboardGremioComponent implements OnInit {
       });
 
       this.notificationSoCancelled$ = this._taskOdoo.getNotificationSoCancelled$();
-      this.notificationSoCancelled$.subscribe(notificationSoCancelled => {
+      this.subscriptioSoCancelled = this.notificationSoCancelled$.subscribe(notificationSoCancelled => {
         this.ngZone.run(() => {
 
           let temp = (this.solicitudesList.findIndex(element => element.id === notificationSoCancelled));
-          this.solicitudesList.splice(temp, 1);
+          if (temp !== -1) {
+            this.solicitudesList.splice(temp, 1);
+          }
         });
 
       });
@@ -104,45 +142,78 @@ export class DashboardGremioComponent implements OnInit {
 
 
       this.notificationPoCancelled$ = this._taskOdoo.getRequestedNotificationPoCancelled$();
-      this.notificationPoCancelled$.subscribe(notificationPoCancelled => {
+      this.subscriptioPoCancelled = this.notificationPoCancelled$.subscribe(notificationPoCancelled => {
         this.ngZone.run(() => {
-          for (let Po_id of notificationPoCancelled){
-          console.log("PO Cancelled por notificacion");
-          let temp = (this.solicitudesList.findIndex(element => element.id === Po_id ));
-          this.solicitudesList.splice(temp, 1);
+          for (let Po_id of notificationPoCancelled) {
+            console.log("PO Cancelled por notificacion");
+            let temp = (this.solicitudesList.findIndex(element => element.id === Po_id));
+            if (temp !== -1) {
+              this.solicitudesList.splice(temp, 1);
+            }
           }
         });
 
       });
 
       this.notificationNewPoSuplier$ = this._taskOdoo.getRequestedNotificationNewPoSuplier$();
-      this.notificationNewPoSuplier$.subscribe((notificationNewPoSuplier: number[]) => {
+      this.subscriptioNewPoSuplier = this.notificationNewPoSuplier$.subscribe((notificationNewPoSuplier: number[]) => {
         this.ngZone.run(() => {
 
-         for (let Po_id of notificationNewPoSuplier){
+          for (let Po_id of notificationNewPoSuplier) {
 
-            let temp = (this.solicitudesList.findIndex(element => element.id === Po_id ));
-            if (temp !== -1){
-              console.log(temp,"temp");
-              notificationNewPoSuplier.splice(temp,1);
+            let temp = (this.solicitudesList.findIndex(element => element.id === Po_id));
+            if (temp !== -1) {
+              notificationNewPoSuplier.splice(temp, 1);
             }
           }
-
-          //console.log(this.notificationNewPoSuplier, "llego la notificacion");
           this._taskOdoo.requestTaskPoUpdate(notificationNewPoSuplier);
 
         });
       });
+
+      this.notificationOffertCancelled$ = this._taskOdoo.getRequestedNotificationOffertCancelled$();
+      this.subscriptionOffertCancelled = this.notificationOffertCancelled$.subscribe(notificationOffertCancelled => {
+        this.ngZone.run(() => {
+
+          for (let Po_id of notificationOffertCancelled) {
+            console.log("PO Cancelled por notificacionOffert");
+            let temp = (this.solicitudesList.findIndex(element => element.id === Po_id));
+            if (temp !== -1) {
+              this.solicitudesList.splice(temp, 1);
+            }
+          }
+
+        });
+
+      });
+
+      this.notificationPoAcepted$ = this._taskOdoo.getRequestedNotificationPoAcepted$();
+      this.subscriptionPoAcepted = this.notificationPoAcepted$.subscribe(notificationPoAcepted => {
+        this.ngZone.run(() => {
+
+          console.log(notificationPoAcepted, "notificacionaceptada");
+          /*         for (let Po_id of notificationPoAcepted){
+                    console.log("PO Cancelled por notificacionOffert");
+                    let temp = (this.solicitudesList.findIndex(element => element.id === Po_id ));
+                    if(temp !== -1){
+                    this.solicitudesList.splice(temp, 1);
+                    }
+                    } */
+
+        });
+
+      });
+
     }
 
     //////////////////Para Todos
 
     this.notificationError$ = this._taskOdoo.getNotificationError$();
-    this.notificationError$.subscribe(notificationError =>{
-      this.ngZone.run(()=>{
+    this.subscriptionError = this.notificationError$.subscribe(notificationError => {
+      this.ngZone.run(() => {
 
-        if(notificationError){
-        console.log("Error!!!!!!!!!!!");
+        if (notificationError) {
+          console.log("Error!!!!!!!!!!!");
         }
       });
 
@@ -150,14 +221,14 @@ export class DashboardGremioComponent implements OnInit {
 
 
     this.tab$ = this._taskOdoo.getSelectedTab$();
-    this.tab$.subscribe((tab: String) => {
+    this.subscriptionTab = this.tab$.subscribe((tab: String) => {
       this.ngZone.run(() => {
         this.tab = tab;
       });
     });
 
     this.tasksList$ = this._taskOdoo.getRequestedTaskList$();
-    this.tasksList$.subscribe((tasksList: TaskModel[]) => {
+    this.subscriptiontasksList = this.tasksList$.subscribe((tasksList: TaskModel[]) => {
       this.ngZone.run(() => {
         let temp: TaskModel[];
         temp = tasksList.filter(task => {
@@ -166,14 +237,14 @@ export class DashboardGremioComponent implements OnInit {
           } else if (this.usuario.type === "provider") { return task.state === 'no' };
         });
 
-        if (this.solicitudesList) {
+        if (typeof this.solicitudesList !== 'undefined' && this.solicitudesList.length > 0) {
           Array.prototype.push.apply(this.solicitudesList, temp);
         } else { this.solicitudesList = temp; }
 
         temp = tasksList.filter(task => {
           return task.state === 'invoiced'; //Contratadas
         });
-        if (this.contratadosList) {
+        if (typeof this.contratadosList !== 'undefined' && this.contratadosList.length > 0) {
           Array.prototype.push.apply(this.contratadosList, temp);
         } else { this.contratadosList = temp; }
 
@@ -181,17 +252,20 @@ export class DashboardGremioComponent implements OnInit {
         temp = tasksList.filter(task => {
           return task.state === ''; //Historial
         });
-        if (this.historialList) {
+        if (typeof this.historialList !== 'undefined' && this.historialList.length > 0) {
           Array.prototype.push.apply(this.historialList, temp);
         } else { this.historialList = temp; }
 
-        console.log(this.solicitudesList);
+        //  console.log(this.solicitudesList);
+        this.isLoading = false;
       });
-      if (this.inicio){
-        this.inicio = false;
-        this._taskOdoo.notificationPull();
-      }
+
+      
+
     });
   }
+
+
+
 
 }

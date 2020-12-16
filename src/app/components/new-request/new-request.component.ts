@@ -1,7 +1,8 @@
 import { Component, NgZone, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Address, TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
@@ -24,19 +25,20 @@ export class NewRequestComponent implements OnInit {
   newServiceForm: FormGroup;
   task: any;
   user: UsuarioModel = new UsuarioModel();
-  user$: Observable<UsuarioModel>;
+
+
   base64textString = null;
 
 
   selectedTab: String;
   isLoading: boolean;
-  loadImage: boolean[] = [false,false,false];
+  loadImage: boolean[] = [false, false, false];
   urlImage = 'data:type/example;base64,';
 
   imageSizeLimit: number = 12000000;
   imageSizeLimitKb = Math.round(this.imageSizeLimit / 1000);
   errorMessageImage: string = 'La imagen sobrepasa los ';
-  imageArticle = ['','',''];
+  imageArticle = ['', '', ''];
   currentIndex: number;
 
   get tituloNoValido() {
@@ -83,47 +85,60 @@ export class NewRequestComponent implements OnInit {
   notificationNewSoClient$: Observable<boolean>;
   notificationError$: Observable<boolean>;
 
+  subscriptioNewSoClient: Subscription;
+  subscriptionError: Subscription;
+
   constructor(private route: ActivatedRoute,
     private fb: FormBuilder,
     private _taskOdoo: TaskOdooService,
     private _authGuard: AuthGuardService,
     private messageService: MessageService,
     public sanitizer: DomSanitizer,
-    private ngZone: NgZone) {
+    private ngZone: NgZone,
+    private date: DatePipe) {
 
     this.serviceName = "Servicio de " + this.route.snapshot.queryParams.service;
     this.task = new TaskModel();
     this.task.type = this.serviceName;
-    if(this.route.snapshot.queryParams.service === 'Fontaneria') {
+    if (this.route.snapshot.queryParams.service === 'Fontaneria') {
       this.task.product_id = 39;
-        }
+    }
     this.selectedTab = 'Solicitudes';
     this._taskOdoo.setSelectedTab(this.selectedTab);
     this.createForm();
   }
 
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+
+    this.subscriptioNewSoClient.unsubscribe();
+    this.subscriptionError.unsubscribe();
+
+  }
+
   ngOnInit() {
 
     this.notificationNewSoClient$ = this._taskOdoo.getNotificationNewSoClient$();
-      this.notificationNewSoClient$.subscribe(notificationNewSoClient => {
-        this.ngZone.run(() => {
+    this.subscriptioNewSoClient = this.notificationNewSoClient$.subscribe(notificationNewSoClient => {
+      this.ngZone.run(() => {
 
-          if (notificationNewSoClient) {
-            console.log("Se creo correctamente la tarea");
-            this.messageService.add({severity:'success', summary: 'Completado', detail: 'Se creo correctamente la tarea.'});
+        if (notificationNewSoClient) {
+          console.log("Se creo correctamente la tarea");
+          this.messageService.add({ severity: 'success', summary: 'Completado', detail: 'Se creo correctamente la tarea.' });
 
-          }
-
-        });
+        }
 
       });
 
-      this.notificationError$ = this._taskOdoo.getNotificationError$();
-    this.notificationError$.subscribe(notificationError =>{
-      this.ngZone.run(()=>{
+    });
 
-        if(notificationError){
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error creando tarea.'});
+    this.notificationError$ = this._taskOdoo.getNotificationError$();
+    this.subscriptionError = this.notificationError$.subscribe(notificationError => {
+      this.ngZone.run(() => {
+
+        if (notificationError) {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error creando tarea.' });
         }
       });
 
@@ -137,7 +152,7 @@ export class NewRequestComponent implements OnInit {
       title: ['', [Validators.required]],
       date: [new Date(), [Validators.required]],
       time: ['', [Validators.required]],
-      description: ['',[Validators.required]],
+      description: ['', [Validators.required]],
       photos: this.fb.array([
         ['../../../../assets/img/noImage.png'],
         ['../../../../assets/img/noImage.png'],
@@ -158,19 +173,19 @@ export class NewRequestComponent implements OnInit {
   createNewService() {
     this.isLoading = true;
 
-     if (this.newServiceForm.invalid) {
+    if (this.newServiceForm.invalid) {
       return Object.values(this.newServiceForm.controls).forEach(control => {
         if (control instanceof FormGroup) {
           Object.values(control.controls).forEach(control => control.markAsTouched());
         }
         control.markAsTouched();
       })
-    } 
+    }
     // document.getElementById('close-newService-modal').click();
 
     this.task.title = this.newServiceForm.value['title'];
-    this.task.date = this.newServiceForm.value['date'];
-    this.task.time = this.newServiceForm.value['time'];
+    this.task.date = this.date.transform(this.newServiceForm.value['date'], 'yyyy-MM-dd');
+    this.task.time = this.date.transform(this.newServiceForm.value['time'], 'HH:mm:ss');
     this.task.description = this.newServiceForm.value['description'];
     this.task.address = new Address(this.newServiceForm.value['address']['calle'],
       this.newServiceForm.value['address']['numero'],
@@ -183,8 +198,10 @@ export class NewRequestComponent implements OnInit {
       'longitude');
     this.task.require_materials = Boolean(Number(this.newServiceForm.value['materials']));
     this.task.client_id = this.user.partner_id;
-    console.log(this.task.date);
+
     this._taskOdoo.newTask(this.task);
+
+    console.log(this.task, "tarea a crear");
     this.isLoading = false;
     // this.messageService.add({severity:'success', summary: 'Completado', detail: 'Se creo correctamente la tarea.'});
 
@@ -192,15 +209,15 @@ export class NewRequestComponent implements OnInit {
     this.task = new TaskModel();
   }
 
-  openFileBrowser(event,index) {
+  openFileBrowser(event, index) {
     event.preventDefault();
 
-    const element: HTMLElement = document.getElementById('filePicker'+index) as HTMLElement;
+    const element: HTMLElement = document.getElementById('filePicker' + index) as HTMLElement;
     element.click();
   }
 
-  handleFileSelect(evt,index) {
-    this.currentIndex =index;
+  handleFileSelect(evt, index) {
+    this.currentIndex = index;
     const files = evt.target.files;
     const file = files[0];
     ///data:type/example;base64,
@@ -212,7 +229,7 @@ export class NewRequestComponent implements OnInit {
         reader.readAsBinaryString(file);
       }
     } else {
-      this.messageService.add({severity:'error', summary: 'Error', detail: this.errorMessageImage + this.imageSizeLimitKb + 'kB'});
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: this.errorMessageImage + this.imageSizeLimitKb + 'kB' });
 
     }
   }

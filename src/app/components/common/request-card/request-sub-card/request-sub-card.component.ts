@@ -16,42 +16,30 @@ export class RequestSubCardComponent implements OnInit {
   @Input() mode: boolean;
   @Input() role: string;
   @Input() taskSub: TaskModel;
+  @Input() offersList: TaskModel[];
+
+
   displayModal = false;
 
   userType: string = "";
   user: UsuarioModel;
 
 
-  offersList:TaskModel[];
-  offersList$: Observable<TaskModel[]>;
 
   constructor(private router: Router,
     private _taskOdoo: TaskOdooService,
     private _authOdoo: AuthOdooService,
     private ngZone: NgZone) {
 
-    this.user = this._authOdoo.getUser();
-    this.offersList = [];
-    this.userType = this.user.type;
+
+  }
+
+  goToChat(id) {
+    this.router.navigate(['/chat/', id]);
   }
 
   ngOnInit() {
-    this.offersList$ = this._taskOdoo.getOffers$();
-    this.offersList$.subscribe(offersList =>{
 
-      this.ngZone.run( () => {
-
-        if(offersList.find(element=>element.origin))
-        {
-        let temp = (offersList.find(element=>element.origin));
-
-        if(this.taskSub.id_string === temp.origin)
-        {
-          this.offersList= offersList;
-        }
-      }
-      });
-    });
   }
 
 }

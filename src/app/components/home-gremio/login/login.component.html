@@ -1,7 +1,7 @@
 <!-- LOGIN MODAL -->
 
 <p-dialog [(visible)]="displayModal" [modal]="true" [style]="{ width: '32vw' }" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
-    <p-header> Login </p-header>
+    <p-header> Empecemos </p-header>
     <div class="spinner-container" *ngIf="isLoading">
         <div class="backdrop"></div>
 
@@ -11,9 +11,9 @@
     <div class="form-container">
         <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="login()">
             <div class="p-field">
-                <h5>USUARIO</h5>
+                <h5>CORREO</h5>
                 <input id="username" type="text" aria-describedby="username-help" placeholder="Usuario" [class.p-invalid]="usuarioNoValido" formControlName="usuario" pInputText />
-                <small *ngIf="usuarioNoValido" id="username-help" class="p-invalid">Usuario no valido.</small
+                <small *ngIf="usuarioNoValido" id="username-help" class="p-invalid">Correo no valido.</small
         >
       </div>
       <div class="p-field">

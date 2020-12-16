@@ -1,4 +1,16 @@
 .align-cards {
-    position: relative;
-    top: 100px;
+	position: relative;
+	top: 100px;
+}
+
+.spinner-container {
+	position: fixed;
+	top: 40%;
+	left: 40%;
+}
+.textSpinner {
+	position: fixed;
+	top: 15%;
+	left: 35%;
+	font-size: 50px;
 }

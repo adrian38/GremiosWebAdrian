@@ -20,14 +20,14 @@
     <div class="form-container">
         <form autocomplete="off" [formGroup]="signupForm" (ngSubmit)="signup()">
             <div class="p-field">
-                <h5>NOMBRE</h5>
+                <h5>NOMBRE y APELLIDOS</h5>
                 <input id="nombre" type="text" aria-describedby="nombre-help" placeholder="Nombre" [class.p-invalid]="nombreNoValido" formControlName="nombre" pInputText />
                 <small *ngIf="nombreNoValido" id="nombre-help" class="p-invalid">Nombre no valido.</small
         >
       </div>
       <div fxLayout="row">
         <div class="p-field" fxFlex="48">
-          <h5>USUARIO</h5>
+          <h5>CORREO</h5>
           <input
             id="username"
             type="text"

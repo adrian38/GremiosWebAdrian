@@ -11,6 +11,7 @@ let user: UsuarioModel
 
 let messagesList: MessageModel[];
 let messagesList$ = new Subject<MessageModel[]>();
+let messageSendOk$ = new Subject<MessageModel>();
 
 @Injectable({
     providedIn: 'root'
@@ -23,6 +24,10 @@ export class ChatOdooService {
 
     constructor(private _authOdoo: AuthOdooService) { }
 
+    getRequestedNotificationSendMessage$(): Observable<MessageModel>{
+        return messageSendOk$.asObservable();
+    }
+    
     setUser(usuario: UsuarioModel) {
         user = usuario;
         jaysonServer = this._authOdoo.OdooInfoJayson;
@@ -51,9 +56,9 @@ export class ChatOdooService {
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
 
                 if (err || !value) {
-                    console.log(err, "send_msg_PO");
+                    console.log(err, "Error send_msg_PO");
                 } else {
-                    console.log(value);
+                    messageSendOk$.next(message);
                 }
             })
         }
@@ -63,12 +68,74 @@ export class ChatOdooService {
             if (err || !value) {
                 console.log(err, "Error sendMessageClient");
             } else {
-                console.log(value);
                 send_msg_PO();
             }
         });
 
     }
+    requestNewMessage(idNewMessage: number[]) {
+
+        let NewMessage = function () {
+
+
+            let inParams = []
+            inParams.push([idNewMessage])
+            inParams.push([['id', 'in', idNewMessage]])
+            inParams.push(['message_type', 'model', 'res_id', 'body', 'author_id', 'author_avatar', 'display_name', 'subtype_id'])
+            let params = []
+            params.push(inParams)
+
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('purchase.order');//model
+            fparams.push('search_messages');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+
+                if (err || !value) {
+                    console.log(err, "Error NewMessage");
+                } else {
+                    //console.log(value);
+                    value = value.filter(messages => {
+                        return messages.subtype_id === false;
+                    });
+                    value.reverse();
+                    messagesList = [];
+                    for (let message of value) {
+
+                        let temp: MessageModel = 
+                        new MessageModel(message['body'].slice(3, message['body'].length - 4),
+                            message['author_id'][1],
+                            message['author_id'][0], 
+                            message['res_id']);
+                        messagesList.push(temp);
+                    }
+                    messagesList$.next(messagesList);
+                    console.log(messagesList,"nuevos mensajes");                                    
+                }
+            });
+
+        }
+
+        let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
+        client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
+
+            if (err || !value) {
+                console.log(err, "Error requestAllMessages ");
+            } else {
+                //console.log(value);
+                NewMessage();
+            }
+        });
+    }
+
+    
 
     requestAllMessages(idPurchaseOrder: number) {
         let list_msg_ids = function () {

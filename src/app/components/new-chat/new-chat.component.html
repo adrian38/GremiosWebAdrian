@@ -1,10 +1,10 @@
 <p-toast></p-toast>
-<div class="view-container" fxLayout="row" fxLayoutAlign="space-around center">
-    <div class="p-dialog left">
+<div class="view-container" fxLayout="row" fxLayoutAlign="space-around center" style="height: 100%">
+    <div class="p-dialog left" style="height: 100%; overflow-y: scroll">
         <div class="p-dialog-header">
             <h5>NUEVA SOLICITUD DE FONTANERIA</h5>
         </div>
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%;">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%">
             <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
                 <div class="p-field" fxFlex="100">
                     <h5>Fecha</h5>
@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%;">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%">
             <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
                 <div class="p-field" fxFlex="100">
                     <h5>Hora</h5>
@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%;">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%">
             <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
                 <div class="p-field" fxFlex="100">
                     <h5>Direccion</h5>
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%;">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 section-1 container" style="width: 80%">
             <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
                 <div class="p-field" fxFlex="100">
                     <h5>Descripcion</h5>
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 container" style="width: 80%;">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="t-3 container" style="width: 80%">
             <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
                 <div class="p-field" fxFlex="100">
                     <h5>Presupuesto</h5>
@@ -65,21 +65,58 @@
             <button pButton pRipple type="button" icon="pi pi-times" class="p-button-raised"></button>
         </div>
     </div>
-    <div class="p-dialog right" fxFlexAlign="stretch" fxLayout="column">
-        <div class="p-dialog-header">
-            <h5>Pedro J.</h5>
+    <div class="p-dialog right" fxFlexAlign="stretch" fxLayout="column" style="height: 100%; overflow: hidden">
+        <div class="p-dialog-header" *ngIf="user.type == 'client'">
+            <h5>{{ task.provider_name }}</h5>
+        </div>
+        <div class="p-dialog-header" *ngIf="user.type == 'provider'">
+            <h5>{{ task.client_name }}</h5>
         </div>
 
-        <div fxLayout="column" style="height: 100%;">
-
+        <div fxLayout="column" style="height: 95%">
+            <div *ngIf="user.type == 'client'" class="card-body overflow-auto">
+                <div *ngFor="let message of messagesList" [ngSwitch]="message.author">
+                    <div *ngSwitchCase="task.client_name" class="alert alert-primary col-md-8 ml-auto" role="alert">
+                        {{ message.message }}
+                    </div>
+                    <div *ngSwitchDefault class="alert alert-secondary col-md-8" role="alert">
+                        {{ message.message }}
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="user.type == 'provider'" class="card-body overflow-auto">
+                <div *ngFor="let message of messagesList" [ngSwitch]="message.author">
+                    <div *ngSwitchCase="task.provider_name" class="alert alert-primary col-md-8 ml-auto" role="alert">
+                        {{ message.message }}
+                    </div>
+                    <div *ngSwitchDefault class="alert alert-secondary col-md-8" role="alert">
+                        {{ message.message }}
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="card-footer send-area">
+                <div class="input-group" style="height: min-content">
+                    <input [(ngModel)]="message.message" height="30px" type="text" class="form-control input-sendM" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                    <div class="input-group-append btn-send">
+                        <button (click)="sendMessage()" class="btn btn-secondary btn-send" type="button" id="button-addon2">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+                    </div>
+                </div>
+            </div> -->
         </div>
-        <div class="card-footer send-area" style="border-radius: 0 0 30px 30px;">
-            <div class="input-group" style="height: min-content;">
-                <input [(ngModel)]="message.message" height="30px" type="text" class="form-control input-sendM" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <div class="card-footer send-area" style="
+        border-radius: 0 0 30px 30px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+      ">
+            <div class="input-group" style="height: min-content">
+                <input [(ngModel)]="message.message" height="30px" type="text" class="form-control input-sendM" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2" />
                 <div class="input-group-append btn-send">
                     <button (click)="sendMessage()" class="btn btn-secondary btn-send" type="button" id="button-addon2">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+            <i class="fas fa-paper-plane"></i>
+          </button>
                 </div>
             </div>
         </div>

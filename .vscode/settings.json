@@ -1,3 +1,4 @@
 {
-    "typescript.tsdk": "c:\\Users\\Erne\\Documents\\Work\\Angular\\WebGremios\\node_modules\\typescript\\lib"
+    "typescript.tsdk": "c:\\Users\\Erne\\Documents\\Work\\Angular\\WebGremios\\node_modules\\typescript\\lib",
+     "editor.formatOnSave": true,///for prettier
 }

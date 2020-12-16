@@ -35,6 +35,7 @@ export class UsuarioModel{
     id:number;
     realname:string;
     address:Address;
+    date:string;
 
     constructor(){
       this.username = "";
@@ -47,5 +48,6 @@ export class UsuarioModel{
       this.phone = 0;
       this.id = 0;
       this.realname  = "";
+      this.date = "";
     }
 }

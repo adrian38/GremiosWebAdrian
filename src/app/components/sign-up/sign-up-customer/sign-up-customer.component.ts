@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, NgZone, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { Router } from '@angular/router';
+import { SignUpOdooService } from 'src/app/services/signup-odoo.service';
 
 @Component({
   selector: 'app-sign-up-customer',
@@ -16,7 +17,8 @@ export class SignUpCustomerComponent implements OnInit {
 
   connected$: Observable<boolean>;
 
-  usuario:UsuarioModel;
+  usuario:UsuarioModel = new UsuarioModel;
+  
   usuario$:Observable<UsuarioModel>
 
   alerta:boolean=false;
@@ -44,12 +46,42 @@ export class SignUpCustomerComponent implements OnInit {
     return this.signupForm.get('password').invalid && this.signupForm.get('password').touched;
   }
 
-  constructor(private fb:FormBuilder, private router: Router) {
+  notificationOK$: Observable<boolean>;
+  notificationError$: Observable<boolean>;
+
+  constructor(private fb:FormBuilder,
+     private router: Router,
+     private _signupOdoo: SignUpOdooService,
+     private ngZone: NgZone) {
    }
 
   ngOnInit() {
     this.createForms();
     this.isLoading =false;
+
+    this.notificationError$ = this._signupOdoo.getNotificationError$();
+      this.notificationError$.subscribe(notificationError =>{
+      this.ngZone.run(()=>{
+
+        if(notificationError){
+          console.log("Error creando Usuario");
+        }
+      });
+
+    });
+
+    this.notificationOK$ = this._signupOdoo.getNotificationOK$();
+      this.notificationOK$.subscribe(notificationOK => {
+        this.ngZone.run(() => {
+
+          if (notificationOK) {
+            
+            console.log("Usuario Creado");
+          }
+
+        });
+
+      });
 
   }
 
@@ -60,11 +92,33 @@ export class SignUpCustomerComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       date: ['', [Validators.required]],
       phone: ['', [Validators.required]],
-      address: ['', [Validators.required]]
+      address: ['', [Validators.required]]/////Cambiar por todos los demas campos
     });
   }
 
   signup(){
+
+    /* if (this.signupForm.invalid) {
+      return Object.values(this.signupForm.controls).forEach(control => {
+        if (control instanceof FormGroup) {
+          Object.values(control.controls).forEach(control => control.markAsTouched());
+        }
+        control.markAsTouched();
+      })
+    } */
+
+    this.usuario.realname = this.signupForm.value['nombre'];
+    this.usuario.username = this.signupForm.value['usuario'];
+    this.usuario.password = this.signupForm.value['password'];
+    this.usuario.date = this.signupForm.value['date'];
+    this.usuario.phone = this.signupForm.value['phone'];
+    this.usuario.type = 'client';
+    
+        
+    this._signupOdoo.newUser(this.usuario);
+    this.createForms();
+    this.usuario = new UsuarioModel; 
+    
 
   }
 

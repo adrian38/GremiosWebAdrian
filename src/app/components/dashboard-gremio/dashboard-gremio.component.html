@@ -1,3 +1,13 @@
+
+
+<div class="spinner-container" *ngIf="isLoading">
+    
+    <div><span class="textSpinner">
+        Cargando Solicitudes ....
+    </span></div>
+    
+    <p-progressSpinner [style]="{ width: '250px', height: '250px' }"></p-progressSpinner>
+</div>
 <div *ngIf="activateTab == 'request'" class="align-cards">
     <app-request-card *ngFor="let task of solicitudesList; let i= index" [task]="task" [role]='usuario.type'></app-request-card>
 </div>
