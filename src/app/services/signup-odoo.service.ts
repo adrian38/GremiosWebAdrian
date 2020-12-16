@@ -3,8 +3,8 @@ import { UsuarioModel } from '../models/usuario.model'
 import { Observable, Subject } from 'rxjs';
 let jayson = require('../../../node_modules/jayson/lib/client/');
 
-let host = '192.168.0.106';
-//let host = 'todoenunapp.com';
+// let host = '192.168.0.106';
+let host = 'todoenunapp.com';
 let port = 8069;
 let db = 'demo';
 let user = 'root';
@@ -24,11 +24,11 @@ export class SignUpOdooService {
 
   getNotificationError$(): Observable<boolean> {
     return notificationError$.asObservable();
-}
+  }
 
-getNotificationOK$(): Observable<boolean> {
-  return notificationOK$.asObservable();
-}
+  getNotificationOK$(): Observable<boolean> {
+    return notificationOK$.asObservable();
+  }
 
   newUser(usuario: UsuarioModel) {
 
@@ -168,5 +168,5 @@ getNotificationOK$(): Observable<boolean> {
   }
 
 
- 
+
 }

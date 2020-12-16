@@ -3,9 +3,9 @@ import { UsuarioModel } from '../models/usuario.model'
 import { Observable, Subject } from 'rxjs'
 let jayson = require('../../../node_modules/jayson/lib/client/');
 let jaysonServer = {
-  host: '192.168.0.106',
+  // host: '192.168.0.106',
   //host: '192.168.43.155',
-  //host: 'todoenunapp.com',
+  host: 'todoenunapp.com',
   port: '8069',
   db: 'demo',
   username: '',
@@ -75,7 +75,7 @@ export class AuthOdooService {
                         {
                           usuario.type = "client"
                           console.log("cliente");
-          
+
                         } else if(value[0].classification === "vendor")
                         {
                           usuario.type = "provider"

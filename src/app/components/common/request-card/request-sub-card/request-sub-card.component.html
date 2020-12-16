@@ -18,18 +18,42 @@
 </p-tabView>
 <p-tabView *ngIf="!mode && role == 'provider'">
     <p-tabPanel header="SERVICIO">
-        <div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center" style="background-color: white;">
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
-                <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
-                padding: 10px">Mano de Obra</h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
+        <div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center" style="background-color: white">
+            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          padding: 0;
+        ">
+                <h5 class="name" fxFlex="50" style="
+            color: black;
+            text-align: center;
+            border-right: 2px solid black;
+            height: 50px;
+            padding: 10px;
+          ">
+                    Mano de Obra
+                </h5>
+                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
             </div>
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
-                <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
-                padding: 10px">Materiales</h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
+            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          padding: 0;
+        ">
+                <h5 class="name" fxFlex="50" style="
+            color: black;
+            text-align: center;
+            border-right: 2px solid black;
+            height: 50px;
+            padding: 10px;
+          ">
+                    Materiales
+                </h5>
+                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
             </div>
-           <!--  <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
+            <!--  <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
                 <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
                 padding: 10px">Impuestos (21%)</h5>
                 <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
@@ -42,38 +66,82 @@
 
             <div class="border-bottom-mod"></div>
             <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5">ENVIAR</div>
-
         </div>
-
     </p-tabPanel>
     <p-tabPanel header="PRECIO">
-        <div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center" style="background-color: white;">
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
-                <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
-                padding: 10px">Mano de Obra</h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
+        <div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center" style="background-color: white">
+            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          padding: 0;
+        ">
+                <h5 class="name" fxFlex="50" style="
+            color: black;
+            text-align: center;
+            border-right: 2px solid black;
+            height: 50px;
+            padding: 10px;
+          ">
+                    Mano de Obra
+                </h5>
+                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
             </div>
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
-                <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
-                padding: 10px">Materiales</h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
+            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          padding: 0;
+        ">
+                <h5 class="name" fxFlex="50" style="
+            color: black;
+            text-align: center;
+            border-right: 2px solid black;
+            height: 50px;
+            padding: 10px;
+          ">
+                    Materiales
+                </h5>
+                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
             </div>
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
-                <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
-                padding: 10px">Impuestos (21%)</h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
+            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          padding: 0;
+        ">
+                <h5 class="name" fxFlex="50" style="
+            color: black;
+            text-align: center;
+            border-right: 2px solid black;
+            height: 50px;
+            padding: 10px;
+          ">
+                    Impuestos (21%)
+                </h5>
+                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
             </div>
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
-                <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
-                padding: 10px">Impuesto (Uso de la plataforma)</h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
+            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          padding: 0;
+        ">
+                <h5 class="name" fxFlex="50" style="
+            color: black;
+            text-align: center;
+            border-right: 2px solid black;
+            height: 50px;
+            padding: 10px;
+          ">
+                    Impuesto (Uso de la plataforma)
+                </h5>
+                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
             </div>
 
             <div class="border-bottom-mod"></div>
             <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5">ENVIAR</div>
-
         </div>
-
     </p-tabPanel>
 </p-tabView>
 
@@ -86,7 +154,7 @@
             {{ offer.provider_name }}
         </h5>
         <p-rating [ngModel]="3" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center" fxFlexOffset="10" class="mb-2"></p-rating>
-        <div class="chat-button" fxLayout="column" fxFlexOffset="10" fxLayoutAlign="space-around center">
+        <div class="chat-button" fxLayout="column" fxFlexOffset="10" fxLayoutAlign="space-around center" (click)="goToChat(offer.id)">
             <i class="far fa-comment-alt"></i>
             <span>Chat</span>
         </div>

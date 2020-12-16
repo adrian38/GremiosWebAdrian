@@ -58,7 +58,7 @@ import { RequestCardComponent } from './components/common/request-card/request-c
 import { RequestSubCardComponent } from './components/common/request-card/request-sub-card/request-sub-card.component';
 import { MessageService } from 'primeng/api';
 import { NgxImageCompressService } from 'ngx-image-compress';
-
+import { NewChatComponent } from './components/new-chat/new-chat.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +79,8 @@ import { NgxImageCompressService } from 'ngx-image-compress';
     HireCardComponent,
     HireSubCardComponent,
     HistoryCardComponent,
-    HistorySubCardComponent
+    HistorySubCardComponent,
+    NewChatComponent
 
 
   ],

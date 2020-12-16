@@ -25,13 +25,17 @@ export class RequestSubCardComponent implements OnInit {
   user: UsuarioModel;
 
 
-  
+
   constructor(private router: Router,
     private _taskOdoo: TaskOdooService,
     private _authOdoo: AuthOdooService,
     private ngZone: NgZone) {
 
 
+  }
+
+  goToChat(id) {
+    this.router.navigate(['/chat/', id]);
   }
 
   ngOnInit() {
