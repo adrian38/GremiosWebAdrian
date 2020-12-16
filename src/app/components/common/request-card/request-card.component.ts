@@ -102,6 +102,19 @@ export class RequestCardComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.userType === 'client') {
+
+      this.subscriptionOffersList.unsubscribe();
+      this.subscriptionOffertCancelled.unsubscribe();
+      this.subscriptionNewOffertSuplier.unsubscribe();
+
+    }
+
+  }
+
   selectTypeCancel() {
     if (this.userType === "client") {
       this.cancelSOclient()
