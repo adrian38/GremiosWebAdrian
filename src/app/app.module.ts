@@ -27,6 +27,7 @@ import { registerLocaleData } from '@angular/common';
 registerLocaleData(localeEsAr, 'es')
 
 
+
 // Services
 import { AuthOdooService } from './services/auth-odoo.service';
 import { AuthGuardService } from './services/auth-guard.service';
@@ -89,6 +90,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
     BrowserAnimationsModule,
     FlexLayoutModule,
     FieldsetModule,
+
 
 
     app_routing,
