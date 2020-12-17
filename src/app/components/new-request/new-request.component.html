@@ -169,6 +169,7 @@
               <div fxFlex="100" fxFlexAlign="end" class="autofill-btn">
                 <p-toggleButton
                   [(ngModel)]="Autofill"
+                  [ngModelOptions]="{standalone: true}"
                   onLabel="Manual"
                   offLabel="Autocompletar"
                   onIcon="pi pi-pencil"
@@ -184,6 +185,7 @@
                   pInputText
                   placeholder="No. de calle"
                   formControlName="calle"
+                  [(ngModel)]="myAddress.street"
                 />
                 <small class="p-invalid" *ngIf="calleNoValido"
                   >*Este campo es requerido.</small
@@ -197,6 +199,7 @@
                   pInputText
                   placeholder="Piso"
                   formControlName="piso"
+                  [(ngModel)]="myAddress.floor"
                 />
                 <small class="p-invalid" *ngIf="pisoNoValido"
                   >*Este campo es requerido.</small
@@ -211,6 +214,7 @@
                   pInputText
                   placeholder="Numero"
                   formControlName="numero"
+                  [(ngModel)]="myAddress.number"
                 />
                 <small class="p-invalid" *ngIf="numeroNoValido"
                   >*Este campo es requerido.</small
@@ -224,6 +228,7 @@
                   pInputText
                   placeholder="Puerta"
                   formControlName="puerta"
+                  [(ngModel)]="myAddress.door"
                 />
                 <small class="p-invalid" *ngIf="puertaNoValido"
                   >*Este campo es requerido.</small
@@ -237,6 +242,7 @@
                   pInputText
                   placeholder="Portal"
                   formControlName="portal"
+                  [(ngModel)]="myAddress.portal"
                 />
                 <small class="p-invalid" *ngIf="portalNoValido"
                   >*Este campo es requerido.</small
@@ -250,6 +256,7 @@
                   pInputText
                   placeholder="Cod. Postal"
                   formControlName="cp"
+                  [(ngModel)]="myAddress.cp"
                 />
                 <small class="p-invalid" *ngIf="cpNoValido"
                   >*Este campo es requerido.</small
@@ -263,6 +270,7 @@
                   pInputText
                   placeholder="Escaleras"
                   formControlName="escalera"
+                  [(ngModel)]="myAddress.stair"
                 />
                 <small class="p-invalid" *ngIf="escaleraNoValido"
                   >*Este campo es requerido.</small

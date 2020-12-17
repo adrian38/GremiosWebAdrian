@@ -10,7 +10,7 @@ import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { MessageService } from 'primeng/api';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HexBase64BinaryEncoding } from 'crypto';
+
 
 @Component({
   selector: 'app-new-request',
@@ -27,6 +27,7 @@ export class NewRequestComponent implements OnInit {
   newServiceForm: FormGroup;
   task: any;
   user: UsuarioModel = new UsuarioModel();
+  myAddress = new Address('', '', '', '', '', '', '', '', '');
 
   Autofill: boolean = false;
 
@@ -207,8 +208,8 @@ export class NewRequestComponent implements OnInit {
       this.newServiceForm.value['address']['piso'],
       this.newServiceForm.value['address']['puerta'],
       this.newServiceForm.value['address']['cp'],
-      'latitude',
-      'longitude');
+      '',
+      '');
     this.task.require_materials = Boolean(Number(this.newServiceForm.value['materials']));
     this.task.client_id = this.user.partner_id;
 
@@ -267,12 +268,16 @@ export class NewRequestComponent implements OnInit {
   }
 
   cancelNewService() {
-    this.router.navigate(['/dashboard?tab=request'])
+    this.router.navigate(['/dashboard'], { queryParams: { tab: 'request' } })
   }
 
   autofillChange() {
     if (this.Autofill) {
+      if (this.user.address)
+        this.myAddress = this.user.address;
 
+    } else {
+      this.myAddress = new Address('', '', '', '', '', '', '', '', '');
     }
   }
 }

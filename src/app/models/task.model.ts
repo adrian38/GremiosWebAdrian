@@ -9,8 +9,8 @@ export class Address {
     latitude: string;
     longitude: string;
 
-    constructor(street: string, number: string, portal: string, stair: string, floor: string,
-        door: string, cp: string, latitude: string, longitude: string) {
+    constructor(street: '', number: '', portal: '', stair: '', floor: '',
+        door: '', cp: '', latitude: '', longitude: '') {
         this.street = street;
         this.number = number;
         this.portal = portal;

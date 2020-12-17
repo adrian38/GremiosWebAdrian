@@ -933,6 +933,8 @@ export class TaskOdooService {
 
     requestTaskListClient() {
 
+        console.log("entre a requestTaskListClient");
+
         let tasksList = [];
         let SO_id = [];
 
@@ -1040,7 +1042,7 @@ export class TaskOdooService {
                 if (err) {
                     console.log(err || !value, "get_so_list");
                 } else {
-                    //console.log(value);
+                    console.log(value);
                     SO_id = [];
                     for (let order of value) {
                         let temp = new TaskModel();
@@ -1069,7 +1071,11 @@ export class TaskOdooService {
                         tasksList.push(temp);
                     }
                     if (SO_id.length) {
+
                         get_so_type();
+                    } else {
+
+                        tasksList$.next(tasksList);
                     }
                 }
             });
@@ -1082,6 +1088,7 @@ export class TaskOdooService {
                 console.log(err, "requestTaskListClient");
 
             } else {
+                console.log("me conecte")
                 get_so_list(user.partner_id);
             }
         });
@@ -1238,7 +1245,15 @@ export class TaskOdooService {
                         tasksList.push(temp);
                     }
 
-                    get_Res_Id();
+                    if (SO_origin.length) {
+
+                        get_Res_Id();
+
+                    } else {
+                        tasksList$.next(tasksList);
+                    }
+
+
                 }
             })
         }

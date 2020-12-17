@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, ViewEncapsulation, NgZone } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
@@ -19,6 +19,7 @@ export class NavbarGremioComponent implements OnInit {
   task: TaskModel;
   user: UsuarioModel = new UsuarioModel();
   user$: Observable<UsuarioModel>;
+  subscriptionUsuario: Subscription;
 
   selectedService: any;
   selectedTab: String;
@@ -44,9 +45,17 @@ export class NavbarGremioComponent implements OnInit {
 
   }
 
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+
+    this.subscriptionUsuario.unsubscribe();
+
+  }
+
   ngOnInit() {
     this.user$ = this._authOdoo.getUser$();
-    this.user$.subscribe(user => {
+    this.subscriptionUsuario = this.user$.subscribe(user => {
       this.ngZone.run(() => {
         this.user = user;
         console.log(this.user);

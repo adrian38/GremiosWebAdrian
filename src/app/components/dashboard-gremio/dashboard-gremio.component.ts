@@ -60,6 +60,7 @@ export class DashboardGremioComponent implements OnInit {
 
     if (this.usuario.type == "client") {
       this._taskOdoo.requestTaskListClient();
+      console.log("es un cliente");
 
 
     } else if (this.usuario.type == "provider") {
@@ -260,7 +261,7 @@ export class DashboardGremioComponent implements OnInit {
         this.isLoading = false;
       });
 
-      
+
 
     });
   }
