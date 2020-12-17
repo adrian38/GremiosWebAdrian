@@ -58,6 +58,8 @@ import { RequestSubCardComponent } from './components/common/request-card/reques
 import { MessageService } from 'primeng/api';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { NewChatComponent } from './components/new-chat/new-chat.component';
+import { TooltipModule } from 'primeng/tooltip';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @NgModule({
   declarations: [
@@ -89,8 +91,8 @@ import { NewChatComponent } from './components/new-chat/new-chat.component';
     BrowserAnimationsModule,
     FlexLayoutModule,
     FieldsetModule,
-
-
+    TooltipModule,
+    ToggleButtonModule,
 
     app_routing,
 

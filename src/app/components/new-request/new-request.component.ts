@@ -28,6 +28,9 @@ export class NewRequestComponent implements OnInit {
   task: any;
   user: UsuarioModel = new UsuarioModel();
 
+  Autofill: boolean = false;
+
+
   base64textString = null;
 
 
@@ -160,8 +163,8 @@ export class NewRequestComponent implements OnInit {
   createForm() {
     this.newServiceForm = this.fb.group({
       title: ['', [Validators.required]],
-      date: [new Date(), [Validators.required]],
-      time: ['', [Validators.required]],
+      date: [null, [Validators.required]],
+      time: [null, [Validators.required]],
       description: ['', [Validators.required]],
       photos: this.fb.array([
         ['../../../../assets/img/noImage.png'],
@@ -263,4 +266,13 @@ export class NewRequestComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustStyle(`url(${url})`);
   }
 
+  cancelNewService() {
+    this.router.navigate(['/dashboard?tab=request'])
+  }
+
+  autofillChange() {
+    if (this.Autofill) {
+
+    }
+  }
 }
