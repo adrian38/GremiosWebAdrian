@@ -1,14 +1,16 @@
 import { Component, NgZone, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Address, TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
+import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { MessageService } from 'primeng/api';
 import { DomSanitizer } from '@angular/platform-browser';
+import { HexBase64BinaryEncoding } from 'crypto';
 
 @Component({
   selector: 'app-new-request',
@@ -25,6 +27,7 @@ export class NewRequestComponent implements OnInit {
   newServiceForm: FormGroup;
   task: any;
   user: UsuarioModel = new UsuarioModel();
+
 
 
   base64textString = null;
@@ -89,14 +92,17 @@ export class NewRequestComponent implements OnInit {
   subscriptionError: Subscription;
 
   constructor(private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder,
     private _taskOdoo: TaskOdooService,
     private _authGuard: AuthGuardService,
+    private _authOdoo: AuthOdooService,
     private messageService: MessageService,
     public sanitizer: DomSanitizer,
     private ngZone: NgZone,
     private date: DatePipe) {
 
+    this.user = this._authOdoo.getUser();
     this.serviceName = "Servicio de " + this.route.snapshot.queryParams.service;
     this.task = new TaskModel();
     this.task.type = this.serviceName;
@@ -127,6 +133,8 @@ export class NewRequestComponent implements OnInit {
           console.log("Se creo correctamente la tarea");
           this.messageService.add({ severity: 'success', summary: 'Completado', detail: 'Se creo correctamente la tarea.' });
 
+          setTimeout(() => { this.backdasboard() }, 2000);
+
         }
 
       });
@@ -145,6 +153,10 @@ export class NewRequestComponent implements OnInit {
     });
 
 
+  }
+
+  backdasboard() {
+    this.router.navigate(['/dashboard'], { queryParams: { tab: 'request' } });
   }
 
   createForm() {
@@ -237,6 +249,8 @@ export class NewRequestComponent implements OnInit {
   async handleReaderLoaded(readerEvt) {
     const binaryString = readerEvt.target.result;
     this.base64textString = btoa(binaryString);
+    this.task.photoNewTaskArray[this.currentIndex] = this.base64textString;
+    //console.log(this.task.photoNewTaskArray);
     this.imageArticle[this.currentIndex] = this.urlImage + this.base64textString;
     try {
       this.loadImage[this.currentIndex] = true;

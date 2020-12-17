@@ -362,6 +362,76 @@ export class TaskOdooService {
     //////// De la forma de Michel
     newTask(task: TaskModel) {
 
+        let confirmService = function (SO_id: number) {
+            let inParams = []
+            inParams.push(SO_id)
+            let params = []
+            params.push(inParams)
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('sale.order');//model
+            fparams.push('action_confirm');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+                if (err || !value) {
+                    console.log(err, "Error Confirmar Servicio Creado");
+                    notificationError$.next(true);
+                } else {
+                    console.log(value, "Confirmar Servicio Creado");
+                    notificationNewSoClient$.next(true);
+
+                }
+            });
+        }
+
+        let create_SO_attachment = function (SO_id: number, count: string) {
+
+            console.log(task.photoNewTaskArray[0], "foto");
+
+            let attachement = {
+                'name': 'photoSolicitud_' + count + '.jpg',
+                'datas': task.photoNewTaskArray[parseInt(count)],
+                'type': 'binary',
+                'description': 'photoSolicitud_' + count.toString + '.jpg',
+                'res_model': 'purchase.order',
+                'res_id': SO_id,
+            };
+            let inParams = [];
+            inParams.push(attachement);
+
+            let params = [];
+            params.push(inParams)
+
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('ir.attachment');//model
+            fparams.push('create');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+
+                if (err || !value) {
+                    console.log(err, "Error create_SO_attachment");
+
+                } else {
+                    console.log(value, "create_SO_attachment");
+
+
+                }
+            });
+        }
+
         let createService = function () {
 
             let SO = {
@@ -410,35 +480,17 @@ export class TaskOdooService {
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
 
                 if (err || !value) {
-                    console.log(err, "createService");
+
+                    console.log(err, " Error createService");
 
                 } else {
                     console.log(value, "createService");
-                    inParams = []
-                    inParams.push(value)
-                    params = []
-                    params.push(inParams)
-                    let fparams = [];
-                    fparams.push(jaysonServer.db);
-                    fparams.push(user.id);
-                    fparams.push(jaysonServer.password);
-                    fparams.push('sale.order');//model
-                    fparams.push('action_confirm');//method
 
-                    for (let i = 0; i < params.length; i++) {
-                        fparams.push(params[i]);
+                    for (var index in task.photoNewTaskArray) {
+                        create_SO_attachment(value, index);
+
                     }
-
-                    client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-                        if (err || !value) {
-                            console.log(err, "Error Confirmar Servicio Creado");
-                            notificationError$.next(true);
-                        } else {
-                            console.log(value, "Confirmar Servicio Creado");
-                            notificationNewSoClient$.next(true);
-
-                        }
-                    });
+                    confirmService(value);
                 }
             });
         }
@@ -447,6 +499,7 @@ export class TaskOdooService {
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
 
             if (err || !value) {
+                notificationError$.next(true);
                 console.log(err, "newTask");
 
             } else {
@@ -1121,14 +1174,14 @@ export class TaskOdooService {
                     if (typeof offersList !== 'undefined' && offersList.length > 0) {
                         //console.log(id_po_offert,"lo q se esta mandando oferta eliminada")   
                         offersList$.next(offersList);
-                    }else{
+                    } else {
                         let temp = new TaskModel();
                         temp.origin = id;
                         temp.budget = 0;
-                        offersList[0]= temp;
+                        offersList[0] = temp;
                         offersList$.next(offersList);
                     }
-                    
+
                 }
             })
         }

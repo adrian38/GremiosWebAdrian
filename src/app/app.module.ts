@@ -36,7 +36,6 @@ import { SignUpOdooService } from './services/signup-odoo.service';
 
 // Components
 import { AppComponent } from './app.component';
-import { ChatComponent } from './components/chat/chat.component';
 import { LoginComponent } from './components/home-gremio/login/login.component';
 import { HomeGremioComponent } from './components/home-gremio/home-gremio.component';
 
@@ -64,7 +63,6 @@ import { NewChatComponent } from './components/new-chat/new-chat.component';
   declarations: [
     AppComponent,
     NavbarGremioComponent,
-    ChatComponent,
     LoginComponent,
     HomeGremioComponent,
     PlaceHolderDirective,
