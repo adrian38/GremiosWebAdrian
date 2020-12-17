@@ -6,7 +6,7 @@ import { TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
-declare const $:any;
+declare const $: any;
 
 @Component({
   selector: 'app-navbar-gremio',
@@ -16,7 +16,7 @@ declare const $:any;
 })
 export class NavbarGremioComponent implements OnInit {
 
-  task:TaskModel;
+  task: TaskModel;
   user: UsuarioModel = new UsuarioModel();
   user$: Observable<UsuarioModel>;
 
@@ -26,10 +26,10 @@ export class NavbarGremioComponent implements OnInit {
 
   services = [
     {
-      name:'Fontaneria'
+      name: 'Fontaneria'
     },
     {
-      name:'Electricidad'
+      name: 'Electricidad'
     }
   ];
   constructor(private router: Router,
@@ -53,7 +53,7 @@ export class NavbarGremioComponent implements OnInit {
       });
 
     });
-    this.route.queryParams.subscribe(params =>{
+    this.route.queryParams.subscribe(params => {
       this.tabActive = params.tab;
     })
   }
@@ -63,7 +63,9 @@ export class NavbarGremioComponent implements OnInit {
     // return true;
   }
 
-  emitRequest(){
-    this.router.navigate(['/new-request'],{queryParams: {service: this.selectedService.name}})
+  emitRequest() {
+
+    this.router.navigate(['/new-request'], { queryParams: { service: this.selectedService.name } })
+    this.selectedService = null;
   }
 }

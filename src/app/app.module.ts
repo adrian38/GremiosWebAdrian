@@ -27,6 +27,7 @@ import { registerLocaleData } from '@angular/common';
 registerLocaleData(localeEsAr, 'es')
 
 
+
 // Services
 import { AuthOdooService } from './services/auth-odoo.service';
 import { AuthGuardService } from './services/auth-guard.service';
@@ -35,7 +36,6 @@ import { SignUpOdooService } from './services/signup-odoo.service';
 
 // Components
 import { AppComponent } from './app.component';
-import { ChatComponent } from './components/chat/chat.component';
 import { LoginComponent } from './components/home-gremio/login/login.component';
 import { HomeGremioComponent } from './components/home-gremio/home-gremio.component';
 
@@ -58,12 +58,13 @@ import { RequestSubCardComponent } from './components/common/request-card/reques
 import { MessageService } from 'primeng/api';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { NewChatComponent } from './components/new-chat/new-chat.component';
+import { TooltipModule } from 'primeng/tooltip';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarGremioComponent,
-    ChatComponent,
     LoginComponent,
     HomeGremioComponent,
     PlaceHolderDirective,
@@ -90,7 +91,8 @@ import { NewChatComponent } from './components/new-chat/new-chat.component';
     BrowserAnimationsModule,
     FlexLayoutModule,
     FieldsetModule,
-
+    TooltipModule,
+    ToggleButtonModule,
 
     app_routing,
 

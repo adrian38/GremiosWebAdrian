@@ -41,6 +41,7 @@ export class RequestCardComponent implements OnInit {
     this.user = this._authOdoo.getUser();
     this.offersList = [];
     this.userType = this.user.type;
+
   }
 
 
@@ -100,6 +101,8 @@ export class RequestCardComponent implements OnInit {
         });
       });
     }
+
+    console.log(this.task);
   }
 
   ngOnDestroy(): void {
