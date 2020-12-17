@@ -28,8 +28,6 @@ export class NewRequestComponent implements OnInit {
   task: any;
   user: UsuarioModel = new UsuarioModel();
 
-
-
   base64textString = null;
 
 

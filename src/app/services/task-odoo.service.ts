@@ -936,8 +936,47 @@ export class TaskOdooService {
         let tasksList = [];
         let SO_id = [];
 
-        let get_so_type = function () {
+        let get_photo_so = function () {
 
+            let inParams = [];
+            inParams.push([['res_id', 'in', SO_id]]);
+            inParams.push(['name', 'res_id', 'res_model', 'url', 'datas', 'mimetype', 'file_size']);
+
+            let params = []
+            params.push(inParams)
+
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('ir.attachment');//model
+            fparams.push('search_read');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+                if (err) {
+                    console.log(err, "Error get_photo_so");
+                } else {
+
+                    for (let resId of value) {
+                        for (let task of tasksList) {
+                            if (task.id === resId.res_id) {
+                                task.photoNewTaskArray.push(resId.datas);
+                            }
+                        }
+
+                    }
+
+                    tasksList$.next(tasksList);
+                }
+
+            });
+
+        }
+
+        let get_so_type = function () {
 
             let inParams = [];
             inParams.push([['order_id', 'in', SO_id]]);
@@ -958,8 +997,8 @@ export class TaskOdooService {
             }
 
             client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
-                if (err) {
-                    console.log(err || !value, "get_so_list");
+                if (err || !value) {
+                    console.log(err, "Error get_so_list");
                 } else {
                     // console.log(value);
 
@@ -967,8 +1006,7 @@ export class TaskOdooService {
                         let temp = (value.find(element => element.order_id[0] === task.id));
                         task.type = temp.product_id[1];
                     }
-
-                    tasksList$.next(tasksList);
+                    get_photo_so();
 
                 }
             });
@@ -1003,7 +1041,7 @@ export class TaskOdooService {
                     console.log(err || !value, "get_so_list");
                 } else {
                     //console.log(value);
-
+                    SO_id = [];
                     for (let order of value) {
                         let temp = new TaskModel();
                         SO_id.push(order['id']);
@@ -1050,13 +1088,104 @@ export class TaskOdooService {
     }
 
     requestTaskListProvider() {
+
+        let SO_origin = [];
+        let SO_id = [];
+
+        let get_photo_so = function () {
+
+            let inParams = [];
+            inParams.push([['res_id', 'in', SO_id]]);
+            inParams.push(['name', 'res_id', 'res_model', 'url', 'datas', 'mimetype', 'file_size']);
+
+            let params = []
+            params.push(inParams)
+
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('ir.attachment');//model
+            fparams.push('search_read');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+                if (err) {
+                    console.log(err, "Error get_photo_so");
+                } else {
+
+                    console.log(value);
+                    if (value) {
+                        for (let resId of value) {
+                            for (let task of tasksList) {
+                                if (task.origin_id === resId.res_id) {
+                                    task.photoNewTaskArray.push(resId.datas);
+                                }
+                            }
+
+                        }
+                    }
+
+                    tasksList$.next(tasksList);
+                }
+
+            });
+
+        }
+
+
+        let get_Res_Id = function () {
+
+
+            let inParams = [];
+            inParams.push([['name', 'in', SO_origin]]);
+            inParams.push(['id', 'name']);
+
+            let params = []
+            params.push(inParams)
+
+            let fparams = [];
+            fparams.push(jaysonServer.db);
+            fparams.push(user.id);
+            fparams.push(jaysonServer.password);
+            fparams.push('sale.order');//model
+            fparams.push('search_read');//method
+
+            for (let i = 0; i < params.length; i++) {
+                fparams.push(params[i]);
+            }
+
+            client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function (err, error, value) {
+                if (err || !value) {
+                    console.log(err, "Error get_Res_Id");
+                } else {
+                    SO_id = [];
+                    for (let id_value of value) {
+                        SO_id.push(id_value.id);
+                    }
+                    for (let task of tasksList) {
+                        let temp = (value.find(element => element.name === task.origin));
+                        if (temp) {
+                            task.origin_id = temp.id;
+                        }
+                    }
+
+                    get_photo_so();
+                }
+            });
+
+        }
+
+
         let get_po_list = function (partnerId) {
             let inParams = []
             inParams.push([['partner_id', '=', partnerId]])
             inParams.push(['state', 'product_id', 'note', 'user_id', 'partner_id', 'name', 'date_order', 'commitment_date', 'invoice_status', 'title', 'note', 'require_materials',
                 'commitment_date', 'address_street', 'address_floor', 'address_portal',
                 'address_number', 'address_door', 'address_stairs', 'address_zip_code',
-                'address_latitude', 'address_longitude'])
+                'address_latitude', 'address_longitude', 'origin', 'state'])
             let params = []
             params.push(inParams)
 
@@ -1077,9 +1206,12 @@ export class TaskOdooService {
                 } else {
                     console.log(value);
                     tasksList = [];
+                    SO_origin = [];
                     for (let task of value) {
                         let temp = new TaskModel();
                         temp.offer_send = task['state'];
+                        temp.origin = task['origin'];
+                        SO_origin.push(task['origin']);
                         temp.type = task['product_id'][1];
                         temp.description = task['note'];
                         temp.client_id = task['user_id'][0];
@@ -1105,7 +1237,8 @@ export class TaskOdooService {
 
                         tasksList.push(temp);
                     }
-                    tasksList$.next(tasksList);
+
+                    get_Res_Id();
                 }
             })
         }

@@ -45,12 +45,15 @@ export class TaskModel {
     offer_send: String;
     product_id: number;
     photoNewTaskArray: Array<any>;
+    origin_id: number;
+
 
     constructor(product_id: number = 0, offer_send: string = "", type: string = "", description: string = "", id: number = 0, id_string: string = "",
         client_id: number = 0, client_name: string = "", provider_id: number = 0, provider_name: number = 0,
         budget: number = 0, origin: string = "", date_planned: string = "", date: string = "",
-        time: string = "", title: string = "", require_materials: boolean = true) {
+        time: string = "", title: string = "", require_materials: boolean = true, origin_id = 0) {
 
+        this.origin_id = origin_id;
         this.photoNewTaskArray = [];
         this.product_id = product_id;
         this.offer_send = offer_send;
