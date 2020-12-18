@@ -19,7 +19,8 @@ export class RequestCardComponent implements OnInit {
   userType: string = "";
   offersList: TaskModel[];
   offersList$: Observable<TaskModel[]>;
-  isLoading = false;
+  isLoading1 = false;
+  isLoading2 = false;
 
 
 
@@ -90,11 +91,13 @@ export class RequestCardComponent implements OnInit {
           if ((offersList.findIndex(element => element.origin === this.task.id_string) !== -1)) {
             if (offersList[0].budget !== 0) {
               this.offersList = offersList;
-              this.isLoading = false;
+              this.isLoading1 = false;
+              this.isLoading2 = false;
               this.showSubCard = true;
             }
             else {
-              this.isLoading = false;
+              this.isLoading1 = false;
+              this.isLoading2 = false;
               console.log("No tienes Ofertas");
             }
           }
@@ -140,9 +143,14 @@ export class RequestCardComponent implements OnInit {
   onShowSubCard(offerDetail: boolean) {
     if (this.showSubCard) {
       this.showSubCard = false;
+      this.offersDetail = offerDetail;
     } else {
-      this.isLoading = true;
+      this.isLoading1 = !offerDetail;
+      this.isLoading2 = offerDetail;
+      this.offersDetail = offerDetail;
+
       this._taskOdoo.requestOffersForTask(this.task.id_string);
     }
   }
+
 }

@@ -9,43 +9,73 @@
                         </div>
                     </div>
                     <div class="col-9">
-
                         <div class="container py-2">
-                            <div class="spinner-container-card" *ngIf="isLoading">
-                                <p-progressSpinner [style]="{ width: '150px', height: '150px' }"></p-progressSpinner>
-                            </div>
-                            <h3>{{task.title}}</h3>
-                            <span><i class="far fa-calendar mr-2"></i>{{task.date_planned | date : 'EEEE, MMMM d, y'}}</span>
-                            
-                                <span type="button" (click)="selectTypeCancel()"class="derecha">Cancelar</span>
-                           
-                            <br>
-                            <span><i class="far fa-clock mr-2"></i>{{task.time }}</span>
-                            <br>
-                            <span><i class="far fa-user mr-2" *ngIf="role == 'provider'" ></i>Cliente: Adrian J.</span>
+                            <h3>{{ task.title }}</h3>
+                            <span><i class="far fa-calendar mr-2"></i
+                >{{ task.date_planned | date: "EEEE, MMMM d, y" }}</span
+              >
 
-                            <div class="buttons-cont" fxLayout="row">
-                                <div class="btn btn-primary" fxFlex="role =='client' ? 20 : 24" (click)="onShowSubCard(false)">{{role == 'client' ? 'OFERTAS': 'PRESUPUESTAR'}}</div>
-                                <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)="onShowSubCard(true)">DETALLES</div>
-                                <div fxFlex="20" fxFlexOffset="35">
-                                    <span>Solicitado:</span><br>
-                                    <span>{{task.date | date}}</span>
-                                </div>
+              <span type="button" (click)="selectTypeCancel()" class="derecha"
+                >Cancelar</span
+              >
 
-                            </div>
+              <br />
+              <span><i class="far fa-clock mr-2"></i>{{ task.time }}</span>
+                            <br />
+                            <span *ngIf="role == 'provider'"><i class="far fa-user mr-2"></i>Cliente: Adrian J.</span
+              >
+
+              <div class="buttons-cont" fxLayout="row">
+                <button
+                  class="btn btn-primary"
+                  fxFlex="role =='client' ? 20 : 24"
+                  (click)="onShowSubCard(false)"
+                  [disabled]="isLoading1"
+                >
+                  {{ role == "client" ? "OFERTAS" : "PRESUPUESTAR" }}
+                  <div
+                    class="spinner-container-card"
+                    *ngIf="isLoading1"
+                    style="bottom: 7%; left: 12%"
+                  >
+                    <p-progressSpinner
+                      [style]="{ width: '30px', height: '30px' }"
+                    ></p-progressSpinner>
+                  </div>
+                </button>
+                <button
+                  class="btn btn-primary"
+                  fxFlex="20"
+                  fxFlexOffset="5"
+                  (click)="onShowSubCard(true)"
+                  [disabled]="isLoading2"
+                >
+                  DETALLES
+                  <div
+                    class="spinner-container-card"
+                    *ngIf="isLoading2"
+                    style="bottom: 7%; left: 36%"
+                  >
+                    <p-progressSpinner
+                      [style]="{ width: '30px', height: '30px' }"
+                    ></p-progressSpinner>
+                  </div>
+                </button>
+                <div fxFlex="20" fxFlexOffset="35">
+                  <span>Solicitado:</span><br />
+                            <span>{{ task.date | date }}</span>
                         </div>
                     </div>
                 </div>
             </div>
-           
-        </p-card>
-
-        
-
-        <div class="fade-down" *ngIf="showSubCard">
-            <p-card>
-                <app-request-sub-card [mode]="offersDetail" [role]='role' [taskSub]="task" [offersList]='offersList'></app-request-sub-card>
-            </p-card>
-        </div>
     </div>
+</div>
+</p-card>
+
+<div class="fade-down" *ngIf="showSubCard">
+    <p-card>
+        <app-request-sub-card [mode]="offersDetail" [role]="role" [taskSub]="task" [offersList]="offersList"></app-request-sub-card>
+    </p-card>
+</div>
+</div>
 </div>
