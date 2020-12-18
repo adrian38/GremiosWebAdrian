@@ -14,3 +14,14 @@
 	left: 35%;
 	font-size: 50px;
 }
+
+.button-container {
+	button {
+		background-color: darkcyan;
+		width: 200px;
+		height: 60;
+		font-weight: 600;
+		font-size: 18px;
+		border: none;
+	}
+}

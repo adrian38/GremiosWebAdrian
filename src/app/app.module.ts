@@ -60,6 +60,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { NewChatComponent } from './components/new-chat/new-chat.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { PaymentStripeComponent } from './components/payment-stripe/payment-stripe.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     HireSubCardComponent,
     HistoryCardComponent,
     HistorySubCardComponent,
-    NewChatComponent
+    NewChatComponent,
+    PaymentStripeComponent
 
 
   ],

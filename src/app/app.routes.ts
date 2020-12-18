@@ -4,6 +4,7 @@ import { HomeGremioComponent } from './components/home-gremio/home-gremio.compon
 import { NewRequestComponent } from './components/new-request/new-request.component';
 import { DashboardGremioComponent } from './components/dashboard-gremio/dashboard-gremio.component';
 import { NewChatComponent } from './components/new-chat/new-chat.component';
+import { PaymentStripeComponent } from './components/payment-stripe/payment-stripe.component'
 
 const app_routes: Routes = [
     { path: 'home', component: HomeGremioComponent },
@@ -15,6 +16,7 @@ const app_routes: Routes = [
     { path: 'new-request', component: NewRequestComponent, canActivate: [AuthGuardService] },
     { path: 'dashboard', component: DashboardGremioComponent, canActivate: [AuthGuardService] },
     { path: 'chat/:id', component: NewChatComponent, canActivate: [AuthGuardService] },
+    { path: 'payment', component: PaymentStripeComponent, canActivate: [AuthGuardService] },
     { path: '', pathMatch: 'full', redirectTo: 'home' }
 ];
 

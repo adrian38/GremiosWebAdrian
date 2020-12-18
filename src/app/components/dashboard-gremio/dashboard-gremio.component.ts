@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
@@ -49,7 +49,8 @@ export class DashboardGremioComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private _taskOdoo: TaskOdooService,
     private _authOdoo: AuthOdooService,
-    private ngZone: NgZone) {
+    private ngZone: NgZone,
+    private router: Router,) {
 
     this.isLoading = true;
 
@@ -68,6 +69,10 @@ export class DashboardGremioComponent implements OnInit {
 
     }
 
+  }
+
+  pagosComponent() {
+    this.router.navigate(['/payment'])
   }
 
   ngOnInit(): void {
