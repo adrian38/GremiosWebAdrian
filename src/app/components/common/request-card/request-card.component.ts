@@ -153,4 +153,18 @@ export class RequestCardComponent implements OnInit {
     }
   }
 
+  onShowSubCardDetail(offerDetail: boolean) {
+    if (this.showSubCard) {
+      this.showSubCard = false;
+      this.offersDetail = offerDetail;
+    } else {
+      this.isLoading1 = !offerDetail;
+      this.isLoading2 = offerDetail;
+      this.offersDetail = offerDetail;
+      /*     this.isLoading1 = false;
+          this.isLoading2 = false; */
+      this.showSubCard = true;
+    }
+  }
+
 }

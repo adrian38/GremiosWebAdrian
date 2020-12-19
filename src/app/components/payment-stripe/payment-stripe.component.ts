@@ -10,6 +10,7 @@ import { environment } from '../../../environments/environment'
 export class PaymentStripeComponent implements OnInit {
   private stripe: Stripe;
 
+
   constructor() {
 
   }
@@ -42,46 +43,22 @@ export class PaymentStripeComponent implements OnInit {
     card.on('change', (event) => {
       const displayError = document.getElementById('card-errors');
       if (event.error) {
+        console.log("error");
         displayError.textContent = event.error.message;
+
+
       } else {
+        console.log(event);
         displayError.textContent = '';
+
       }
 
     });
 
-    const button = document.getElementById('button');
-    button.addEventListener('click', (event) => {
-      event.preventDefault();
-      const ownerInfo = {
-        owner: {
-          name: 'user'
-        },
-        amount: 20000,
-        currency: 'usd'
-      };
 
-      /* this.stripe.createSource(card, ownerInfo).then((result) => {
-        console.log(result);
-        if (result.error) {
-          const errorElement = document.getElementById('card-errors');
-          errorElement.textContent = result.error.message;
-        } else {
-          //this.stripeSourceHandler(result.source);
-        }
-      }); */
-    });
   }
 
-  /* private stripeSourceHandler(source): void {
-    const callable = this.fns.httpsCallable('stripeChargeCall');
-    const obs = callable(source);
-    obs.subscribe(res => {
-      console.log(res);
-      if (res.result === 'SUCCESSFUL') {
-        document.getElementsByClassName('text')[0].innerHTML = 'Flower Paid 💸, Thanks';
-      } else {
-        document.getElementsByClassName('text')[0].innerHTML = 'Something went wrong. 😞';
-      }
-    });
-  } */
+
+
+
 }

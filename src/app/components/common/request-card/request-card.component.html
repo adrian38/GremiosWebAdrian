@@ -20,7 +20,7 @@
               >
 
               <br />
-              <span><i class="far fa-clock mr-2"></i>{{ task.time }}</span>
+              <span><i class="far fa-clock mr-2"></i>{{ task.time | date : 'h:mm a' }}</span>
                             <br />
                             <span *ngIf="role == 'provider'"><i class="far fa-user mr-2"></i>Cliente: Adrian J.</span
               >
@@ -47,11 +47,11 @@
                   class="btn btn-primary"
                   fxFlex="20"
                   fxFlexOffset="5"
-                  (click)="onShowSubCard(true)"
-                  [disabled]="isLoading2"
+                  (click)="onShowSubCardDetail(true)"
+                
                 >
                   DETALLES
-                  <div
+<!--                   <div
                     class="spinner-container-card"
                     *ngIf="isLoading2"
                     style="bottom: 7%; left: 36%"
@@ -59,7 +59,7 @@
                     <p-progressSpinner
                       [style]="{ width: '30px', height: '30px' }"
                     ></p-progressSpinner>
-                  </div>
+                  </div> -->
                 </button>
                 <div fxFlex="20" fxFlexOffset="35">
                   <span>Solicitado:</span><br />

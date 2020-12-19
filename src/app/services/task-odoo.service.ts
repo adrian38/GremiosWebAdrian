@@ -933,8 +933,6 @@ export class TaskOdooService {
 
     requestTaskListClient() {
 
-        console.log("entre a requestTaskListClient");
-
         let tasksList = [];
         let SO_id = [];
 
@@ -1042,7 +1040,7 @@ export class TaskOdooService {
                 if (err) {
                     console.log(err || !value, "get_so_list");
                 } else {
-                    console.log(value);
+
                     SO_id = [];
                     for (let order of value) {
                         let temp = new TaskModel();
@@ -1058,7 +1056,7 @@ export class TaskOdooService {
                         temp.state = order['invoice_status'];
                         temp.date = order['date_order'];
                         temp.date_planned = String(order['commitment_date']).slice(0, 10);
-                        temp.time = String(order['commitment_date']).slice(10, String(order['commitment_date']).length);
+                        temp.time = String(order['commitment_date']);
                         temp.address = new Address(order['address_street'],
                             order['address_number'],
                             order['address_portal'],
@@ -1088,7 +1086,7 @@ export class TaskOdooService {
                 console.log(err, "requestTaskListClient");
 
             } else {
-                console.log("me conecte")
+
                 get_so_list(user.partner_id);
             }
         });
@@ -1230,7 +1228,7 @@ export class TaskOdooService {
                         temp.id_string = task['name'];
                         temp.date = task['date_order'];
                         temp.date_planned = String(task['commitment_date']).slice(0, 10);
-                        temp.time = String(task['commitment_date']).slice(10, String(task['commitment_date']).length);
+                        temp.time = String(task['commitment_date']);
                         temp.title = task['title'];
                         temp.address = new Address(task['address_street'],
                             task['address_number'],
