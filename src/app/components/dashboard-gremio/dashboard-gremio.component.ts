@@ -5,6 +5,7 @@ import { TaskModel } from 'src/app/models/task.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-dashboard-gremio',
@@ -33,6 +34,7 @@ export class DashboardGremioComponent implements OnInit {
   notificationError$: Observable<boolean>;
   notificationOffertCancelled$: Observable<number[]>;
   notificationPoAcepted$: Observable<any[]>;
+  offersList$: Observable<TaskModel[]>;
 
 
   subscriptioNewPoSuplier: Subscription;
@@ -44,19 +46,23 @@ export class DashboardGremioComponent implements OnInit {
   subscriptionPoAcepted: Subscription;
   subscriptionTab: Subscription;
   subscriptiontasksList: Subscription;
+  subscriptionOffersList: Subscription;
 
 
   constructor(private route: ActivatedRoute,
     private _taskOdoo: TaskOdooService,
     private _authOdoo: AuthOdooService,
     private ngZone: NgZone,
-    private router: Router,) {
+    private router: Router,
+    private messageService: MessageService,) {
 
     this.isLoading = true;
 
     this.usuario = this._authOdoo.getUser();
 
     this.tab = 'Solicitudes';
+
+
 
 
     if (this.usuario.type == "client") {
@@ -77,6 +83,8 @@ export class DashboardGremioComponent implements OnInit {
 
   ngOnInit(): void {
 
+
+
     this.route.queryParams.subscribe(params => {
       this.activateTab = params.tab;
     });
@@ -92,6 +100,7 @@ export class DashboardGremioComponent implements OnInit {
     if (this.usuario.type == "client") {
       this.subscriptioSoCancelled.unsubscribe();
       this.subscriptioNewSoClient.unsubscribe();
+      this.subscriptionOffersList.unsubscribe();
     }
 
     if (this.usuario.type == "provider") {
@@ -115,6 +124,18 @@ export class DashboardGremioComponent implements OnInit {
     ////////////////////////////////Para el Cliente
 
     if (this.usuario.type == "client") {
+
+
+      this.offersList$ = this._taskOdoo.getOffers$();
+      this.subscriptionOffersList = this.offersList$.subscribe(offersList => {
+
+        this.ngZone.run(() => {
+
+          if (offersList[0].budget === 0) {
+            this.messageService.add({ severity: 'error', summary: 'Disculpe', detail: 'Todavia no hay ofertas.' });
+          }
+        });
+      });
 
 
       this.notificationNewSoClient$ = this._taskOdoo.getNotificationNewSoClient$();

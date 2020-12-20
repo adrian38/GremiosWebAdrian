@@ -29,9 +29,9 @@ export class NavbarGremioComponent implements OnInit {
     {
       name: 'Fontaneria'
     },
-    {
+    /* {
       name: 'Electricidad'
-    }
+    } */
   ];
   constructor(private router: Router,
     private fb: FormBuilder,

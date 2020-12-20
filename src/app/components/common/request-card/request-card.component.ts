@@ -21,6 +21,7 @@ export class RequestCardComponent implements OnInit {
   offersList$: Observable<TaskModel[]>;
   isLoading1 = false;
   isLoading2 = false;
+  isLoading3 = false;
 
 
 
@@ -132,11 +133,13 @@ export class RequestCardComponent implements OnInit {
   cancelSOclient() {
     console.log("CancelarSo");
     this._taskOdoo.cancelSOclient(this.task.id);
+    this.isLoading3 = true;
   }
 
   cancelPOsuplier() {
     console.log("CancelarPo");
-    this._taskOdoo.cancelPOsuplier(this.task.id);
+    this._taskOdoo.cancelPOsuplier(this.task.id)
+    this.isLoading3 = true;
   }
 
 

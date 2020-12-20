@@ -135,7 +135,7 @@ export class NewRequestComponent implements OnInit {
           console.log("Se creo correctamente la tarea");
           this.messageService.add({ severity: 'success', summary: 'Completado', detail: 'Se creo correctamente la tarea.' });
 
-          setTimeout(() => { this.backdasboard() }, 2000);
+          //setTimeout(() => { this.backdasboard() }, 2000);
 
         }
 
