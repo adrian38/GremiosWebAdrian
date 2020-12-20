@@ -148,26 +148,47 @@ export class RequestCardComponent implements OnInit {
       this.showSubCard = false;
       this.offersDetail = offerDetail;
     } else {
-      this.isLoading1 = !offerDetail;
-      this.isLoading2 = offerDetail;
-      this.offersDetail = offerDetail;
+      if (this.role === 'provider') {
 
-      this._taskOdoo.requestOffersForTask(this.task.id_string);
+        this.showSubCard = true;
+      } else {
+        this.isLoading1 = !offerDetail;
+        this.offersDetail = offerDetail;
+
+
+        this._taskOdoo.requestOffersForTask(this.task.id_string);
+
+      }
+
     }
   }
 
   onShowSubCardDetail(offerDetail: boolean) {
+
     if (this.showSubCard) {
       this.showSubCard = false;
       this.offersDetail = offerDetail;
+
     } else {
       this.isLoading1 = !offerDetail;
-      this.isLoading2 = offerDetail;
       this.offersDetail = offerDetail;
-      /*     this.isLoading1 = false;
-          this.isLoading2 = false; */
       this.showSubCard = true;
+
     }
   }
+
+  /*  onShowSubCard(offerDetail: boolean) {
+     if (!this.showSubCard) {
+       this.showSubCard = true;
+       this.offersDetail = offerDetail;
+       console.log('1');
+     } else {
+       if (this.offersDetail == offerDetail) {
+         this.showSubCard = false;
+       } else {
+         this.offersDetail = offerDetail;
+       }
+     }
+   } */
 
 }
