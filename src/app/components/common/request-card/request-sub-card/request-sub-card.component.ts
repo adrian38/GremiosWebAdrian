@@ -24,6 +24,11 @@ export class RequestSubCardComponent implements OnInit {
   userType: string = "";
   user: UsuarioModel;
 
+  budget: {
+    workforce: number,
+    materials: number
+  }
+
 
 
   constructor(private router: Router,
@@ -40,6 +45,10 @@ export class RequestSubCardComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  sendPresupuesto(offer: TaskModel) {
+    this._taskOdoo.sendOffer(offer);
   }
 
 }

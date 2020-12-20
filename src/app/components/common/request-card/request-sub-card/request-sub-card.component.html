@@ -1,4 +1,4 @@
-<p-tabView *ngIf="mode && role == 'client'">
+<p-tabView *ngIf="mode ">
     <p-tabPanel header="DESCRIPCION">
         <p>
             {{ taskSub.description }}
@@ -34,7 +34,7 @@
           ">
                     Mano de Obra
                 </h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
+                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" [(ngModel)]="budget.workforce"/>
             </div>
             <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
           background-color: white;
@@ -51,7 +51,7 @@
           ">
                     Materiales
                 </h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
+                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" [(ngModel)]="budget.materials" />
             </div>
             <!--  <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
                 <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
@@ -65,7 +65,7 @@
             </div> -->
 
             <div class="border-bottom-mod"></div>
-            <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5">ENVIAR</div>
+            <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)='sendPresupuesto()' >ENVIAR</div>
         </div>
     </p-tabPanel>
     <p-tabPanel header="PRECIO">
