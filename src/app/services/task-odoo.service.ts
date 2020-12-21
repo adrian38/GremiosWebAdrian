@@ -9,6 +9,7 @@ let jayson = require('../../../node_modules/jayson/lib/client/');
 
 let jaysonServer;
 
+let taskCesar: TaskModel;
 
 let task: TaskModel;
 let task$ = new Subject<TaskModel[]>();
@@ -62,6 +63,13 @@ export class TaskOdooService {
 
     setUser(usuario: UsuarioModel) {
         user = usuario;
+    }
+
+    setTaskCesar(task: TaskModel) {
+        taskCesar = task;
+    }
+    getTaskCesar() {
+        return taskCesar;
     }
 
     getUser() {
@@ -1209,7 +1217,7 @@ export class TaskOdooService {
                 if (err || !value) {
                     console.log(err, "get_po_list");
                 } else {
-                    console.log(value);
+
                     tasksList = [];
                     SO_origin = [];
                     for (let task of value) {
@@ -1223,6 +1231,7 @@ export class TaskOdooService {
                         temp.client_name = task['user_id'][1];
                         temp.provider_id = task['partner_id'][0];
                         temp.provider_name = task['partner_id'][1];
+                        temp.require_materials = task['require_materials'];
                         temp.id = task['id'];
                         temp.state = task['invoice_status'];
                         temp.id_string = task['name'];
@@ -1336,7 +1345,7 @@ export class TaskOdooService {
         client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
 
             if (err || !value) {
-                console.log(err, 'get_po_of_task');
+                console.log(err, 'Error get_po_of_task');
 
             } else {
                 get_po_of_task();
@@ -1352,7 +1361,7 @@ export class TaskOdooService {
     sendOffer(offer: TaskModel) {
         let POline = {
             'name': 'Presupuesto',
-            'product_id': 39,
+            'product_id': 16,
             'product_uom': 1,
             'product_qty': 1,
             'price_unit': offer.budget,

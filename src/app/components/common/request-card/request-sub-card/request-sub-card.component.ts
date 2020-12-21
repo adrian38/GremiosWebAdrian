@@ -1,4 +1,5 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UsuarioModel } from 'src/app/models/usuario.model';
@@ -24,14 +25,14 @@ export class RequestSubCardComponent implements OnInit {
   userType: string = "";
   user: UsuarioModel;
 
-  budget: {
-    workforce: number,
-    materials: number
-  }
+
+  workforce: number;
+  materials: number;
 
 
 
   constructor(private router: Router,
+    public sanitizer: DomSanitizer,
     private _taskOdoo: TaskOdooService,
     private _authOdoo: AuthOdooService,
     private ngZone: NgZone) {
@@ -47,8 +48,14 @@ export class RequestSubCardComponent implements OnInit {
 
   }
 
-  sendPresupuesto(offer: TaskModel) {
-    this._taskOdoo.sendOffer(offer);
+  sendPresupuesto() {
+    this.taskSub.budget = this.workforce;
+    this._taskOdoo.sendOffer(this.taskSub);
+
+  }
+
+  public getSafeImage(url: string) {
+    return this.sanitizer.bypassSecurityTrustStyle(`url(${url})`);
   }
 
 }

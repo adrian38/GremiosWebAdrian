@@ -3,6 +3,30 @@
         <p>
             {{ taskSub.description }}
         </p>
+
+        <div
+        *ngIf="!taskSub.photoNewTaskArray[0]"
+        class="photo-profile"
+        fxFlex="row"
+        fxLayoutAlign="center center"
+        style="
+          background-size: cover;
+          background-position: center center;
+          flex: none;
+        "
+        [style.background-image]="
+          getSafeImage('../../../assets/img/noImage.png')
+        "
+      >
+        <button
+          id="photoCameraBtn"
+          style="position: absolute"
+          mat-icon-button
+          
+        >
+          <i class="fas fa-camera"></i>
+        </button>
+      </div>
     </p-tabPanel>
     <!-- <p-tabPanel header="FECHA Y HORA">
         <p>
@@ -14,6 +38,7 @@
         <p>
             {{ taskSub.address.street }} {{ taskSub.address.number }}, {{ taskSub.address.cp }}
         </p>
+       
     </p-tabPanel>
 </p-tabView>
 <p-tabView *ngIf="!mode && role == 'provider'">
@@ -34,14 +59,14 @@
           ">
                     Mano de Obra
                 </h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" [(ngModel)]="budget.workforce"/>
+                <input placeholder="Valor en €" fxFlex="50" style="height: 50px; border: none; text-align: center" [(ngModel)]="workforce"/>
             </div>
             <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
           background-color: white;
           border-bottom: 2px solid #f6b776;
           color: black;
           padding: 0;
-        ">
+        "><ng-container *ngIf="!taskSub.require_materials">
                 <h5 class="name" fxFlex="50" style="
             color: black;
             text-align: center;
@@ -51,8 +76,9 @@
           ">
                     Materiales
                 </h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" [(ngModel)]="budget.materials" />
-            </div>
+                <input  placeholder="Valor en €" fxFlex="50" style="height: 50px; border: none; text-align: center" [(ngModel)]="materials" />
+            </ng-container>
+        </div>
             <!--  <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
                 <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
                 padding: 10px">Impuestos (21%)</h5>

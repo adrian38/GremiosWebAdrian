@@ -93,3 +93,39 @@
 		border-radius: 0 0 15px 15px;
 	}
 }
+
+.photo-profile {
+	position: relative;
+	height: 100px;
+	width: 100px;
+	border-radius: 4px;
+	flex: none !important;
+	background-color: transparent;
+	color: #bdbdbd;
+	border: 2px solid rgba(0, 0, 0, 0.22) !important;
+	.avatar-icon {
+		font-size: 250px;
+		height: 250px;
+		width: 250px;
+		color: #bdbdbd;
+	}
+	#photoCameraBtn {
+		opacity: 0;
+		height: 100%;
+		width: 100%;
+		mat-icon {
+			font-size: 30px;
+			height: 30px;
+			width: 30px;
+		}
+	}
+	&:hover {
+		#photoCameraBtn {
+			opacity: 1;
+			transition: opacity 0.5s ease;
+		}
+	}
+	button {
+		position: absolute;
+	}
+}

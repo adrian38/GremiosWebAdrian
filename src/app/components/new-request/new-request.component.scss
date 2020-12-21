@@ -1,188 +1,188 @@
 .view-container {
-    padding: 50px 0;
-    background-color: rgb(235, 235, 235)!important;
-    .spinner-container {
-        position: fixed;
-        top: 30%;
-        left: 30%;
-    }
-    .backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.25);
-        z-index: 50
-    }
-    .p-dialog {
-        border-radius: 30px;
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-        margin-top: 100px;
-        // top: 50px;
-        position: relative;
-        background-color: white;
-        width: 50vw;
-        .p-dialog-header {
-            background-color: #f6b776;
-            color: black;
-            border-radius: 30px 30px 0 0;
-            padding: 1rem;
-            .p-dialog-title {
-                width: 100%;
-            }
-        }
-        .pi {
-            color: black
-        }
-        .form-container {
-            height: 100%;
-            flex-direction: column;
-            box-sizing: border-box;
-            display: flex;
-            place-content: flex-start space-evenly;
-            align-items: flex-start;
-            form {
-                width: 100%;
-            }
-            .p-inputtext {
-                border: 1px solid #f6b776;
-            }
-            .p-inputtext:enabled:focus {
-                outline: 0 none;
-                outline-offset: 0;
-                box-shadow: 0 0 0 0.1rem #f6b7af;
-                border-color: #f6b776;
-            }
-        }
-        .p-field {
-            display: grid;
-            margin-top: 20px;
-            h5 {
-                font-size: 1rem;
-            }
-        }
-        .p-dialog-content {
-            border-radius: 0 0 30px 30px;
-        }
-        .p-calendar {
-            width: 100%;
-        }
-        // .p-calendar .p-datepicker {
-        //     top: 215px !important;
-        //     left: 0 !important;
-        //     position: fixed;
-        //     display: block !important;
-        //     min-width: 430px;
-        // }
-        .p-radiobutton {
-            margin-right: 10px;
-        }
-        .p-field-radiobutton {
-            margin-bottom: 10px;
-        }
-        .section-1 {
-            padding-bottom: 15px;
-            border-bottom: 3px solid #f6b776;
-        }
-    }
-    .location-btn {
-        button {
-            height: 100% !important;
-            width: 80%;
-            border-radius: 10px !important;
-            background-color: #f6b776;
-            svg {
-                color: white;
-            }
-        }
-    }
-    .button-container {
-        padding: 40px;
-        button {
-            background-color: darkcyan;
-            width: 200px;
-            height: 60;
-            font-weight: 600;
-            font-size: 18px;
-            border: none;
-        }
-    }
-    textarea.ng-invalid.ng-touched {
-        border: 2px solid #dc3545 !important;
-    }
-    #date.ng-invalid.ng-touched,
-    #time.ng-invalid.ng-touched {
-        input {
-            border: 2px solid #dc3545 !important;
-        }
-    }
-    input.ng-invalid.ng-touched {
-        border: 2px solid #dc3545 !important;
-    }
+	padding: 50px 0;
+	background-color: rgb(235, 235, 235) !important;
+	.spinner-container {
+		position: fixed;
+		top: 30%;
+		left: 30%;
+	}
+	.backdrop {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.25);
+		z-index: 50;
+	}
+	.p-dialog {
+		border-radius: 30px;
+		display: flex;
+		flex-direction: column;
+		margin: auto;
+		margin-top: 100px;
+		// top: 50px;
+		position: relative;
+		background-color: white;
+		width: 50vw;
+		.p-dialog-header {
+			background-color: #f6b776;
+			color: black;
+			border-radius: 30px 30px 0 0;
+			padding: 1rem;
+			.p-dialog-title {
+				width: 100%;
+			}
+		}
+		.pi {
+			color: black;
+		}
+		.form-container {
+			height: 100%;
+			flex-direction: column;
+			box-sizing: border-box;
+			display: flex;
+			place-content: flex-start space-evenly;
+			align-items: flex-start;
+			form {
+				width: 100%;
+			}
+			.p-inputtext {
+				border: 1px solid #f6b776;
+			}
+			.p-inputtext:enabled:focus {
+				outline: 0 none;
+				outline-offset: 0;
+				box-shadow: 0 0 0 0.1rem #f6b7af;
+				border-color: #f6b776;
+			}
+		}
+		.p-field {
+			display: grid;
+			margin-top: 20px;
+			h5 {
+				font-size: 1rem;
+			}
+		}
+		.p-dialog-content {
+			border-radius: 0 0 30px 30px;
+		}
+		.p-calendar {
+			width: 100%;
+		}
+		// .p-calendar .p-datepicker {
+		//     top: 215px !important;
+		//     left: 0 !important;
+		//     position: fixed;
+		//     display: block !important;
+		//     min-width: 430px;
+		// }
+		.p-radiobutton {
+			margin-right: 10px;
+		}
+		.p-field-radiobutton {
+			margin-bottom: 10px;
+		}
+		.section-1 {
+			padding-bottom: 15px;
+			border-bottom: 3px solid #f6b776;
+		}
+	}
+	.location-btn {
+		button {
+			height: 100% !important;
+			width: 80%;
+			border-radius: 10px !important;
+			background-color: #f6b776;
+			svg {
+				color: white;
+			}
+		}
+	}
+	.button-container {
+		padding: 40px;
+		button {
+			background-color: darkcyan;
+			width: 200px;
+			height: 60;
+			font-weight: 600;
+			font-size: 18px;
+			border: none;
+		}
+	}
+	textarea.ng-invalid.ng-touched {
+		border: 2px solid #dc3545 !important;
+	}
+	#date.ng-invalid.ng-touched,
+	#time.ng-invalid.ng-touched {
+		input {
+			border: 2px solid #dc3545 !important;
+		}
+	}
+	input.ng-invalid.ng-touched {
+		border: 2px solid #dc3545 !important;
+	}
 }
 
 ////////////////////////////////////////////////
 .hide-style {
-    display: none;
+	display: none;
 }
 
 .avatar-profile {
-    position: relative;
-    height: 100px;
-    width: 100px;
-    border-radius: 4px;
-    flex: none !important;
-    background-color: transparent;
-    color: #bdbdbd;
-    border: 2px solid rgba(0, 0, 0, 0.22) !important;
-    .avatar-icon {
-        font-size: 250px;
-        height: 250px;
-        width: 250px;
-        color: #bdbdbd;
-    }
-    #photoCameraBtn {
-        opacity: 0;
-        height: 100%;
-        width: 100%;
-        mat-icon {
-            font-size: 30px;
-            height: 30px;
-            width: 30px;
-        }
-    }
-    &:hover {
-        #photoCameraBtn {
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-    }
-    button {
-        position: absolute;
-    }
+	position: relative;
+	height: 100px;
+	width: 100px;
+	border-radius: 4px;
+	flex: none !important;
+	background-color: transparent;
+	color: #bdbdbd;
+	border: 2px solid rgba(0, 0, 0, 0.22) !important;
+	.avatar-icon {
+		font-size: 250px;
+		height: 250px;
+		width: 250px;
+		color: #bdbdbd;
+	}
+	#photoCameraBtn {
+		opacity: 0;
+		height: 100%;
+		width: 100%;
+		mat-icon {
+			font-size: 30px;
+			height: 30px;
+			width: 30px;
+		}
+	}
+	&:hover {
+		#photoCameraBtn {
+			opacity: 1;
+			transition: opacity 0.5s ease;
+		}
+	}
+	button {
+		position: absolute;
+	}
 }
 
 .avatar-profile:hover {
-    #photoCameraBtn {
-        background-color: transparent;
-        opacity: 0.4;
-        border: none;
-    }
+	#photoCameraBtn {
+		background-color: transparent;
+		opacity: 0.4;
+		border: none;
+	}
 }
 
 .p-togglebutton.p-button.p-highlight {
-    background: darkcyan !important;
-    border-color: darkcyan !important;
-    color: #ffffff !important;
+	background: darkcyan !important;
+	border-color: darkcyan !important;
+	color: #ffffff !important;
 }
 
 .p-togglebutton.p-button {
-    background: #f6b776 !important;
-    border-color: #f6b776 !important;
-    color: #ffffff !important;
+	background: #f6b776 !important;
+	border-color: #f6b776 !important;
+	color: #ffffff !important;
 }
 
 /////////////////////////////////////////////////

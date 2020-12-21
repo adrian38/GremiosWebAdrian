@@ -217,7 +217,7 @@ export class NewRequestComponent implements OnInit {
 
     console.log(this.task, "tarea a crear");
     this.isLoading = false;
-    // this.messageService.add({severity:'success', summary: 'Completado', detail: 'Se creo correctamente la tarea.'});
+
 
     this.createForm();
     this.task = new TaskModel();
@@ -273,8 +273,12 @@ export class NewRequestComponent implements OnInit {
 
   autofillChange() {
     if (this.Autofill) {
-      if (this.user.address)
-        this.myAddress = this.user.address;
+
+      for (let value in this.user.address) {
+        if (!this.user.address[value])
+          this.user.address[value] = '';
+      }
+      this.myAddress = this.user.address;
 
     } else {
       this.myAddress = new Address('', '', '', '', '', '', '', '', '');

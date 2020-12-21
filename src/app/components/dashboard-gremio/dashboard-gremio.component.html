@@ -1,4 +1,5 @@
-<p-toast></p-toast>
+
+ <p-toast></p-toast>
 <div class="spinner-container" *ngIf="isLoading">
     
     <div><span class="textSpinner">
@@ -16,6 +17,7 @@
 <div *ngIf="activateTab == 'history'" class="align-cards">
     <app-history-card *ngFor="let task of historialList; let i= index" [task]="task" [role]='usuario.type'></app-history-card>
 </div>
+
 <!-- <br>
 <br>
 <br>
