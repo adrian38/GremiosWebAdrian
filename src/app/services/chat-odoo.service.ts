@@ -13,6 +13,8 @@ let messagesList: MessageModel[];
 let messagesList$ = new Subject<MessageModel[]>();
 let messageSendOk$ = new Subject<MessageModel>();
 
+let id:number;
+
 @Injectable({
     providedIn: 'root'
 })
@@ -23,6 +25,16 @@ export class ChatOdooService {
     id: any;
 
     constructor(private _authOdoo: AuthOdooService) { }
+
+    setIdPo(id:number){ 
+        this.id = id;
+
+    }
+
+    getIdPo(){ 
+        return this.id;
+
+    }
 
     getRequestedNotificationSendMessage$(): Observable<MessageModel>{
         return messageSendOk$.asObservable();
