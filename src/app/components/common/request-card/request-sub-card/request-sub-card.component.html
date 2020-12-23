@@ -18,15 +18,32 @@
           getSafeImage('../../../assets/img/noImage.png')
         "
       >
-        <button
-          id="photoCameraBtn"
-          style="position: absolute"
-          mat-icon-button
-          
-        >
-          <i class="fas fa-camera"></i>
-        </button>
+       
       </div>
+      
+      <div
+      *ngIf="taskSub.photoNewTaskArray[0]"
+      class="photo-profile"
+      fxFlex="row"
+      fxLayoutAlign="center center"
+      style="
+        background-size: cover;
+        background-position: center center;
+        flex: none;
+      "
+      [style.background-image]="
+        getSafeImage(taskSub.photoNewTaskArray[0])
+      "
+    >
+      <button
+        id="photoCameraBtn"
+        style="position: absolute"
+        mat-icon-button
+        
+      >
+        <i class="fas fa-camera"></i>
+      </button>
+    </div>
     </p-tabPanel>
     <!-- <p-tabPanel header="FECHA Y HORA">
         <p>

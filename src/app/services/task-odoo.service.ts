@@ -44,6 +44,7 @@ let notificationOK$ = new Subject<boolean>();
 
 let notificationPoAcepted$ = new Subject<any[]>();
 
+let urlImage = 'data:type/example;base64,';
 
 let user: UsuarioModel;
 
@@ -967,11 +968,12 @@ export class TaskOdooService {
                 if (err) {
                     console.log(err, "Error get_photo_so");
                 } else {
-
+                    let img = new Image;
                     for (let resId of value) {
                         for (let task of tasksList) {
                             if (task.id === resId.res_id) {
-                                task.photoNewTaskArray.push(resId.datas);
+                                //img.src = 'data:image/png;base64,' + resId.datas;
+                                task.photoNewTaskArray.push(urlImage + resId.datas);
                             }
                         }
 

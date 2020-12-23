@@ -221,6 +221,7 @@ export class NewRequestComponent implements OnInit {
 
     this.createForm();
     this.task = new TaskModel();
+    this.imageArticle = [];
   }
 
   openFileBrowser(event, index) {
