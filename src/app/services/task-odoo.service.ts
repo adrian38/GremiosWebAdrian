@@ -371,6 +371,9 @@ export class TaskOdooService {
     //////// De la forma de Michel
     newTask(task: TaskModel) {
 
+        let count: number;
+
+
         let confirmService = function (SO_id: number) {
             let inParams = []
             inParams.push(SO_id)
@@ -399,16 +402,16 @@ export class TaskOdooService {
             });
         }
 
-        let create_SO_attachment = function (SO_id: number, count: string) {
+        let create_SO_attachment = function (SO_id: number) {
 
-            console.log(task.photoNewTaskArray[0], "foto");
+            console.log(count);
 
             let attachement = {
                 'name': 'photoSolicitud_' + count + '.jpg',
-                'datas': task.photoNewTaskArray[parseInt(count)],
+                'datas': task.photoNewTaskArray[count],
                 'type': 'binary',
                 'description': 'photoSolicitud_' + count.toString + '.jpg',
-                'res_model': 'purchase.order',
+                'res_model': 'sale.order',
                 'res_id': SO_id,
             };
             let inParams = [];
@@ -435,13 +438,20 @@ export class TaskOdooService {
 
                 } else {
                     console.log(value, "create_SO_attachment");
+                    count--;
+                    if (count >= 0) {
+                        create_SO_attachment(SO_id);
+                    } else {
 
-
+                        console.log(count, "confirmar so")
+                        confirmService(SO_id);
+                    }
                 }
             });
         }
 
         let createService = function () {
+            count = 0;
 
             let SO = {
                 'company_id': 1,
@@ -495,11 +505,14 @@ export class TaskOdooService {
                 } else {
                     console.log(value, "createService");
 
-                    for (var index in task.photoNewTaskArray) {
-                        create_SO_attachment(value, index);
+                    if (task.photoNewTaskArray.length) {
+                        count = task.photoNewTaskArray.length - 1;
+                        create_SO_attachment(value);
 
+                    } else {
+                        confirmService(value);
                     }
-                    confirmService(value);
+
                 }
             });
         }
