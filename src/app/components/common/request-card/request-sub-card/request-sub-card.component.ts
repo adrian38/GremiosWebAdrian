@@ -57,5 +57,10 @@ export class RequestSubCardComponent implements OnInit {
   public getSafeImage(url: string) {
     return this.sanitizer.bypassSecurityTrustStyle(`url(${url})`);
   }
-
+  acceptOffer(offerId) {
+    alert("Accept Method ")
+  }
+  cancelOffer(offerId) {
+    alert("Cancel Method ")
+  }
 }
