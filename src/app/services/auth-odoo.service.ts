@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs'
 let jayson = require('../../../node_modules/jayson/lib/client/');
 let jaysonServer = {
 
+  //host: '192.168.0.106',
   host: 'todoenunapp.com',
   port: '8069',
   db: 'demo',
@@ -122,25 +123,23 @@ export class AuthOdooService {
           usuario.partner_id = value[0].partner_id[0];
           usuario.realname = value[0].name;
 
-          /*             if(value[0].classification === "custumer")
-                        {
-                          usuario.type = "client"
-                          console.log("cliente");
-
-                        } else if(value[0].classification === "vendor")
-                        {
-                          usuario.type = "provider"
-                          console.log("proveedor");
-                        } */
-
           if (value[0].classification === "custumer") {
             usuario.type = "client"
             console.log("cliente");
 
-          } else {
+          } else if (value[0].classification === "vendor") {
             usuario.type = "provider"
             console.log("proveedor");
           }
+          /* 
+                    if (value[0].classification === "custumer") {
+                      usuario.type = "client"
+                      console.log("cliente");
+          
+                    } else {
+                      usuario.type = "provider"
+                      console.log("proveedor");
+                    } */
 
           search_partner_fields(usuario.id)
         }

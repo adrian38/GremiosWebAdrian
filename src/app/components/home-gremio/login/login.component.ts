@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { Observable, Subscription } from 'rxjs';
@@ -42,7 +42,8 @@ export class LoginComponent implements OnInit {
     private _authOdoo: AuthOdooService,
     private router: Router,
     private _taskOdoo: TaskOdooService,
-    private _chatOdoo: ChatOdooService) {
+    private _chatOdoo: ChatOdooService,
+    private ngZone: NgZone,) {
     this.usuario = new UsuarioModel;
     this.createForms();
   }
@@ -50,8 +51,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.usuario$ = this._authOdoo.getUser$();
     this.subscriptionUsuario = this.usuario$.subscribe(user => {
-      this.usuario = user;
-      this.checkUser();
+      this.ngZone.run(() => {
+        this.usuario = user;
+        this.checkUser();
+      });
     });
   }
 
