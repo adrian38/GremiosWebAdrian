@@ -1155,7 +1155,7 @@ export class TaskOdooService {
 
                         }
                     }
-
+                    console.log("actualizando tareas")
                     tasksList$.next(tasksList);
                 }
 
