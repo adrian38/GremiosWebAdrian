@@ -3,7 +3,7 @@
   <p-tabPanel header="DESCRIPCION">
     <div class="row">
       <div class="col-sm-6">
-        <p>
+        <p style="text-align: center;">
           {{ taskSub.description }}
         </p>
       </div>
@@ -86,8 +86,18 @@
           Mano de Obra
         </h5>
         <input placeholder="Valor en €" fxFlex="50" style="height: 50px; border: none; text-align: center"
-          [(ngModel)]="workforce" />
+          [(ngModel)]="workforce" (keyup)="onKeyUpWorkForce()" />
+
       </div>
+
+      <div class="row" *ngIf="workForceInvalid">
+        <div class="col-sm-12" style="left: 200px;">
+          <small class="p-invalid">Mano de obra no valido.</small>
+        </div>
+
+      </div>
+
+
       <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
           background-color: white;
           border-bottom: 2px solid #f6b776;
@@ -104,9 +114,17 @@
           ">
             Materiales
           </h5>
-          <input placeholder="Valor en €" fxFlex="50" style="height: 50px; border: none; text-align: center"
-            [(ngModel)]="materials" />
+          <input class="inputs" placeholder="Valor en €" fxFlex="50"
+            style="height: 50px; border: none; text-align: center" [(ngModel)]="materials"
+            (keyup)="onKeyUpMaterial()" />
+
         </ng-container>
+      </div>
+      <div class="row" *ngIf="materialInvalid">
+        <div class="col-sm-12" style="left: 200px;">
+          <small class="p-invalid">Material no valido.</small>
+        </div>
+
       </div>
       <!--  <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
                 <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
@@ -120,11 +138,13 @@
             </div> -->
 
       <div class="border-bottom-mod"></div>
-      <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)='sendPresupuesto()'>ENVIAR</div>
+
+      <button class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)='sendPresupuesto()'
+        [disabled]="materialInvalid==true || workForceInvalid==true">ENVIAR</button>
     </div>
   </p-tabPanel>
-  <p-tabPanel header="PRECIO">
-    <div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center"
+  <p-tabPanel header="PRECIO" id="precio">
+    <!--<div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center"
       style="background-color: white">
       <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
           background-color: white;
@@ -197,7 +217,7 @@
 
       <div class="border-bottom-mod"></div>
       <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5">ENVIAR</div>
-    </div>
+    </div>-->
   </p-tabPanel>
 </p-tabView>
 
@@ -206,14 +226,38 @@
   <ng-container *ngIf="offersList">
     <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center"
       *ngFor="let offer of offersList">
-      <div class="img-container" fxFlex="10" (click)="displayModal = !displayModal">
-        <img src="../../../../../assets/img/phoebe.png" />
+
+      <div *ngIf="taskSub.photoNewTaskArray[0]" class="img-container" fxFlex="10" (click)="displayModal = !displayModal"
+        style="
+      background-size: cover;
+      background-position: center center;
+      flex: none;
+    " [style.background-image]="
+      getSafeImage(taskSub.photoNewTaskArray[0])
+    ">
+
+
+
       </div>
+
+      <div *ngIf="!taskSub.photoNewTaskArray[0]" class="img-container" fxFlex="10"
+        (click)="displayModal = !displayModal" style="
+      background-size: cover;
+      background-position: center center;
+      flex: none;
+    " [style.background-image]="
+      getSafeImage('../../../assets/img/noImage.png')
+    ">
+
+
+
+      </div>
+
       <h5 class="name" fxFlex="15" (click)="displayModal = !displayModal">
         {{ offer.provider_name }}
       </h5>
       <p-rating [ngModel]="3" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center"
-        fxFlexOffset="10" class="mb-2"></p-rating>
+        fxFlexOffset="10" class="mb-2" style="pointer-events: none;"></p-rating>
       <div class="chat-button" fxLayout="column" fxFlexOffset="10" fxLayoutAlign="space-around center"
         (click)="goToChat(offer.id)">
         <i class="far fa-comment-alt"></i>
