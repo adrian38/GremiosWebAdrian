@@ -27,10 +27,12 @@ export class RequestCardComponent implements OnInit {
 
   notificationOffertCancelled$: Observable<number[]>;
   notificationNewOffertSuplier$: Observable<any[]>;
+  notificationSendOffertOk$ = new Observable<number>();
 
   subscriptionOffersList: Subscription;
   subscriptionOffertCancelled: Subscription;
   subscriptionNewOffertSuplier: Subscription;
+  subscriptioSendOffertOk: Subscription;
 
   @Input() task: TaskModel;
   @Input() role: 'client' | 'provider';
@@ -106,6 +108,33 @@ export class RequestCardComponent implements OnInit {
       });
     }
 
+    if (this.role == "provider") {
+
+      this.notificationSendOffertOk$ = this._taskOdoo.getnotificationSendOffertOk$();
+      this.subscriptioSendOffertOk = this.notificationSendOffertOk$.subscribe(PoId => {
+
+        this.ngZone.run(() => {
+          if (this.task.id === PoId) {
+
+            console.log("presupuesto enviado correctamente")
+            ///cerrar subcard////
+            this.showSubCard = false;
+            ///quitar spinner//
+          }
+        });
+      });
+
+
+
+
+
+    }
+
+
+
+
+
+
     console.log(this.task);
   }
 
@@ -118,6 +147,10 @@ export class RequestCardComponent implements OnInit {
       this.subscriptionOffertCancelled.unsubscribe();
       this.subscriptionNewOffertSuplier.unsubscribe();
 
+    }
+
+    if (this.userType === 'provider') {
+      this.subscriptioSendOffertOk.unsubscribe();
     }
 
   }

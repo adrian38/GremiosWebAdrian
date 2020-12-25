@@ -54,22 +54,24 @@ export class RequestSubCardComponent implements OnInit {
       this.subscriptioSendOffertOk = this.notificationSendOffertOk$.subscribe(PoId => {
 
         this.ngZone.run(() => {
-          /*   if ((offersList.findIndex(element => element.origin === this.task.id_string) !== -1)) {
-              if (offersList[0].budget !== 0) {
-                this.offersList = offersList;
-                this.isLoading1 = false;
-                this.isLoading2 = false;
-                this.showSubCard = true;
-              }
-              else {
-                this.isLoading1 = false;
-                this.isLoading2 = false;
-                console.log("No tienes Ofertas");
-              }
-            } */
+          if (this.taskSub.id === PoId) {
+
+            console.log("presupuesto enviado correctamente")
+            ///quitar spinner////
+          }
         });
       });
 
+    }
+
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+
+    if (this.role == "provider") {
+      this.subscriptioSendOffertOk.unsubscribe();
     }
 
   }
@@ -79,6 +81,7 @@ export class RequestSubCardComponent implements OnInit {
 
 
   sendPresupuesto() {
+    //poner Spinner// inhabilitar el boton de enviar
     this.taskSub.budget = this.workforce;
     this._taskOdoo.sendOffer(this.taskSub);
 
