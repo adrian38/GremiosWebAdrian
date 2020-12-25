@@ -79,3 +79,17 @@
 .spinner-container-card {
 	position: absolute;
 }
+.chat-button {
+  svg {
+      color: white;
+      font-size: 25px;
+  }
+  span {
+      color: white;
+      font-size: 14px;
+  }
+}
+#chatSubRequest:hover{
+  cursor: pointer;
+ 
+  }

@@ -4,6 +4,7 @@ import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { UsuarioModel } from '../../../models/usuario.model'
 import { Observable, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-request-card',
@@ -25,6 +26,7 @@ export class RequestCardComponent implements OnInit {
 
 
 
+
   notificationOffertCancelled$: Observable<number[]>;
   notificationNewOffertSuplier$: Observable<any[]>;
   notificationSendOffertOk$ = new Observable<number>();
@@ -40,7 +42,7 @@ export class RequestCardComponent implements OnInit {
 
   constructor(private _taskOdoo: TaskOdooService,
     private _authOdoo: AuthOdooService,
-    private ngZone: NgZone) {
+    private ngZone: NgZone, private router: Router) {
 
     this.user = this._authOdoo.getUser();
     this.offersList = [];
@@ -210,6 +212,9 @@ export class RequestCardComponent implements OnInit {
     }
   }
 
+  goToChat() {
+    alert("Go to Chat")
+  }
 
 
 }

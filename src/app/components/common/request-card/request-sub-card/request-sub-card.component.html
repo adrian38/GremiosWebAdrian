@@ -1,102 +1,132 @@
 <p-tabView *ngIf="mode ">
-    <p-tabPanel header="DESCRIPCION">
-        <p>
-            {{ taskSub.description }}
-        </p>
 
-        <div
-        *ngIf="!taskSub.photoNewTaskArray[0]"
-        class="photo-profile"
-        fxFlex="row"
-        fxLayoutAlign="center center"
-        style="
+  <p-tabPanel header="DESCRIPCION">
+    <div class="row">
+      <div class="col-sm-6">
+        <p style="text-align: center;">
+          {{ taskSub.description }}
+        </p>
+      </div>
+      <div class="col-sm-3"></div>
+      <div class="col-sm-3">
+        <div *ngIf="!taskSub.photoNewTaskArray[0]" class="photo-profile" fxFlex="row" fxLayoutAlign="center center"
+          style="
+            background-size: cover;
+            background-position: center center;
+            flex: none;
+          " [style.background-image]="
+            getSafeImage('../../../assets/img/noImage.png')
+          ">
+
+        </div>
+
+        <div *ngIf="taskSub.photoNewTaskArray[0]" class="photo-profile" fxFlex="row" fxLayoutAlign="center center"
+          style="
           background-size: cover;
           background-position: center center;
           flex: none;
-        "
-        [style.background-image]="
-          getSafeImage('../../../assets/img/noImage.png')
-        "
-      >
-       
+        " [style.background-image]="
+          getSafeImage(taskSub.photoNewTaskArray[0])
+        ">
+          <button id="photoCameraBtn" style="position: absolute" mat-icon-button>
+            <i class="fas fa-camera"></i>
+          </button>
+        </div>
       </div>
-      
-      <div
-      *ngIf="taskSub.photoNewTaskArray[0]"
-      class="photo-profile"
-      fxFlex="row"
-      fxLayoutAlign="center center"
-      style="
-        background-size: cover;
-        background-position: center center;
-        flex: none;
-      "
-      [style.background-image]="
-        getSafeImage(taskSub.photoNewTaskArray[0])
-      "
-    >
-      <button
-        id="photoCameraBtn"
-        style="position: absolute"
-        mat-icon-button
-        
-      >
-        <i class="fas fa-camera"></i>
-      </button>
+
     </div>
-    </p-tabPanel>
-    <!-- <p-tabPanel header="FECHA Y HORA">
+
+  </p-tabPanel>
+  <!-- <p-tabPanel header="FECHA Y HORA">
         <p>
             Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
             sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
         </p>
     </p-tabPanel> -->
-    <p-tabPanel header="DIRECCION">
-        <p>
-            {{ taskSub.address.street }} {{ taskSub.address.number }}, {{ taskSub.address.cp }}
+  <p-tabPanel header="DIRECCION">
+    <div class="row">
+      <div class="col-sm-6">
+        <p style="text-align: center;">
+          {{ taskSub.address.street }} {{ taskSub.address.number }}, {{ taskSub.address.cp }}
         </p>
-       
-    </p-tabPanel>
+      </div>
+
+      <div class="col-sm-6 " style="left: 143px;">
+        <div fxFlexOffset="3" fxFlex="12" fxFlexAlign="end" class="location-btn">
+
+          <button pButton pRipple type="button" icon="fas fa-map-marker-alt" class="p-button-rounded p-button-warning"
+            pTooltip="Google Maps" tooltipPosition="right"></button>
+
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </p-tabPanel>
 </p-tabView>
 <p-tabView *ngIf="!mode && role == 'provider'">
-    <p-tabPanel header="SERVICIO">
-        <div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center" style="background-color: white">
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+  <p-tabPanel header="SERVICIO">
+    <div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center"
+      style="background-color: white">
+      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
           background-color: white;
           border-bottom: 2px solid #f6b776;
           color: black;
           padding: 0;
         ">
-                <h5 class="name" fxFlex="50" style="
+        <h5 class="name" fxFlex="50" style="
             color: black;
             text-align: center;
             border-right: 2px solid black;
             height: 50px;
             padding: 10px;
           ">
-                    Mano de Obra
-                </h5>
-                <input placeholder="Valor en €" fxFlex="50" style="height: 50px; border: none; text-align: center" [(ngModel)]="workforce"/>
-            </div>
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          Mano de Obra
+        </h5>
+        <input placeholder="Valor en €" fxFlex="50" style="height: 50px; border: none; text-align: center"
+          [(ngModel)]="workforce" (keyup)="onKeyUpWorkForce()" />
+
+      </div>
+
+      <div class="row" *ngIf="workForceInvalid">
+        <div class="col-sm-12" style="left: 200px;">
+          <small class="p-invalid">Mano de obra no valido.</small>
+        </div>
+
+      </div>
+
+
+      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
           background-color: white;
           border-bottom: 2px solid #f6b776;
           color: black;
           padding: 0;
-        "><ng-container *ngIf="!taskSub.require_materials">
-                <h5 class="name" fxFlex="50" style="
+        ">
+        <ng-container *ngIf="!taskSub.require_materials">
+          <h5 class="name" fxFlex="50" style="
             color: black;
             text-align: center;
             border-right: 2px solid black;
             height: 50px;
             padding: 10px;
           ">
-                    Materiales
-                </h5>
-                <input  placeholder="Valor en €" fxFlex="50" style="height: 50px; border: none; text-align: center" [(ngModel)]="materials" />
-            </ng-container>
+            Materiales
+          </h5>
+          <input class="inputs" placeholder="Valor en €" fxFlex="50"
+            style="height: 50px; border: none; text-align: center" [(ngModel)]="materials"
+            (keyup)="onKeyUpMaterial()" />
+
+        </ng-container>
+      </div>
+      <div class="row" *ngIf="materialInvalid">
+        <div class="col-sm-12" style="left: 200px;">
+          <small class="p-invalid">Material no valido.</small>
         </div>
-            <!--  <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
+
+      </div>
+      <!--  <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
                 <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
                 padding: 10px">Impuestos (21%)</h5>
                 <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
@@ -107,133 +137,169 @@
                 <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
             </div> -->
 
-            <div class="border-bottom-mod"></div>
-            <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)='sendPresupuesto()' >ENVIAR</div>
-        </div>
-    </p-tabPanel>
-    <p-tabPanel header="PRECIO">
-        <div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center" style="background-color: white">
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
-          background-color: white;
-          border-bottom: 2px solid #f6b776;
-          color: black;
-          padding: 0;
-        ">
-                <h5 class="name" fxFlex="50" style="
-            color: black;
-            text-align: center;
-            border-right: 2px solid black;
-            height: 50px;
-            padding: 10px;
-          ">
-                    Mano de Obra
-                </h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
-            </div>
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
-          background-color: white;
-          border-bottom: 2px solid #f6b776;
-          color: black;
-          padding: 0;
-        ">
-                <h5 class="name" fxFlex="50" style="
-            color: black;
-            text-align: center;
-            border-right: 2px solid black;
-            height: 50px;
-            padding: 10px;
-          ">
-                    Materiales
-                </h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
-            </div>
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
-          background-color: white;
-          border-bottom: 2px solid #f6b776;
-          color: black;
-          padding: 0;
-        ">
-                <h5 class="name" fxFlex="50" style="
-            color: black;
-            text-align: center;
-            border-right: 2px solid black;
-            height: 50px;
-            padding: 10px;
-          ">
-                    Impuestos (21%)
-                </h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
-            </div>
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
-          background-color: white;
-          border-bottom: 2px solid #f6b776;
-          color: black;
-          padding: 0;
-        ">
-                <h5 class="name" fxFlex="50" style="
-            color: black;
-            text-align: center;
-            border-right: 2px solid black;
-            height: 50px;
-            padding: 10px;
-          ">
-                    Impuesto (Uso de la plataforma)
-                </h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
-            </div>
+      <div class="border-bottom-mod"></div>
 
-            <div class="border-bottom-mod"></div>
-            <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5">ENVIAR</div>
-        </div>
-    </p-tabPanel>
+      <button class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)='sendPresupuesto()'
+        [disabled]="materialInvalid==true || workForceInvalid==true">ENVIAR</button>
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="PRECIO" id="precio">
+    <!--<div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center"
+      style="background-color: white">
+      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          padding: 0;
+        ">
+        <h5 class="name" fxFlex="50" style="
+            color: black;
+            text-align: center;
+            border-right: 2px solid black;
+            height: 50px;
+            padding: 10px;
+          ">
+          Mano de Obra
+        </h5>
+        <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
+      </div>
+      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          padding: 0;
+        ">
+        <h5 class="name" fxFlex="50" style="
+            color: black;
+            text-align: center;
+            border-right: 2px solid black;
+            height: 50px;
+            padding: 10px;
+          ">
+          Materiales
+        </h5>
+        <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
+      </div>
+      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          padding: 0;
+        ">
+        <h5 class="name" fxFlex="50" style="
+            color: black;
+            text-align: center;
+            border-right: 2px solid black;
+            height: 50px;
+            padding: 10px;
+          ">
+          Impuestos (21%)
+        </h5>
+        <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
+      </div>
+      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          padding: 0;
+        ">
+        <h5 class="name" fxFlex="50" style="
+            color: black;
+            text-align: center;
+            border-right: 2px solid black;
+            height: 50px;
+            padding: 10px;
+          ">
+          Impuesto (Uso de la plataforma)
+        </h5>
+        <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
+      </div>
+
+      <div class="border-bottom-mod"></div>
+      <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5">ENVIAR</div>
+    </div>-->
+  </p-tabPanel>
 </p-tabView>
 
 <div class="list-group" *ngIf="!mode && role == 'client'" fxLayout="column" fxLayoutAlign="space-around center">
-    
-    <ng-container *ngIf="offersList">
-    <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center"  *ngFor="let offer of offersList">
-        <div class="img-container" fxFlex="10" (click)="displayModal = !displayModal">
-            <img src="../../../../../assets/img/phoebe.png" />
-        </div>
-        <h5 class="name" fxFlex="15" (click)="displayModal = !displayModal">
-            {{ offer.provider_name }}
-        </h5>
-        <p-rating [ngModel]="3" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center" fxFlexOffset="10" class="mb-2"></p-rating>
-        <div class="chat-button" fxLayout="column" fxFlexOffset="10" fxLayoutAlign="space-around center" (click)="goToChat(offer.id)">
-            <i class="far fa-comment-alt"></i>
-            <span>Chat</span>
-        </div>
-        <div class="chat-button" fxLayout="column" fxFlexOffset="5" fxLayoutAlign="space-around center">
-            <i class="fas fa-check-square"></i>
-            <span>Aceptar</span>
-        </div>
-        <div class="chat-button" fxLayout="column" fxFlexOffset="2" fxLayoutAlign="space-around center">
-            <i class="fas fa-window-close"></i>
-            <span>Cancelar</span>
-        </div>
-        <h2 fxFlexOffset="5">{{ offer.budget }}€</h2>
-    </div>
-</ng-container>
 
-    </div>
-    <div class="border-bottom-mod"></div>
+  <ng-container *ngIf="offersList">
+    <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center"
+      *ngFor="let offer of offersList">
+
+      <div *ngIf="taskSub.photoNewTaskArray[0]" class="img-container" fxFlex="10" (click)="displayModal = !displayModal"
+        style="
+      background-size: cover;
+      background-position: center center;
+      flex: none;
+    " [style.background-image]="
+      getSafeImage(taskSub.photoNewTaskArray[0])
+    ">
 
 
-<p-dialog header=" " [(visible)]="displayModal" [modal]="true" [style]="{ width: '35vw' }" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
-    <div fxLayout="row">
-        <div class="img-container-modal" fxFlex="30" (click)="displayModal = !displayModal">
-            <img width="120" src="../../../../../assets/img/phoebe.png" />
-        </div>
-        <div class="name-container" fxLayout="column">
-            <h2 class="name">Phoebe B.</h2>
-            <h4 class="job">FONTANERA</h4>
-            <p-rating [ngModel]="3" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center" fxFlexOffset="10" class="mb-2 w-100"></p-rating>
-        </div>
+
+      </div>
+
+      <div *ngIf="!taskSub.photoNewTaskArray[0]" class="img-container" fxFlex="10"
+        (click)="displayModal = !displayModal" style="
+      background-size: cover;
+      background-position: center center;
+      flex: none;
+    " [style.background-image]="
+      getSafeImage('../../../assets/img/noImage.png')
+    ">
+
+
+
+      </div>
+
+      <h5 class="name" fxFlex="15" (click)="displayModal = !displayModal">
+        {{ offer.provider_name }}
+      </h5>
+      <p-rating [ngModel]="3" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center"
+        fxFlexOffset="10" class="mb-2" style="pointer-events: none;"></p-rating>
+      <div class="chat-button" fxLayout="column" fxFlexOffset="10" fxLayoutAlign="space-around center"
+        (click)="goToChat(offer.id)">
+        <i class="far fa-comment-alt"></i>
+        <span>Chat</span>
+      </div>
+      <div class="chat-button" fxLayout="column" fxFlexOffset="5" fxLayoutAlign="space-around center"
+        (click)="acceptOffer(offer.id)">
+        <i class="fas fa-check-square"></i>
+        <span>Aceptar</span>
+      </div>
+      <div class="chat-button" fxLayout="column" fxFlexOffset="2" fxLayoutAlign="space-around center"
+        (click)="cancelOffer(offer.id)">
+        <i class="fas fa-window-close"></i>
+        <span>Cancelar</span>
+      </div>
+      <h2 fxFlexOffset="5">{{ offer.budget }}€</h2>
     </div>
-    <div fxLayout="row" class="mt-3">
-        <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia
-            animi, id est laborum et dolorum fuga.
-        </p>
+  </ng-container>
+
+</div>
+<div class="border-bottom-mod"></div>
+
+
+<p-dialog header=" " [(visible)]="displayModal" [modal]="true" [style]="{ width: '35vw' }" [baseZIndex]="10000"
+  [draggable]="false" [resizable]="false">
+  <div fxLayout="row">
+    <div class="img-container-modal" fxFlex="30" (click)="displayModal = !displayModal">
+      <img width="120" src="../../../../../assets/img/phoebe.png" />
     </div>
+    <div class="name-container" fxLayout="column">
+      <h2 class="name">Phoebe B.</h2>
+      <h4 class="job">FONTANERA</h4>
+      <p-rating [ngModel]="3" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center"
+        fxFlexOffset="10" class="mb-2 w-100"></p-rating>
+    </div>
+  </div>
+  <div fxLayout="row" class="mt-3">
+    <p>
+      At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque
+      corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+      qui officia deserunt mollitia
+      animi, id est laborum et dolorum fuga.
+    </p>
+  </div>
 </p-dialog>
