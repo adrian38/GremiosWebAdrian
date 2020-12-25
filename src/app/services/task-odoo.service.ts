@@ -38,6 +38,8 @@ let notificationNewOffertSuplier$ = new Subject<any[]>(); ///////cliente
 
 let notificationNewMessg$ = new Subject<number[]>(); ///////Proveedor
 
+let notificationSendOffertOk$ = new Subject<number>();
+
 let notificationError$ = new Subject<boolean>();
 
 let notificationOK$ = new Subject<boolean>();
@@ -1373,6 +1375,10 @@ export class TaskOdooService {
         return offersList$.asObservable();
     }
 
+    getnotificationSendOffertOk$(): Observable<number> {
+        return notificationSendOffertOk$.asObservable();
+    }
+
     sendOffer(offer: TaskModel) {
         let POline = {
             'name': 'Presupuesto',
@@ -1406,6 +1412,7 @@ export class TaskOdooService {
                     console.log(err);
                 } else {
                     console.log(value);
+                    notificationSendOffertOk$.next(offer.id);
                 }
             });
 

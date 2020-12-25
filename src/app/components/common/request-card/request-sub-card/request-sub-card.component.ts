@@ -1,11 +1,11 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { TaskModel } from '../../../../models/task.model';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-request-sub-card',
@@ -28,6 +28,8 @@ export class RequestSubCardComponent implements OnInit {
 
   workforce: number;
   materials: number;
+  notificationSendOffertOk$ = new Observable<number>();
+  subscriptioSendOffertOk: Subscription;
 
 
 
@@ -46,7 +48,35 @@ export class RequestSubCardComponent implements OnInit {
 
   ngOnInit() {
 
+    if (this.role == "provider") {
+
+      this.notificationSendOffertOk$ = this._taskOdoo.getnotificationSendOffertOk$();
+      this.subscriptioSendOffertOk = this.notificationSendOffertOk$.subscribe(PoId => {
+
+        this.ngZone.run(() => {
+          /*   if ((offersList.findIndex(element => element.origin === this.task.id_string) !== -1)) {
+              if (offersList[0].budget !== 0) {
+                this.offersList = offersList;
+                this.isLoading1 = false;
+                this.isLoading2 = false;
+                this.showSubCard = true;
+              }
+              else {
+                this.isLoading1 = false;
+                this.isLoading2 = false;
+                console.log("No tienes Ofertas");
+              }
+            } */
+        });
+      });
+
+    }
+
   }
+
+
+
+
 
   sendPresupuesto() {
     this.taskSub.budget = this.workforce;
