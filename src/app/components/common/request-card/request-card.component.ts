@@ -213,7 +213,7 @@ export class RequestCardComponent implements OnInit {
   }
 
   goToChat() {
-    alert("Go to Chat")
+    this.router.navigate(['/chat/', this.task.id]);
   }
 
 
