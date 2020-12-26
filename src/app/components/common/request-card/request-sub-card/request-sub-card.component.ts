@@ -112,11 +112,11 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
   cancelOffer(offerId) {
     alert("Cancel Method ")
   }
-  private disableEnviar: boolean = true;
-  private workForceInvalid: boolean = false;
-  private materialInvalid: boolean = false;
-  private ceroInvalid: boolean = false;
-  
+  public disableEnviar: boolean = true;
+  public workForceInvalid: boolean = false;
+  public materialInvalid: boolean = false;
+  public ceroInvalid: boolean = false;
+
   onKeyUpWorkForce() {
     if (!_isNumberValue(this.workforce) || this.workforce == 0) {
       this.workForceInvalid = true;
