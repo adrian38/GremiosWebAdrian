@@ -35,6 +35,7 @@ export class DashboardGremioComponent implements OnInit {
   notificationOffertCancelled$: Observable<number[]>;
   notificationPoAcepted$: Observable<any[]>;
   offersList$: Observable<TaskModel[]>;
+  notificationSendOffertOk$ = new Observable<number>();
 
 
   subscriptioNewPoSuplier: Subscription;
@@ -47,6 +48,7 @@ export class DashboardGremioComponent implements OnInit {
   subscriptionTab: Subscription;
   subscriptiontasksList: Subscription;
   subscriptionOffersList: Subscription;
+  subscriptioSendOffertOk: Subscription;
 
 
   constructor(private route: ActivatedRoute,
@@ -109,6 +111,7 @@ export class DashboardGremioComponent implements OnInit {
       this.subscriptioNewPoSuplier.unsubscribe();
       this.subscriptionOffertCancelled.unsubscribe();
       this.subscriptionPoAcepted.unsubscribe();
+      this.subscriptioSendOffertOk.unsubscribe();
 
 
     }
@@ -167,6 +170,24 @@ export class DashboardGremioComponent implements OnInit {
 
     if (this.usuario.type == "provider") {
 
+      this.notificationSendOffertOk$ = this._taskOdoo.getnotificationSendOffertOk$();
+      this.subscriptioSendOffertOk = this.notificationSendOffertOk$.subscribe(PoId => {
+
+        this.ngZone.run(() => {
+
+          console.log("entre a send dashboard")
+
+          this.messageService.add({ severity: 'success', summary: 'Completado', detail: 'Se envio correctamenta la oferta.' });
+          let temp = this.solicitudesList.findIndex(element => element.id === PoId)
+          if (temp !== -1) {
+            this.solicitudesList[temp].offer_send = "sent";
+
+          }
+
+          console.log(this.solicitudesList);
+        });
+      });
+
 
       this.notificationPoCancelled$ = this._taskOdoo.getRequestedNotificationPoCancelled$();
       this.subscriptioPoCancelled = this.notificationPoCancelled$.subscribe(notificationPoCancelled => {
@@ -186,15 +207,17 @@ export class DashboardGremioComponent implements OnInit {
       this.subscriptioNewPoSuplier = this.notificationNewPoSuplier$.subscribe((notificationNewPoSuplier: number[]) => {
         this.ngZone.run(() => {
 
-          for (let Po_id of notificationNewPoSuplier) {
+          if (typeof this.solicitudesList) {
+            for (let Po_id of notificationNewPoSuplier) {
 
-            let temp = (this.solicitudesList.findIndex(element => element.id === Po_id));
-            if (temp !== -1) {
-              notificationNewPoSuplier.splice(temp, 1);
+
+              let temp = (this.solicitudesList.findIndex(element => element.id === Po_id));
+              if (temp !== -1) {
+                notificationNewPoSuplier.splice(temp, 1);
+              }
             }
+            this._taskOdoo.requestTaskPoUpdate(notificationNewPoSuplier);
           }
-          this._taskOdoo.requestTaskPoUpdate(notificationNewPoSuplier);
-
         });
       });
 

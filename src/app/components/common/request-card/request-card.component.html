@@ -27,7 +27,7 @@
 
               <div class="buttons-cont" fxLayout="row">
                 <button class="btn btn-primary" fxFlex="role =='client' ? 20 : 24" (click)="onShowSubCard(false)"
-                  [disabled]="isLoading1||(role=='provider' && task.state=='si')">
+                  [disabled]="isLoading1||(role=='provider' && task.offer_send.toString() == 'sent')">
                   {{ role == "client" ? "OFERTAS" : "PRESUPUESTAR" }}
                   <div class="spinner-container-card" *ngIf="isLoading1" style="bottom: 7%; left: 12%">
                     <p-progressSpinner [style]="{ width: '30px', height: '30px' }"></p-progressSpinner>
@@ -46,7 +46,7 @@
                     ></p-progressSpinner>
                   </div> -->
                 </button>
-                <div fxFlex="20" fxFlexOffset="5" (click)="goToChat()" id="chatSubRequest" *ngIf="role=='provider'">
+                <div fxFlex="20" fxFlexOffset="5" (click)="goToChat()" id="chatSubRequest" *ngIf="role=='provider' && task.offer_send.toString() == 'sent'">
                   <i class="far fa-comment-alt" style="color: black;"></i>
                   <span style="color: black;">Chat</span>
 

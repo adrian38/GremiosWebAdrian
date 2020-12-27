@@ -2,11 +2,11 @@ import { _isNumberValue } from '@angular/cdk/coercion';
 import { AfterViewInit, Component, Input, NgZone, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { TaskModel } from '../../../../models/task.model';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-request-sub-card',
@@ -29,6 +29,8 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
 
   workforce: number;
   materials: number;
+  notificationSendOffertOk$ = new Observable<number>();
+  subscriptioSendOffertOk: Subscription;
 
 
 
@@ -59,11 +61,42 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
+    if (this.role == "provider") {
+
+      this.notificationSendOffertOk$ = this._taskOdoo.getnotificationSendOffertOk$();
+      this.subscriptioSendOffertOk = this.notificationSendOffertOk$.subscribe(PoId => {
+
+        this.ngZone.run(() => {
+          if (this.taskSub.id === PoId) {
+
+            console.log("presupuesto enviado correctamente")
+            ///quitar spinner////
+          }
+        });
+      });
+
+    }
+
     this.taskSub.require_materials = false;
 
   }
 
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+
+    if (this.role == "provider") {
+      this.subscriptioSendOffertOk.unsubscribe();
+    }
+
+  }
+
+
+
+
+
   sendPresupuesto() {
+    //poner Spinner// inhabilitar el boton de enviar
     this.taskSub.budget = this.workforce;
     this._taskOdoo.sendOffer(this.taskSub);
 
@@ -79,11 +112,11 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
   cancelOffer(offerId) {
     alert("Cancel Method ")
   }
-  private disableEnviar: boolean = true;
-  private workForceInvalid: boolean = false;
-  private materialInvalid: boolean = false;
-  private ceroInvalid: boolean = false;
-  
+  public disableEnviar: boolean = true;
+  public workForceInvalid: boolean = false;
+  public materialInvalid: boolean = false;
+  public ceroInvalid: boolean = false;
+
   onKeyUpWorkForce() {
     if (!_isNumberValue(this.workforce) || this.workforce == 0) {
       this.workForceInvalid = true;
