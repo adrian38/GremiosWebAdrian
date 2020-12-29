@@ -247,6 +247,8 @@ export class NewRequestComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: this.errorMessageImage + this.imageSizeLimitKb + 'kB' });
 
     }
+
+
   }
 
   async handleReaderLoaded(readerEvt) {
@@ -263,6 +265,7 @@ export class NewRequestComponent implements OnInit {
       this.loadImage[this.currentIndex] = true;
       // this.imageArticleChange = true;
     }
+    console.log(this.imageArticle)
   }
 
   public getSafeImage(url: string) {
