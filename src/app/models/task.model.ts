@@ -1,3 +1,5 @@
+import { HexBase64BinaryEncoding } from "crypto";
+
 export class Address {
     street: string;
     number: string;
@@ -46,13 +48,14 @@ export class TaskModel {
     product_id: number;
     photoNewTaskArray: Array<any>;
     origin_id: number;
-
+    photoProvider: string;
 
     constructor(product_id: number = 0, offer_send: string = "", type: string = "", description: string = "", id: number = 0, id_string: string = "",
         client_id: number = 0, client_name: string = "", provider_id: number = 0, provider_name: number = 0,
         budget: number = 0, origin: string = "", date_planned: string = "", date: string = "",
-        time: string = "", title: string = "", require_materials: boolean = true, origin_id = 0) {
+        time: string = "", title: string = "", require_materials: boolean = true, origin_id = 0, photoProvider = "") {
 
+        this.photoProvider = photoProvider;
         this.origin_id = origin_id;
         this.photoNewTaskArray = [];
         this.product_id = product_id;

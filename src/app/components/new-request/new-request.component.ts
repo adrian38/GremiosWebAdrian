@@ -252,7 +252,8 @@ export class NewRequestComponent implements OnInit {
   async handleReaderLoaded(readerEvt) {
     const binaryString = readerEvt.target.result;
     this.base64textString = btoa(binaryString);
-    this.task.photoNewTaskArray[this.currentIndex] = this.base64textString;
+    //this.task.photoNewTaskArray[this.currentIndex] = this.base64textString;
+    this.task.photoNewTaskArray[this.currentIndex] = this._base64ToArrayBuffer(this.base64textString);
     //console.log(this.task.photoNewTaskArray);
     this.imageArticle[this.currentIndex] = this.urlImage + this.base64textString;
     try {
@@ -283,6 +284,18 @@ export class NewRequestComponent implements OnInit {
 
     } else {
       this.myAddress = new Address('', '', '', '', '', '', '', '', '');
+
     }
+
+  }
+
+  _base64ToArrayBuffer(base64) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+      bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
   }
 }

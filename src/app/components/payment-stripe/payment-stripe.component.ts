@@ -16,7 +16,7 @@ export class PaymentStripeComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.stripe = await loadStripe(environment.stripe.testKey);
+    // this.stripe = await loadStripe(environment.stripe.testKey);
     const elements = this.stripe.elements();
 
     const style = {
