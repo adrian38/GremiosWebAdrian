@@ -24,13 +24,10 @@
           style="
           background-size: cover;
           background-position: center center;
-          flex: none;
-        " [style.background-image]="
-          getSafeImage(taskSub.photoNewTaskArray[0])
-        ">
-          <button id="photoCameraBtn" style="position: absolute" mat-icon-button>
+          flex: none;" [style.background-image]="getSafeImage(taskSub.photoNewTaskArray[0])">
+          <!-- <button id="photoCameraBtn" style="position: absolute" mat-icon-button>
             <i class="fas fa-camera"></i>
-          </button>
+          </button>-->
         </div>
       </div>
 
@@ -232,11 +229,10 @@
       background-size: cover;
       background-position: center center;
       flex: none;
-    " [style.background-image]="
-      getSafeImage(taskSub.photoNewTaskArray[0])
-    ">
+      " [style.background-image]="
+      getSafeImage(taskSub.photoNewTaskArray[0])">
 
-
+        <!--<img [src]=" taskSub.photoNewTaskArray[0]" style="width:75px;height:75px" alt="No image" />-->
 
       </div>
 
@@ -284,14 +280,19 @@
 <p-dialog header=" " [(visible)]="displayModal" [modal]="true" [style]="{ width: '35vw' }" [baseZIndex]="10000"
   [draggable]="false" [resizable]="false">
   <div fxLayout="row">
-    <div class="img-container-modal" fxFlex="30" (click)="displayModal = !displayModal">
-      <img width="120" src="../../../../../assets/img/phoebe.png" />
+    <div class="img-container-modal" fxFlex="30" (click)="displayModal = !displayModal"
+      [style.background-image]="getSafeImage(taskSub.photoNewTaskArray[0])">
+      <!--<img width="120" src="taskSub.photoNewTaskArray[0]" />-->
+      <!--<div class="photo-profile" fxFlex="row" fxLayoutAlign="center center" style="
+      background-size: cover;
+      background-position: center center;
+      flex: none;" [style.background-image]="getSafeImage(taskSub.photoNewTaskArray[0])"></div>-->
     </div>
     <div class="name-container" fxLayout="column">
-      <h2 class="name">Phoebe B.</h2>
-      <h4 class="job">FONTANERA</h4>
+      <h2 class="name"> Phoebe B.</h2>
+      <h4 class="job"> FONTANERA</h4>
       <p-rating [ngModel]="3" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center"
-        fxFlexOffset="10" class="mb-2 w-100"></p-rating>
+        fxFlexOffset="10" class="mb-2 w-100" style="pointer-events: none;"></p-rating>
     </div>
   </div>
   <div fxLayout="row" class="mt-3">

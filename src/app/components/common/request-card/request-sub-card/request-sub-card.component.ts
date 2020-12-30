@@ -77,7 +77,8 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
 
     }
 
-    this.taskSub.require_materials = false;
+    //this.taskSub.require_materials = false;
+    //console.log(this.taskSub.photoNewTaskArray[0])
 
   }
 
@@ -103,6 +104,7 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
   }
 
   public getSafeImage(url: string) {
+
     return this.sanitizer.bypassSecurityTrustStyle(`url(${url})`);
   }
 

@@ -247,13 +247,15 @@ export class NewRequestComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: this.errorMessageImage + this.imageSizeLimitKb + 'kB' });
 
     }
+
+
   }
 
   async handleReaderLoaded(readerEvt) {
     const binaryString = readerEvt.target.result;
     this.base64textString = btoa(binaryString);
-    this.task.photoNewTaskArray[this.currentIndex] = this.base64textString;
-    //console.log(this.task.photoNewTaskArray);
+    this.task.photoNewTaskArray[this.currentIndex] = this.urlImage + binaryString //this.base64textString;
+
     this.imageArticle[this.currentIndex] = this.urlImage + this.base64textString;
     try {
       this.loadImage[this.currentIndex] = true;
@@ -262,6 +264,7 @@ export class NewRequestComponent implements OnInit {
       this.loadImage[this.currentIndex] = true;
       // this.imageArticleChange = true;
     }
+    console.log(this.imageArticle)
   }
 
   public getSafeImage(url: string) {

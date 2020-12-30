@@ -52,6 +52,7 @@ export class RequestCardComponent implements OnInit {
 
 
   ngOnInit() {
+  
     if (this.userType === 'client') {
 
       this.notificationOffertCancelled$ = this._taskOdoo.getRequestedNotificationOffertCancelled$();
