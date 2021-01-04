@@ -281,7 +281,7 @@
   [draggable]="false" [resizable]="false">
   <div fxLayout="row">
     <div class="img-container-modal" fxFlex="30" (click)="displayModal = !displayModal"
-      [style.background-image]="getSafeImage(taskSub.photoNewTaskArray[0])">
+      [style.background-image]="getSafeImage(taskSub.photoProvider)">
       <!--<img width="120" src="taskSub.photoNewTaskArray[0]" />-->
       <!--<div class="photo-profile" fxFlex="row" fxLayoutAlign="center center" style="
       background-size: cover;
@@ -289,18 +289,15 @@
       flex: none;" [style.background-image]="getSafeImage(taskSub.photoNewTaskArray[0])"></div>-->
     </div>
     <div class="name-container" fxLayout="column">
-      <h2 class="name"> Phoebe B.</h2>
+      <h2 class="name">{{taskSub.provider_name}}</h2>
       <h4 class="job"> FONTANERA</h4>
-      <p-rating [ngModel]="3" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center"
+      <p-rating [ngModel]="taskSub.ranking" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center"
         fxFlexOffset="10" class="mb-2 w-100" style="pointer-events: none;"></p-rating>
     </div>
   </div>
   <div fxLayout="row" class="mt-3">
     <p>
-      At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque
-      corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-      qui officia deserunt mollitia
-      animi, id est laborum et dolorum fuga.
+      {{taskSub.comment}}
     </p>
   </div>
 </p-dialog>
