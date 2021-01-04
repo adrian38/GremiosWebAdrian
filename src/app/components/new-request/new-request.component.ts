@@ -254,7 +254,7 @@ export class NewRequestComponent implements OnInit {
   async handleReaderLoaded(readerEvt) {
     const binaryString = readerEvt.target.result;
     this.base64textString = btoa(binaryString);
-    this.task.photoNewTaskArray[this.currentIndex] = this.urlImage + binaryString //this.base64textString;
+    this.task.photoNewTaskArray[this.currentIndex] = this.base64textString;
 
     this.imageArticle[this.currentIndex] = this.urlImage + this.base64textString;
     try {
