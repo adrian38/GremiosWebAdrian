@@ -48,7 +48,7 @@ export class TaskModel {
     product_id: number;
     photoNewTaskArray: Array<any>;
     origin_id: number;
-    photoProvider: string;
+    photoProvider: any;
     comment: string;
     ranking: number;
 
