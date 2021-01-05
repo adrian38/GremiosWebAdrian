@@ -19,6 +19,7 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
   @Input() role: string;
   @Input() taskSub: TaskModel;
   @Input() offersList: TaskModel[];
+  currentOffer: TaskModel;
 
 
   displayModal = false;
@@ -77,8 +78,9 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
 
     }
 
-    //this.taskSub.require_materials = false;
-    //console.log(this.taskSub.photoNewTaskArray[0])
+    this.offersList.forEach(element => {
+      element.ranking = 3;
+    })
 
   }
 
@@ -143,5 +145,11 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onClickOffer(offer: any) {
+    this.currentOffer = null;
+    this.displayModal = !this.displayModal;
+    this.currentOffer = offer;
+   
+  }
 
 }
