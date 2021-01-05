@@ -126,7 +126,7 @@ export class AuthOdooService {
           console.log(err, "Error get_user");
         } else {
 
-          console.log(value[0].image_1920);
+
           if (knownTypes[value[0].image_1920[0]]) {
             usuario.avatar = knownTypes[value[0].image_1920[0]] + value[0].image_1920;
           }
@@ -192,7 +192,6 @@ export class AuthOdooService {
         'login',
         'email',
         'partner_id',
-        'groups_id',
         'image_1920',
         'classification'
       ])
@@ -215,9 +214,12 @@ export class AuthOdooService {
           console.log(err, "Error get_user");
         } else {
 
-
-
           if (value[0].classification === "custumer") {
+
+
+            if (knownTypes[value[0].image_1920[0]]) {
+              usuario.avatar = knownTypes[value[0].image_1920[0]] + value[0].image_1920;
+            }
             usuario.type = "client"
             console.log("cliente");
             usuario.connected = true;
