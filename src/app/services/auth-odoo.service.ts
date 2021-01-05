@@ -11,7 +11,14 @@ let jaysonServer = {
   username: '',
   password: '',
   pathConnection: '/jsonrpc'
-}
+
+};
+
+let knownTypes = {
+  '/': 'data:image/jpg;base64,',
+  'i': 'data:image/png;base64,',
+
+};
 
 
 let user$ = new Subject<UsuarioModel>();
@@ -97,7 +104,6 @@ export class AuthOdooService {
         'login',
         'email',
         'partner_id',
-        'groups_id',
         'image_1920',
         'classification'
       ])
@@ -120,6 +126,10 @@ export class AuthOdooService {
           console.log(err, "Error get_user");
         } else {
 
+          console.log(value[0].image_1920);
+          if (knownTypes[value[0].image_1920[0]]) {
+            usuario.avatar = knownTypes[value[0].image_1920[0]] + value[0].image_1920;
+          }
           usuario.partner_id = value[0].partner_id[0];
           usuario.realname = value[0].name;
 

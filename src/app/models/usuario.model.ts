@@ -36,6 +36,7 @@ export class UsuarioModel {
   realname: string;
   address: Address;
   date: string;
+  avatar: any;
 
   constructor() {
     this.username = "";
@@ -49,5 +50,6 @@ export class UsuarioModel {
     this.id = 0;
     this.realname = "";
     this.date = "";
+    this.avatar = "";
   }
 }

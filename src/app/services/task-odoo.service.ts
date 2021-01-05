@@ -486,8 +486,8 @@ export class TaskOdooService {
         'address_door': task.address.door,
         'address_stairs': task.address.stair,
         'address_zip_code': task.address.cp,
-        'address_latitude': '',
-        'address_longitude': '',
+        'address_latitude': task.address.latitude,
+        'address_longitude': task.address.longitude,
       }
       let inParams = [];
       inParams.push(SO);
