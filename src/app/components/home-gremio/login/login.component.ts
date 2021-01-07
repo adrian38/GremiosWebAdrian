@@ -69,12 +69,14 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       usuario: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       //usuario: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      //password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required]]
     });
   }
 
   login() {
     if (this.loginForm.invalid) {
+      console.log("error escribiendo usuario")
       this.disabled = true;
       this.alerta = true;
       setTimeout(() => {

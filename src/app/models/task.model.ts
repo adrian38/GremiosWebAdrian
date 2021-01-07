@@ -47,6 +47,7 @@ export class TaskModel {
     offer_send: String;
     product_id: number;
     photoNewTaskArray: Array<any>;
+    photoNewTaskArrayThumb: Array<any>;
     origin_id: number;
     photoProvider: any;
     comment: string;
@@ -57,6 +58,7 @@ export class TaskModel {
         budget: number = 0, origin: string = "", date_planned: string = "", date: string = "",
         time: string = "", title: string = "", require_materials: boolean = true, origin_id = 0, photoProvider = "", comment = "", ranking = 0) {
 
+        this.photoNewTaskArrayThumb = [];
         this.comment = comment;
         this.ranking = ranking;
         this.photoProvider = photoProvider;

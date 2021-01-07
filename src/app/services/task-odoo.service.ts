@@ -966,6 +966,7 @@ export class TaskOdooService {
     let tasksList = [];
     let SO_id = [];
 
+
     let get_photo_so = function () {
 
       let inParams = [];
@@ -997,6 +998,7 @@ export class TaskOdooService {
 
                 if (knownTypes[resId.datas[0]]) {
                   task.photoNewTaskArray.push(knownTypes[resId.datas[0]] + resId.datas);
+
                 }
 
               }

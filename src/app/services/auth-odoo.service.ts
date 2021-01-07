@@ -4,8 +4,8 @@ import { Observable, Subject } from 'rxjs'
 let jayson = require('../../../node_modules/jayson/lib/client/');
 let jaysonServer = {
 
-  // host: '192.168.0.106',
-  host: 'todoenunapp.com',
+  host: '192.168.0.106',
+  //host: 'todoenunapp.com',
   //port: '',
   port: '8069',
   db: 'demo',
@@ -127,7 +127,7 @@ export class AuthOdooService {
           console.log(err, "Error get_user");
         } else {
 
-
+          console.log(value)
           if (knownTypes[value[0].image_1920[0]]) {
             usuario.avatar = knownTypes[value[0].image_1920[0]] + value[0].image_1920;
           }
@@ -160,13 +160,11 @@ export class AuthOdooService {
     client.request('call', { service: 'common', method: 'login', args: [jaysonServer.db, jaysonServer.username, jaysonServer.password] }, function (err, error, value) {
 
       if (err || !value) {
-        console.log("Login Failed");
-        //console.log(err);
+        console.log(err, "Login Failed");
         usuario.connected = false;
         userLogin = usuario;
         user$.next(userLogin);;
       } else {
-        console.log("Connected");
         usuario.connected = true;
         usuario.id = value;
         connected = usuario.connected;
@@ -176,7 +174,7 @@ export class AuthOdooService {
     });
   }
 
-  //////////////////////////////////////////////////
+  /////////////////////////////////////////////////
 
   //Login desde la apk de cliente
 

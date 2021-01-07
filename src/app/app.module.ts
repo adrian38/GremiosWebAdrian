@@ -19,6 +19,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RatingModule } from 'primeng/rating';
 import { ToastModule } from 'primeng/toast';
+import { LightboxModule } from 'primeng/lightbox';
 
 //pipes
 import { DatePipe } from '@angular/common'
@@ -56,7 +57,6 @@ import { HistorySubCardComponent } from './components/common/history-card/histor
 import { RequestCardComponent } from './components/common/request-card/request-card.component';
 import { RequestSubCardComponent } from './components/common/request-card/request-sub-card/request-sub-card.component';
 import { MessageService } from 'primeng/api';
-import { NgxImageCompressService } from 'ngx-image-compress';
 import { NewChatComponent } from './components/new-chat/new-chat.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToggleButtonModule } from 'primeng/togglebutton';
@@ -95,6 +95,7 @@ import { PaymentStripeComponent } from './components/payment-stripe/payment-stri
     FieldsetModule,
     TooltipModule,
     ToggleButtonModule,
+    LightboxModule,
 
     app_routing,
 

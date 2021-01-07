@@ -69,8 +69,6 @@ export class DashboardGremioComponent implements OnInit {
 
     if (this.usuario.type == "client") {
       this._taskOdoo.requestTaskListClient();
-      console.log("es un cliente");
-
 
     } else if (this.usuario.type == "provider") {
       this._taskOdoo.requestTaskListProvider();
@@ -282,6 +280,8 @@ export class DashboardGremioComponent implements OnInit {
       this.ngZone.run(() => {
         let temp: TaskModel[];
         temp = tasksList.filter(task => {
+
+          task.photoNewTaskArrayThumb[0] = this.resizedataURL(task.photoNewTaskArray[0], 50, 50);
           if (this.usuario.type === "client") {
             return task.state === 'to invoice'; //Solicitadas
           } else if (this.usuario.type === "provider") { return task.state === 'no' };
@@ -310,12 +310,23 @@ export class DashboardGremioComponent implements OnInit {
         this.isLoading = false;
       });
 
-
-
     });
   }
 
+  resizedataURL(datas, wantedWidth, wantedHeight) {
+    var img = document.createElement('img');
+    img.src = datas
+    img.onload = (() => {
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
+      canvas.width = wantedWidth;
+      canvas.height = wantedHeight;
+      ctx.drawImage(img, 0, 0, wantedWidth, wantedHeight);
+      this.task.photoNewTaskArrayThumb[0] = canvas.toDataURL();
+      console.log(this.task.photoNewTaskArrayThumb[0], "function");
+    });
 
+  }
 
 
 }

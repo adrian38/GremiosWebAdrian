@@ -7,6 +7,8 @@ import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { TaskModel } from '../../../../models/task.model';
 import { Observable, Subscription } from 'rxjs';
+import { CATCH_ERROR_VAR } from '@angular/compiler/src/output/output_ast';
+import { getDataUrlFromFile } from 'browser-image-compression';
 
 @Component({
   selector: 'app-request-sub-card',
@@ -21,6 +23,8 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
   @Input() offersList: TaskModel[];
   currentOffer: TaskModel;
 
+  temp: any;
+
 
   displayModal = false;
 
@@ -33,6 +37,7 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
   notificationSendOffertOk$ = new Observable<number>();
   subscriptioSendOffertOk: Subscription;
 
+  images: any[];
 
 
   constructor(private router: Router,
@@ -42,15 +47,13 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
     private ngZone: NgZone) {
 
 
+
   }
   ngAfterViewInit(): void {
     if (this.role == 'provider') {
       var pTabNav = document.getElementsByClassName("p-tabview-nav")[0];
       var childrenLi = pTabNav.children[1];
       childrenLi.setAttribute("style", "pointer-events:none");
-
-
-
     }
 
 
@@ -61,6 +64,28 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
+    // console.log(this.taskSub.photoNewTaskArrayThumb[0]);
+    this.images = [];
+    console.log(this.taskSub.photoNewTaskArrayThumb[0], "subcard");
+    this.images.push({ source: this.taskSub.photoNewTaskArray[0], thumbnail: this.taskSub.photoNewTaskArrayThumb[0] });
+    /*   for (let photo of this.taskSub.photoNewTaskArray) {
+  
+        this.images.push({ source: photo, thumbnail: this.resizedataURL(this.taskSub.photoNewTaskArray[0], 50, 50) });
+  
+  
+      } */
+
+    //console.log(this.taskSub.photoNewTaskArray[0], "sin achicar");
+
+    //this.resizedataURL(this.taskSub.photoNewTaskArray[0], 50, 50);
+
+
+    // this.images.push({ source: 'assets/showcase/images/demo/sopranos/sopranos2.jpg', thumbnail: 'assets/showcase/images/demo/sopranos/sopranos2_small.jpg', title: 'Sopranos 2' });
+
+
+
+
 
     if (this.role == "provider") {
 
@@ -149,7 +174,24 @@ export class RequestSubCardComponent implements OnInit, AfterViewInit {
     this.currentOffer = null;
     this.displayModal = !this.displayModal;
     this.currentOffer = offer;
-   
+
   }
+
+
+  resizedataURL(datas, wantedWidth, wantedHeight) {
+    var img = document.createElement('img');
+    img.src = datas
+    img.onload = (() => {
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
+      canvas.width = wantedWidth;
+      canvas.height = wantedHeight;
+      ctx.drawImage(img, 0, 0, wantedWidth, wantedHeight);
+      this.taskSub.photoNewTaskArrayThumb[0] = canvas.toDataURL();
+      console.log(this.taskSub.photoNewTaskArrayThumb[0], "function");
+    });
+
+  }
+
 
 }

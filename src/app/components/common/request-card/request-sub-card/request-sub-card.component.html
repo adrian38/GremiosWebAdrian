@@ -34,12 +34,7 @@
     </div>
 
   </p-tabPanel>
-  <!-- <p-tabPanel header="FECHA Y HORA">
-        <p>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
-            sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
-        </p>
-    </p-tabPanel> -->
+  
   <p-tabPanel header="DIRECCION">
     <div class="row">
       <div class="col-sm-6">
@@ -123,98 +118,14 @@
         </div>
 
       </div>
-      <!--  <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
-                <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
-                padding: 10px">Impuestos (21%)</h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
-            </div>
-            <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="background-color: white;border-bottom: 2px solid #f6b776; color: black; padding: 0;">
-                <h5 class="name" fxFlex="50" style="color: black;text-align: center;border-right: 2px solid black;height: 50px;
-                padding: 10px">Impuesto (Uso de la plataforma)</h5>
-                <input type="text" fxFlex="50" style="height: 50px; border: none;text-align: center;" />
-            </div> -->
-
-      <div class="border-bottom-mod"></div>
+          <div class="border-bottom-mod"></div>
 
       <button class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)='sendPresupuesto()'
         [disabled]="materialInvalid==true || workForceInvalid==true">ENVIAR</button>
     </div>
   </p-tabPanel>
   <p-tabPanel header="PRECIO" id="precio">
-    <!--<div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center"
-      style="background-color: white">
-      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
-          background-color: white;
-          border-bottom: 2px solid #f6b776;
-          color: black;
-          padding: 0;
-        ">
-        <h5 class="name" fxFlex="50" style="
-            color: black;
-            text-align: center;
-            border-right: 2px solid black;
-            height: 50px;
-            padding: 10px;
-          ">
-          Mano de Obra
-        </h5>
-        <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
-      </div>
-      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
-          background-color: white;
-          border-bottom: 2px solid #f6b776;
-          color: black;
-          padding: 0;
-        ">
-        <h5 class="name" fxFlex="50" style="
-            color: black;
-            text-align: center;
-            border-right: 2px solid black;
-            height: 50px;
-            padding: 10px;
-          ">
-          Materiales
-        </h5>
-        <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
-      </div>
-      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
-          background-color: white;
-          border-bottom: 2px solid #f6b776;
-          color: black;
-          padding: 0;
-        ">
-        <h5 class="name" fxFlex="50" style="
-            color: black;
-            text-align: center;
-            border-right: 2px solid black;
-            height: 50px;
-            padding: 10px;
-          ">
-          Impuestos (21%)
-        </h5>
-        <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
-      </div>
-      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
-          background-color: white;
-          border-bottom: 2px solid #f6b776;
-          color: black;
-          padding: 0;
-        ">
-        <h5 class="name" fxFlex="50" style="
-            color: black;
-            text-align: center;
-            border-right: 2px solid black;
-            height: 50px;
-            padding: 10px;
-          ">
-          Impuesto (Uso de la plataforma)
-        </h5>
-        <input type="text" fxFlex="50" style="height: 50px; border: none; text-align: center" />
-      </div>
-
-      <div class="border-bottom-mod"></div>
-      <div class="btn btn-primary" fxFlex="20" fxFlexOffset="5">ENVIAR</div>
-    </div>-->
+ 
   </p-tabPanel>
 </p-tabView>
 
@@ -269,6 +180,11 @@
 
 </div>
 <div class="border-bottom-mod"></div>
+
+ <!-- <p-lightbox  [images]="images" easing="ease-in" effectDuration="500ms"></p-lightbox> --> 
+ 
+ <p-lightbox [images]="images" > adrian </p-lightbox>
+
 
 
 <p-dialog header=" " [(visible)]="displayModal" [modal]="true" [style]="{ width: '35vw' }" [baseZIndex]="10000"

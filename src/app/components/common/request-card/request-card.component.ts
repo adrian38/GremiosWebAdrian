@@ -52,7 +52,8 @@ export class RequestCardComponent implements OnInit {
 
 
   ngOnInit() {
-  
+
+
     if (this.userType === 'client') {
 
       this.notificationOffertCancelled$ = this._taskOdoo.getRequestedNotificationOffertCancelled$();
@@ -126,17 +127,7 @@ export class RequestCardComponent implements OnInit {
           }
         });
       });
-
-
-
-
-
     }
-
-
-
-
-
 
     console.log(this.task);
   }
@@ -208,6 +199,13 @@ export class RequestCardComponent implements OnInit {
     } else {
       this.isLoading1 = !offerDetail;
       this.offersDetail = offerDetail;
+      /*  this.resizedataURL(this.task.photoNewTaskArray[0], 50, 50);
+ 
+ 
+       setTimeout(() => {
+ 
+       }, 1000);
+  */
       this.showSubCard = true;
 
     }
@@ -217,5 +215,19 @@ export class RequestCardComponent implements OnInit {
     this.router.navigate(['/chat/', this.task.id]);
   }
 
+  resizedataURL(datas, wantedWidth, wantedHeight) {
+    var img = document.createElement('img');
+    img.src = datas
+    img.onload = (() => {
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
+      canvas.width = wantedWidth;
+      canvas.height = wantedHeight;
+      ctx.drawImage(img, 0, 0, wantedWidth, wantedHeight);
+      this.task.photoNewTaskArrayThumb[0] = canvas.toDataURL();
+      console.log(this.task.photoNewTaskArrayThumb[0], "function");
+    });
+
+  }
 
 }
