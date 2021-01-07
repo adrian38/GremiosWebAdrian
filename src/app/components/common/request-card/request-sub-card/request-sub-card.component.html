@@ -224,20 +224,14 @@
     <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center"
       *ngFor="let offer of offersList">
 
-      <div *ngIf="taskSub.photoNewTaskArray[0]" class="img-container" fxFlex="10" (click)="displayModal = !displayModal"
-        style="
+      <div *ngIf="offer.photoProvider" class="img-container" fxFlex="10" (click)="onClickOffer(offer)" style="
       background-size: cover;
       background-position: center center;
       flex: none;
       " [style.background-image]="
-      getSafeImage(taskSub.photoNewTaskArray[0])">
+      getSafeImage(offer.photoProvider)"> </div>
 
-        <!--<img [src]=" taskSub.photoNewTaskArray[0]" style="width:75px;height:75px" alt="No image" />-->
-
-      </div>
-
-      <div *ngIf="!taskSub.photoNewTaskArray[0]" class="img-container" fxFlex="10"
-        (click)="displayModal = !displayModal" style="
+      <div *ngIf="!offer.photoProvider" class="img-container" fxFlex="10" (click)="onClickOffer(offer)" style="
       background-size: cover;
       background-position: center center;
       flex: none;
@@ -249,12 +243,12 @@
 
       </div>
 
-      <h5 class="name" fxFlex="15" (click)="displayModal = !displayModal">
+      <h5 class="name" fxFlex="15" fxFlexOffset="1" (click)="displayModal = !displayModal">
         {{ offer.provider_name }}
       </h5>
-      <p-rating [ngModel]="3" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center"
-        fxFlexOffset="10" class="mb-2" style="pointer-events: none;"></p-rating>
-      <div class="chat-button" fxLayout="column" fxFlexOffset="10" fxLayoutAlign="space-around center"
+      <p-rating [ngModel]="offer.ranking" readonly="true" stars="5" [cancel]="false" fxFlex="20"
+        fxFlexOffset="8" class="mb-2" style="pointer-events: none;"></p-rating>
+      <div class="chat-button" fxLayout="column" fxFlexOffset="15" fxLayoutAlign="space-around center"
         (click)="goToChat(offer.id)">
         <i class="far fa-comment-alt"></i>
         <span>Chat</span>
@@ -280,27 +274,22 @@
 <p-dialog header=" " [(visible)]="displayModal" [modal]="true" [style]="{ width: '35vw' }" [baseZIndex]="10000"
   [draggable]="false" [resizable]="false">
   <div fxLayout="row">
-    <div class="img-container-modal" fxFlex="30" (click)="displayModal = !displayModal"
-      [style.background-image]="getSafeImage(taskSub.photoNewTaskArray[0])">
-      <!--<img width="120" src="taskSub.photoNewTaskArray[0]" />-->
-      <!--<div class="photo-profile" fxFlex="row" fxLayoutAlign="center center" style="
-      background-size: cover;
-      background-position: center center;
-      flex: none;" [style.background-image]="getSafeImage(taskSub.photoNewTaskArray[0])"></div>-->
+    <div class="img-container" fxFlex="30" (click)="displayModal = !displayModal" style="
+    background-size: cover;
+    background-position: center center;
+    flex: none;" [style.background-image]="getSafeImage(currentOffer?.photoProvider)">
+
     </div>
-    <div class="name-container" fxLayout="column">
-      <h2 class="name"> Phoebe B.</h2>
+    <div class="name-container" fxLayout="column" fxFlexOffset="10" >
+      <h2 class="name">{{currentOffer?.provider_name}}</h2>
       <h4 class="job"> FONTANERA</h4>
-      <p-rating [ngModel]="3" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexAlign="center"
-        fxFlexOffset="10" class="mb-2 w-100" style="pointer-events: none;"></p-rating>
+      <p-rating [ngModel]="currentOffer?.ranking" readonly="true" stars="5" [cancel]="false" fxFlex="20"
+        fxFlexAlign="center" fxFlexOffset="10" class="mb-2 w-100" style="pointer-events: none;"></p-rating>
     </div>
   </div>
   <div fxLayout="row" class="mt-3">
-    <p>
-      At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque
-      corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-      qui officia deserunt mollitia
-      animi, id est laborum et dolorum fuga.
+    <p style="text-align: center;">
+      {{currentOffer?.comment}}
     </p>
   </div>
 </p-dialog>
