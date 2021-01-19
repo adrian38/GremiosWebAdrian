@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Component, ViewEncapsulation, ViewChild, ComponentFactoryResolver,OnInit } from '@angular/core';
 
 import { UsuarioModel } from 'src/app/models/usuario.model';
 
@@ -7,6 +7,7 @@ import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 
 import { PlaceHolderDirective } from '../shared/placeholder/placeholder.directive';
 import { LoginComponent } from './login/login.component';
+import { Router } from '@angular/router';
 declare const $: any;
 
 @Component({
@@ -15,7 +16,7 @@ declare const $: any;
   styleUrls: ['./home-gremio.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class HomeGremioComponent {
+export class HomeGremioComponent implements OnInit{
 
 
   imgCarousel = ['assets/img/home1.jpg', 'assets/img/home3.jpg'];
@@ -42,15 +43,20 @@ export class HomeGremioComponent {
 
   constructor(private fb: FormBuilder,
     private _authOdoo: AuthOdooService,
-
-
+    private router:Router,
     private componentFactoryResolver: ComponentFactoryResolver,
   ) {
     this.usuario = new UsuarioModel;
     this.createForms();
   }
 
+  ngOnDestroy(){
+   
+  }
 
+  ngOnInit(){
+
+  }
 
   createForms() {
     this.loginForm = this.fb.group({

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { Router } from '@angular/router';
 import { SignUpOdooService } from 'src/app/services/signup-odoo.service';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-sign-up-customer',
@@ -52,10 +53,25 @@ export class SignUpCustomerComponent implements OnInit {
   constructor(private fb:FormBuilder,
      private router: Router,
      private _signupOdoo: SignUpOdooService,
-     private ngZone: NgZone) {
+     private ngZone: NgZone,
+     ) {
    }
 
   ngOnInit() {
+
+    /* (function() {
+
+      if (window.history && window.history.pushState) {
+    
+        $(window).on('popstate', function() {
+          
+          alert('Back button was pressed.');
+        });
+      }
+    })(); */
+
+    // Capture browser-level back/forward buttons.  Alters browser history.
+        
     this.createForms();
     this.isLoading =false;
 
@@ -126,6 +142,14 @@ export class SignUpCustomerComponent implements OnInit {
     this.router.navigate(['/signup/provider'])
   }
   goHome(){
+
     this.router.navigate(['/home'])
+    /* .then(() => {
+      window.location.reload();
+    }); */
+   /*  this.router.navigate(['/home'])
+    .then(() => {
+      window.location.reload();
+    }); */
   }
 }

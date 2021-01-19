@@ -41,20 +41,21 @@
           INICIAR SESIÓN
         </button>
       </div>
-    </form>
-  </div>
+      <div class= "log">
+        <a
+          type="button"
+          [routerLink]="['/signup/customer']"
+          class="text-green mr-3 letra-chica"
+          >¿No tiene una cuenta?</a
+        >
+        <a [routerLink]="['/signup']" class="text-green ml-3 letra-chica"
+          >Restablecer contraseña</a
+        >
+      </div>
 
-  <ng-template pTemplate="footer">
-    <div class="mt-2">
-      <a
-        type="button"
-        [routerLink]="['/signup/customer']"
-        class="text-green mr-3 letra-chica"
-        >¿No tiene una cuenta?</a
-      >
-      <a [routerLink]="['/signup']" class="text-green ml-3 letra-chica"
-        >Restablecer contraseña</a
-      >
-    </div>
-  </ng-template>
+      </form>
+
+    
+  </div>
+ 
 </p-dialog>

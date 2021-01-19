@@ -61,6 +61,8 @@ export class LoginComponent implements OnInit {
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
+    
+    this.loginForm.reset();
     this.subscriptionUsuario.unsubscribe();
 
   }
