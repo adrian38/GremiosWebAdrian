@@ -2,64 +2,74 @@
 
   <div class="pcard-container">
     <p-card>
-      <div class="container p-0">
+      <div class="container-fluid p-0">
         <div class="row m-0">
           <div class="col-3 p-0">
             <div class="image-left">
               <img src="assets/img/home1.jpg" class="heaven" />
             </div>
           </div>
+
           <div class="col-9">
-            <div class="spinner-container-card" *ngIf="isLoading3">
-              <p-progressSpinner [style]="{ width: '150px', height: '150px' }"></p-progressSpinner>
-            </div>
-            <div class="container py-2">
-              <h3>{{ task.title }}</h3>
-              <span><i class="far fa-calendar mr-2"></i>{{ task.date_planned | date: "EEEE, MMMM d, y" }}</span>
-
-              <span type="button" (click)="selectTypeCancel()" class="derecha">Cancelar</span>
-
-              <br />
-              <span><i class="far fa-clock mr-2"></i>{{ task.time | date : 'h:mm a' }}</span>
-              <br />
-              <span *ngIf="role == 'provider'"><i class="far fa-user mr-2"></i>Cliente: <span
-                  style="color:#31b0b9 ;">{{task.client_name}}</span></span>
-
-              <div class="buttons-cont" fxLayout="row">
-                <button class="btn btn-primary" fxFlex="role =='client' ? 20 : 24" (click)="onShowSubCard(false)"
-                  [disabled]="isLoading1||(role=='provider' && task.offer_send.toString() == 'sent')">
-                  {{ role == "client" ? "OFERTAS" : "PRESUPUESTAR" }}
-                  <div class="spinner-container-card" *ngIf="isLoading1" style="bottom: 7%; left: 12%">
-                    <p-progressSpinner [style]="{ width: '30px', height: '30px' }"></p-progressSpinner>
-                  </div>
-                </button>
-                <button class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)="onShowSubCardDetail(true)"
-                  style="margin-right: 38px;">
-                  DETALLES
-                  <!--                   <div
-                    class="spinner-container-card"
-                    *ngIf="isLoading2"
-                    style="bottom: 7%; left: 36%"
-                  >
-                    <p-progressSpinner
-                      [style]="{ width: '30px', height: '30px' }"
-                    ></p-progressSpinner>
-                  </div> -->
-                </button>
-                <div fxFlex="20" fxFlexOffset="5" (click)="goToChat()" id="chatSubRequest" *ngIf="role=='provider' && task.offer_send.toString() == 'sent'">
-                  <i class="far fa-comment-alt" style="color: black;"></i>
-                  <span style="color: black;">Chat</span>
-
+            <div class="container-fluid ">
+              <div class="row mt-4">
+                <div class="col-6">
+                  <h3>{{ task.title }}</h3>
                 </div>
-
-                <div fxFlex="20" fxFlexOffset="35">
-                  <div style="margin-left: -94px;margin-top: 4px;">
-                    <span style="color: black;">Solicitado:</span><br />
-                    <span style="color: black;">{{ task.date | date }}</span>
-                  </div>
-
+                <div class="col" style="text-align: right;">
+                  <span type="button" class="text-green" (click)="selectTypeCancel()">Cancelar</span>
                 </div>
               </div>
+              <div class="col; p-0 ">
+
+                <i class="far fa-calendar mr-2"></i>
+                <span style="color: black">{{ task.date_planned | date: "EEEE, MMMM
+                  d, y" }}</span>
+
+              </div>
+              <div class="col; p-0">
+                <i class="far fa-clock mr-2"></i>
+
+                <span style="color: black">Horario de servicio: {{ task.time | date :
+                  'h:mm a' }}</span>
+              </div>
+              <div class="col; p-0 " *ngIf="role == 'provider'">
+                <span><i class="far fa-user mr-2"></i>Cliente: <span
+                    style="color:#31b0b9 ;">{{task.client_name}}</span></span>
+              </div>
+
+              <div class="container  mt-4 mb-3 ">
+                <div class="row ">
+
+                  <div class="align-self-center ; role == 'client'?col-3:col-5">
+                    <button class=" btn btn-primary btn-sm   " style="color: black" (click)="onShowSubCard(false)"
+                      [disabled]="isLoading1||(role=='provider' && task.offer_send.toString() == 'sent')">
+                      {{ role == "client" ? "OFERTAS" : "PRESUPUESTAR" }}
+                    </button>
+                  </div>
+
+                  <div class="col-2 ml-2 p-0 align-self-center" style="text-align: right;">
+                    <button class=" btn btn-primary btn-sm" style="color: black;" (click)="onShowSubCardDetail(true)">
+                      DETALLES
+                    </button>
+                  </div>
+
+
+                  <div class="col-1 p-0 ml-5" style="text-align: center;" (click)="goToChat()" id="chatSubRequest"
+                    *ngIf="role=='provider' && task.offer_send.toString() == 'sent'">
+                    <i class="far fa-comment-alt" style="color: black;"></i>
+                    <div class="col p-0">
+                      <span style="color: black; text-align: center;"><small>Chat</small></span>
+                    </div>
+                  </div>
+
+                  <div class="col pr-0" style="text-align: right;">
+                    <span style="color: black;"><small>Solicitado:</small></span><br />
+                    <span style="color: black;"><small>{{ task.date | date: 'dd.MM.yyyy' }}</small></span>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

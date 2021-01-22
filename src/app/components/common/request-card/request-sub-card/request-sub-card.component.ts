@@ -9,6 +9,7 @@ import { TaskModel } from '../../../../models/task.model';
 import { Observable, Subscription } from 'rxjs';
 import { CATCH_ERROR_VAR } from '@angular/compiler/src/output/output_ast';
 import { getDataUrlFromFile } from 'browser-image-compression';
+import {AvatarModule} from 'primeng/avatar';
 
 @Component({
   selector: 'app-request-sub-card',

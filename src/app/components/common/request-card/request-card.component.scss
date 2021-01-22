@@ -1,18 +1,17 @@
 @import '../../../../assets/mystyle.scss';
 .list-card {
 	flex-direction: column;
-	box-sizing: border-box;
+	box-sizing: content-box;
 	display: flex;
 	place-content: center space-around;
 	align-items: center;
 	.pcard-container {
-		// margin-top: 100px;
 		margin-top: 50px;
-		width: 100%;
-		border-radius: 10% 0 0 0;
-		width: 50vw;
+		box-sizing: border-box;
+		width: 60vw;
+		max-width: 70%;
 		.p-component {
-			border-radius: 70px 0 0 0;
+			border-radius: 70px 10px 10px 0;
 		}
 		.p-card .p-card-body {
 			padding: 0;
@@ -24,7 +23,8 @@
 			font-family: $font-family;
 			margin-bottom: 15px;
 		}
-		.buttons-cont {
+
+		/* .buttons-cont {
 			// max-height: 35px;
 			.btn {
 				margin-bottom: 10px;
@@ -33,7 +33,7 @@
 			span {
 				font-size: 14px;
 			}
-		}
+		} */
 	}
 	.image-left {
 		// height: 25vh;
@@ -71,25 +71,19 @@
 	}
 }
 
-.derecha {
-	margin-left: 40%;
-	color: rgb(49, 176, 185);
-}
-
 .spinner-container-card {
 	position: absolute;
 }
 .chat-button {
-  svg {
-      color: white;
-      font-size: 25px;
-  }
-  span {
-      color: white;
-      font-size: 14px;
-  }
+	svg {
+		color: white;
+		font-size: 25px;
+	}
+	span {
+		color: white;
+		font-size: 14px;
+	}
 }
-#chatSubRequest:hover{
-  cursor: pointer;
- 
-  }
+#chatSubRequest:hover {
+	cursor: pointer;
+}
