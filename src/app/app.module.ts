@@ -29,6 +29,7 @@ import { MessageService } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import {AvatarModule} from 'primeng/avatar';
+import {GalleriaModule} from 'primeng/galleria';
 
 //pipes
 import { DatePipe } from '@angular/common'
@@ -97,8 +98,7 @@ import { PaymentStripeComponent } from './components/payment-stripe/payment-stri
     FieldsetModule,
     TooltipModule,
     ToggleButtonModule,
-    LightboxModule,
-    AvatarModule,
+    
 
     app_routing,
 
@@ -117,7 +117,10 @@ import { PaymentStripeComponent } from './components/payment-stripe/payment-stri
     RadioButtonModule,
     InputTextareaModule,
     RatingModule,
-    ToastModule
+    ToastModule,
+    LightboxModule,
+    AvatarModule,
+    GalleriaModule,
 
   ],
   providers: [

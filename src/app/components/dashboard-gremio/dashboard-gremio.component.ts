@@ -6,6 +6,8 @@ import { UsuarioModel } from 'src/app/models/usuario.model';
 import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { MessageService } from 'primeng/api';
+import {GalleriaModule} from 'primeng/galleria';
+
 
 @Component({
   selector: 'app-dashboard-gremio',
@@ -23,7 +25,6 @@ export class DashboardGremioComponent implements OnInit {
   contratadosList: TaskModel[];
   historialList: TaskModel[];
   tab: String;
-
 
   tasksList$: Observable<TaskModel[]>; // servicio comunicacion
   tab$: Observable<String>;
@@ -83,6 +84,7 @@ export class DashboardGremioComponent implements OnInit {
 
   ngOnInit(): void {
 
+   
 
 
     this.route.queryParams.subscribe(params => {
@@ -92,6 +94,10 @@ export class DashboardGremioComponent implements OnInit {
     this.observablesSubscriptions();
 
   }
+
+  
+
+  
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.

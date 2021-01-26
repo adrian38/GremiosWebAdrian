@@ -99,12 +99,12 @@ export class RequestCardComponent implements OnInit {
             if (offersList[0].budget !== 0) {
               this.offersList = offersList;
               this.isLoading1 = false;
-              this.isLoading2 = false;
+             
               this.showSubCard = true;
             }
             else {
               this.isLoading1 = false;
-              this.isLoading2 = false;
+            
               console.log("No tienes Ofertas");
             }
           }
@@ -160,13 +160,13 @@ export class RequestCardComponent implements OnInit {
   cancelSOclient() {
     console.log("CancelarSo");
     this._taskOdoo.cancelSOclient(this.task.id);
-    this.isLoading3 = true;
+    this.isLoading1 = true;
   }
 
   cancelPOsuplier() {
     console.log("CancelarPo");
     this._taskOdoo.cancelPOsuplier(this.task.id)
-    this.isLoading3 = true;
+    this.isLoading1 = true;
   }
 
 

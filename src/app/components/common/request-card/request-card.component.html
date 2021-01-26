@@ -17,7 +17,11 @@
                   <h3>{{ task.title }}</h3>
                 </div>
                 <div class="col" style="text-align: right;">
-                  <span type="button" class="text-green" (click)="selectTypeCancel()">Cancelar</span>
+                  <span type="button" class="text-green" (click)="selectTypeCancel()">Cancelar</span><br />
+                  <div style="text-align: center;">
+                    <p-progressSpinner class="spinner-container-card" *ngIf="isLoading1"
+                      [style]="{ width: '40px', height: '40px' }"></p-progressSpinner>
+                  </div>
                 </div>
               </div>
               <div class="col; p-0 ">

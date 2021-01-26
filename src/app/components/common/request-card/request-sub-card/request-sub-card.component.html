@@ -1,5 +1,4 @@
 <p-tabView *ngIf="mode ">
-
   <p-tabPanel header="DESCRIPCION">
     <div class="row">
       <div class="col-sm-6">
@@ -21,20 +20,20 @@
         </div>
 
         <div *ngIf="taskSub.photoNewTaskArray[0]" class="photo-profile" fxFlex="row" fxLayoutAlign="center center"
-          style="
+          (click)="displayBasic2 = true" style="
           background-size: cover;
           background-position: center center;
           flex: none;" [style.background-image]="getSafeImage(taskSub.photoNewTaskArray[0])">
-          <!-- <button id="photoCameraBtn" style="position: absolute" mat-icon-button>
-            <i class="fas fa-camera"></i>
-          </button>-->
+          <button id="photoCameraBtn" style="position: absolute">
+          </button>
+          <strong>{{numberPhoto}}</strong>
         </div>
       </div>
 
     </div>
 
   </p-tabPanel>
-  
+
   <p-tabPanel header="DIRECCION">
     <div class="row">
       <div class="col-sm-6">
@@ -119,14 +118,14 @@
         </div>
 
       </div>
-          <div class="border-bottom-mod"></div>
+      <div class="border-bottom-mod"></div>
 
       <button class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)='sendPresupuesto()'
         [disabled]="materialInvalid==true || workForceInvalid==true">ENVIAR</button>
     </div>
   </p-tabPanel>
   <p-tabPanel header="PRECIO" id="precio">
- 
+
   </p-tabPanel>
 </p-tabView>
 
@@ -158,8 +157,8 @@
       <h5 class="name" fxFlex="15" fxFlexOffset="1" (click)="displayModal = !displayModal">
         {{ offer.provider_name }}
       </h5>
-      <p-rating [ngModel]="offer.ranking" readonly="true" stars="5" [cancel]="false" fxFlex="20"
-        fxFlexOffset="8" class="mb-2" style="pointer-events: none;"></p-rating>
+      <p-rating [ngModel]="offer.ranking" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexOffset="8"
+        class="mb-2" style="pointer-events: none;"></p-rating>
       <div class="chat-button" fxLayout="column" fxFlexOffset="15" fxLayoutAlign="space-around center"
         (click)="goToChat(offer.id)">
         <i class="far fa-comment-alt"></i>
@@ -182,24 +181,24 @@
 </div>
 <div class="border-bottom-mod"></div>
 
- <!-- <p-lightbox  [images]="images" easing="ease-in" effectDuration="500ms"></p-lightbox> --> 
- 
- <p-lightbox [images]="images" > adrian </p-lightbox>
+<p-galleria [(value)]="images" [(visible)]="displayBasic2" [containerStyle]="{'max-width': '850px'}" [numVisible]="7"
+  [circular]="true" [fullScreen]="true" [showItemNavigators]="true" [showThumbnails]="false" [baseZIndex]="100000">
+  <ng-template pTemplate="item" let-item>
+    <img [src]="item.previewImageSrc" style="width: 100%; display: block;" />
+  </ng-template>
 
+</p-galleria>
 
-
-<p-dialog header=" " [(visible)]="displayModal" [modal]="true" [baseZIndex]="10000" [draggable]="false" >
+<p-dialog header=" " [(visible)]="displayModal" [modal]="true" [baseZIndex]="10000" [draggable]="false">
 
   <div fxLayout="row">
-    <div class="name-container" fxLayout="column" fxFlexOffset="10" >
+    <div class="name-container" fxLayout="column" fxFlexOffset="10">
       <h2 class="name">{{currentOffer?.provider_name}}</h2>
       <h4 class="job"> FONTANERA</h4>
       <p-rating [ngModel]="currentOffer?.ranking" readonly="true" stars="5" [cancel]="false" fxFlex="20"
         fxFlexAlign="center" fxFlexOffset="10" class="mb-2 w-100" style="pointer-events: none;"></p-rating>
     </div>
   </div>
-  
+
 
 </p-dialog>
-  
-

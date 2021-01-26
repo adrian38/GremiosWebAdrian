@@ -1,21 +1,23 @@
+<p-toast></p-toast>
+<div class="spinner-container_1" *ngIf="isLoading">
 
- <p-toast></p-toast>
-<div class="spinner-container" *ngIf="isLoading">
-    
     <div><span class="textSpinner">
-        Cargando Solicitudes ....
-    </span></div>
-    
+            Cargando Solicitudes ....
+        </span></div>
+
     <p-progressSpinner [style]="{ width: '250px', height: '250px' }"></p-progressSpinner>
 </div>
 <div *ngIf="activateTab == 'request'" class="align-cards">
-    <app-request-card *ngFor="let task of solicitudesList; let i= index" [task]="task" [role]='usuario.type'></app-request-card>
+    <app-request-card *ngFor="let task of solicitudesList; let i= index" [task]="task" [role]='usuario.type'>
+    </app-request-card>
 </div>
 <div *ngIf="activateTab == 'hired'" class="align-cards">
-    <app-hire-card *ngFor="let task of contratadosList; let i= index" [task]="task" [role]='usuario.type'></app-hire-card>
+    <app-hire-card *ngFor="let task of contratadosList; let i= index" [task]="task" [role]='usuario.type'>
+    </app-hire-card>
 </div>
 <div *ngIf="activateTab == 'history'" class="align-cards">
-    <app-history-card *ngFor="let task of historialList; let i= index" [task]="task" [role]='usuario.type'></app-history-card>
+    <app-history-card *ngFor="let task of historialList; let i= index" [task]="task" [role]='usuario.type'>
+    </app-history-card>
 </div>
 
 <!-- <br>

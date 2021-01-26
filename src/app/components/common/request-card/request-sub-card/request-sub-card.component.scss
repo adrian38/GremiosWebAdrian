@@ -1,7 +1,9 @@
 @import '../../../../../assets/mystyle.scss';
 :host ::ng-deep .p-tabview .p-tabview-nav {
+	border-radius: 70px 0px 0px 0px;
 	li {
 		width: 50%;
+
 		a {
 			color: white;
 			background-color: $primary-color;
@@ -17,6 +19,7 @@
 	li.p-highlight .p-tabview-nav-link {
 		background-color: $secondary-color;
 		color: $primary-color;
+		border-radius: 70px 0px 0px 0px;
 	}
 	li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
 		background-color: $primary-color;
@@ -100,32 +103,21 @@
 	border-radius: 4px;
 	flex: none !important;
 	background-color: transparent;
-	color: #bdbdbd;
-	border: 2px solid rgba(0, 0, 0, 0.22) !important;
-	.avatar-icon {
-		font-size: 250px;
-		height: 250px;
-		width: 250px;
-		color: #bdbdbd;
-	}
+	//color: #bdbdbd;
+	//border: 2px solid rgba(0, 0, 0, 0.22) !important;
+
 	#photoCameraBtn {
-		opacity: 0;
+		opacity: 0.3;
 		height: 100%;
 		width: 100%;
-		mat-icon {
-			font-size: 30px;
-			height: 30px;
-			width: 30px;
-		}
+		border-radius: 4px;
 	}
 	&:hover {
 		#photoCameraBtn {
-			opacity: 1;
+			border-radius: 4px;
+			opacity: 0.3;
 			transition: opacity 0.5s ease;
 		}
-	}
-	button {
-		position: absolute;
 	}
 }
 .location-btn {
