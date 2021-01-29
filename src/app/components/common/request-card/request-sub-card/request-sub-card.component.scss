@@ -1,9 +1,21 @@
 @import '../../../../../assets/mystyle.scss';
+
+:host ::ng-deep .p-tabview .p-tabview-panels {
+	border-radius: 0 0 50px 50px;
+}
+
+.anchoColumn {
+	height: 120px;
+}
+
+.destacado {
+	margin-top: 1em;
+	margin-left: 2em;
+	font-weight: 500;
+}
 :host ::ng-deep .p-tabview .p-tabview-nav {
-	border-radius: 70px 0px 0px 0px;
 	li {
 		width: 50%;
-
 		a {
 			color: white;
 			background-color: $primary-color;
@@ -19,7 +31,6 @@
 	li.p-highlight .p-tabview-nav-link {
 		background-color: $secondary-color;
 		color: $primary-color;
-		border-radius: 70px 0px 0px 0px;
 	}
 	li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
 		background-color: $primary-color;
@@ -97,33 +108,29 @@
 }
 
 .photo-profile {
+	margin-top: 1em;
+	margin-left: 3em;
 	position: relative;
-	height: 50px;
-	width: 50px;
-	border-radius: 4px;
+	height: 80px;
+	width: 80px;
+	//border-radius: 4px;
 	flex: none !important;
-	background-color: transparent;
-	//color: #bdbdbd;
-	//border: 2px solid rgba(0, 0, 0, 0.22) !important;
+	//background-color: transparent;
 
 	#photoCameraBtn {
-		opacity: 0.3;
+		//opacity: 0.5;
 		height: 100%;
 		width: 100%;
-		border-radius: 4px;
-	}
-	&:hover {
-		#photoCameraBtn {
-			border-radius: 4px;
-			opacity: 0.3;
-			transition: opacity 0.5s ease;
-		}
+		//border-radius: 4px;
+		background-color: rgba(0, 0, 0, 0.4);
+		outline: none;
 	}
 }
+
 .location-btn {
 	button {
-		height: 100% !important;
-		width: 80%;
+		height: 90% !important;
+		width: 23%;
 		border-radius: 10px !important;
 		background-color: #f6b776;
 		color: white;
