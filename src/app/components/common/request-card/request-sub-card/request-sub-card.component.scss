@@ -2,6 +2,7 @@
 
 :host ::ng-deep .p-tabview .p-tabview-panels {
 	border-radius: 0 0 50px 50px;
+	padding: 0;
 }
 
 .anchoColumn {
@@ -49,13 +50,13 @@
 			width: 60px;
 		}
 	}
+	*:focus {
+		outline: none;
+	}
 	.list-group-item {
 		background-color: $primary-color;
 		border: none;
-		.name {
-			color: white;
-			cursor: pointer;
-		}
+
 		.p-rating .p-rating-icon {
 			font-size: 15px;
 		}
@@ -75,12 +76,6 @@
 	}
 	.chat-button:hover {
 		cursor: pointer;
-	}
-	.border-bottom-mod {
-		width: 95%;
-		opacity: 0.3;
-		height: 2px;
-		background-color: white;
 	}
 }
 

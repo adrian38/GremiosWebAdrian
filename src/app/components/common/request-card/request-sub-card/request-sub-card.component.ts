@@ -9,189 +9,186 @@ import { TaskModel } from '../../../../models/task.model';
 import { Observable, Subscription } from 'rxjs';
 import { CATCH_ERROR_VAR } from '@angular/compiler/src/output/output_ast';
 import { getDataUrlFromFile } from 'browser-image-compression';
-import {AvatarModule} from 'primeng/avatar';
-
+import { AvatarModule } from 'primeng/avatar';
 
 @Component({
-  selector: 'app-request-sub-card',
-  templateUrl: './request-sub-card.component.html',
-  styleUrls: ['./request-sub-card.component.scss']
+	selector: 'app-request-sub-card',
+	templateUrl: './request-sub-card.component.html',
+	styleUrls: [ './request-sub-card.component.scss' ]
 })
-export class RequestSubCardComponent implements OnInit, AfterViewInit {
+export class RequestSubCardComponent implements OnInit {
+	@Input() mode: boolean;
+	@Input() role: string;
+	@Input() taskSub: TaskModel;
+	@Input() offersList: TaskModel[];
+	currentOffer: TaskModel;
 
-  @Input() mode: boolean;
-  @Input() role: string;
-  @Input() taskSub: TaskModel;
-  @Input() offersList: TaskModel[];
-  currentOffer: TaskModel;
+	temp: any;
 
-  temp: any;
+	images: any[];
+	activeIndex;
+	displayBasic2;
 
-  images:any[];
-  activeIndex ;
-  displayBasic2;
-  
-  numberPhoto:string;
-  displayModal = false;
+	numberPhoto: string;
+	displayModal = false;
 
-  userType: string = "";
-  user: UsuarioModel;
+	userType: string = '';
+	user: UsuarioModel;
+	total: number = 0;
+	tempMaterial: number = 0;
+	tempHandWork: number = 0;
 
+	workforce: number;
+	materials: number;
+	notificationSendOffertOk$ = new Observable<number>();
+	subscriptioSendOffertOk: Subscription;
 
-  workforce: number;
-  materials: number;
-  notificationSendOffertOk$ = new Observable<number>();
-  subscriptioSendOffertOk: Subscription;
+	constructor(
+		private router: Router,
+		public sanitizer: DomSanitizer,
+		private _taskOdoo: TaskOdooService,
+		private _authOdoo: AuthOdooService,
+		private ngZone: NgZone
+	) {}
 
-    constructor(private router: Router,
-    public sanitizer: DomSanitizer,
-    private _taskOdoo: TaskOdooService,
-    private _authOdoo: AuthOdooService,
-    private ngZone: NgZone,
-    ) {
+	goToChat(id) {
+		this.router.navigate([ '/chat/', id ]);
+	}
 
+	ngOnInit() {
+		this.images = [];
+		if (this.taskSub.photoNewTaskArray.length > 0) {
+			this.numberPhoto = this.taskSub.photoNewTaskArray.length.toString() + '+';
+			this.taskSub.photoNewTaskArray.forEach((element) => {
+				this.images.push({ previewImageSrc: element });
+			});
+		}
 
+		//this.resizedataURL(this.taskSub.photoNewTaskArray[0], 50, 50);
 
-  }
+		if (this.role == 'provider') {
+			this.notificationSendOffertOk$ = this._taskOdoo.getnotificationSendOffertOk$();
+			this.subscriptioSendOffertOk = this.notificationSendOffertOk$.subscribe((PoId) => {
+				this.ngZone.run(() => {
+					if (this.taskSub.id === PoId) {
+						console.log('presupuesto enviado correctamente');
+						///quitar spinner////
+					}
+				});
+			});
+		}
 
-   ngAfterViewInit(): void {
-    if (this.role == 'provider') {
-      var pTabNav = document.getElementsByClassName("p-tabview-nav")[0];
-      var childrenLi = pTabNav.children[1];
-      childrenLi.setAttribute("style", "pointer-events:none");
-    }
+		this.offersList.forEach((element) => {
+			element.ranking = 3;
+		});
+	}
 
+	imageClick(index: number) {
+		this.activeIndex = index;
+		this.displayBasic2 = true;
+	}
 
-  }
+	ngOnDestroy(): void {
+		//Called once, before the instance is destroyed.
+		//Add 'implements OnDestroy' to the class.
 
-  goToChat(id) {
-    this.router.navigate(['/chat/', id]);
-  }
+		if (this.role == 'provider') {
+			this.subscriptioSendOffertOk.unsubscribe();
+		}
+	}
 
-  ngOnInit() {
+	sendPresupuesto() {
+		//poner Spinner// inhabilitar el boton de enviar
+		this.taskSub.budget = this.workforce;
+		this._taskOdoo.sendOffer(this.taskSub);
+	}
 
-    this.images = [];
-    if (this.taskSub.photoNewTaskArray.length > 0){
-      this.numberPhoto = this.taskSub.photoNewTaskArray.length.toString() + "+" ;
-      this.taskSub.photoNewTaskArray.forEach(element => {
-        this.images.push({previewImageSrc:element});
-      });
-      
-    }
+	public getSafeImage(url: string) {
+		return this.sanitizer.bypassSecurityTrustStyle(`url(${url})`);
+	}
 
-    //this.resizedataURL(this.taskSub.photoNewTaskArray[0], 50, 50);
+	acceptOffer(offerId) {
+		alert('Accept Method ');
+	}
+	cancelOffer(offerId) {
+		alert('Cancel Method ');
+	}
+	public disableEnviarM: boolean = true;
+	public disableEnviarW: boolean = true;
+	public workForceInvalid: boolean = false;
+	public materialInvalid: boolean = false;
+	public ceroInvalid: boolean = false;
 
-    if (this.role == "provider") {
+	onKeyUpWorkForce() {
+		if (!_isNumberValue(this.workforce) || this.workforce == 0) {
+			if (this.total != 0) {
+				this.total = this.total - this.tempHandWork;
+				this.tempHandWork = 0;
+			}
+			this.workForceInvalid = true;
+			this.disableEnviarW = true;
+		} else {
+			if (this.taskSub.require_materials) {
+				this.disableEnviarM = false;
+				this.total = this.workforce;
+				this.tempHandWork = this.workforce;
+				this.workForceInvalid = false;
+				this.disableEnviarW = false;
+			} else if (!this.disableEnviarM) {
+				this.total = this.total + this.workforce - this.tempHandWork;
+				this.tempHandWork = this.workforce;
+				this.workForceInvalid = false;
+				this.disableEnviarW = false;
+			} else {
+				this.total = this.workforce;
+				this.tempHandWork = this.workforce;
+				this.workForceInvalid = false;
+				this.disableEnviarW = false;
+			}
+		}
+	}
 
-      this.notificationSendOffertOk$ = this._taskOdoo.getnotificationSendOffertOk$();
-      this.subscriptioSendOffertOk = this.notificationSendOffertOk$.subscribe(PoId => {
+	onKeyUpMaterial() {
+		if (!_isNumberValue(this.materials) || this.materials == 0) {
+			if (this.total != 0) {
+				this.total = this.total - this.tempMaterial;
+				this.tempMaterial = 0;
+			}
+			this.materialInvalid = true;
+			this.disableEnviarM = true;
+		} else {
+			console.log(this.materials);
 
-        this.ngZone.run(() => {
-          if (this.taskSub.id === PoId) {
+			if (!this.disableEnviarW) {
+				this.total = this.total + this.materials - this.tempMaterial;
+				this.tempMaterial = this.materials;
+				this.materialInvalid = false;
+				this.disableEnviarM = false;
+			} else {
+				this.total = this.materials;
+				this.tempMaterial = this.materials;
+				this.materialInvalid = false;
+				this.disableEnviarM = false;
+			}
+		}
+	}
 
-            console.log("presupuesto enviado correctamente")
-            ///quitar spinner////
-          }
-        });
-      });
+	onClickOffer(offer: any) {
+		this.currentOffer = null;
+		this.displayModal = !this.displayModal;
+		this.currentOffer = offer;
+	}
 
-    }
-
-    this.offersList.forEach(element => {
-      element.ranking = 3;
-    })
-
-  }
-
-  imageClick(index: number) {
-    this.activeIndex = index;
-    this.displayBasic2 = true;
-  }
-
-
-  ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-
-    if (this.role == "provider") {
-      this.subscriptioSendOffertOk.unsubscribe();
-    }
-
-  }
-
-
-
-
-
-  sendPresupuesto() {
-    //poner Spinner// inhabilitar el boton de enviar
-    this.taskSub.budget = this.workforce;
-    this._taskOdoo.sendOffer(this.taskSub);
-
-  }
-
-  public getSafeImage(url: string) {
-
-    return this.sanitizer.bypassSecurityTrustStyle(`url(${url})`);
-  }
-
-  acceptOffer(offerId) {
-    alert("Accept Method ")
-  }
-  cancelOffer(offerId) {
-    alert("Cancel Method ")
-  }
-  public disableEnviar: boolean = true;
-  public workForceInvalid: boolean = false;
-  public materialInvalid: boolean = false;
-  public ceroInvalid: boolean = false;
-
-  onKeyUpWorkForce() {
-    if (!_isNumberValue(this.workforce) || this.workforce == 0) {
-      this.workForceInvalid = true;
-      this.disableEnviar = true;
-    }
-    else {
-
-      this.workForceInvalid = false;
-      //this.disableEnviar = false;
-    }
-  }
-
-  onKeyUpMaterial() {
-    if (!_isNumberValue(this.materials) || this.materials == 0) {
-      this.materialInvalid = true;
-      this.disableEnviar = true;
-    }
-    else {
-
-      this.materialInvalid = false;
-      //this.disableEnviar = false;
-    }
-  }
-
-  onClickOffer(offer: any) {
-    this.currentOffer = null;
-    this.displayModal = !this.displayModal;
-    this.currentOffer = offer;
-
-  }
-
-
-  resizedataURL(datas, wantedWidth, wantedHeight) {
-    var img = document.createElement('img');
-    img.src = datas
-    img.onload = (() => {
-      let canvas = document.createElement('canvas');
-      let ctx = canvas.getContext('2d');
-      canvas.width = wantedWidth;
-      canvas.height = wantedHeight;
-      ctx.drawImage(img, 0, 0, wantedWidth, wantedHeight);
-      //this.taskSub.photoNewTaskArrayThumb[0] = canvas.toDataURL();
-      
-    });
-
-  }
-
-
+	resizedataURL(datas, wantedWidth, wantedHeight) {
+		var img = document.createElement('img');
+		img.src = datas;
+		img.onload = () => {
+			let canvas = document.createElement('canvas');
+			let ctx = canvas.getContext('2d');
+			canvas.width = wantedWidth;
+			canvas.height = wantedHeight;
+			ctx.drawImage(img, 0, 0, wantedWidth, wantedHeight);
+			//this.taskSub.photoNewTaskArrayThumb[0] = canvas.toDataURL();
+		};
+	}
 }

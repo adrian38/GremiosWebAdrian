@@ -52,75 +52,106 @@
 </p-tabView>
 
 <p-tabView *ngIf="!mode && role == 'provider'">
-  <p-tabPanel header="SERVICIO">
-    <div class="list-group" *ngIf="!mode && role == 'provider'" fxLayout="column" fxLayoutAlign="space-around center"
-      style="background-color: white">
-      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
-          background-color: white;
-          border-bottom: 2px solid #f6b776;
-          color: black;
-          padding: 0;
-        ">
-        <h5 class="name" fxFlex="50" style="
-            color: black;
-            text-align: center;
-            border-right: 2px solid black;
-            height: 50px;
-            padding: 10px;
-          ">
-          Mano de Obra
-        </h5>
-        <input placeholder="Valor en €" fxFlex="50" style="height: 50px; border: none; text-align: center"
-          [(ngModel)]="workforce" (keyup)="onKeyUpWorkForce()" />
+  <div class="container">
+    <div class="row " style="background-color: #f6b776; height: 60px;">
 
+      <div class="col-sm " style="border-right: 1px solid black; height: 60px; text-align: center;">
+        <h6 class="mt-4" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; ">SERVICIO</h6>
       </div>
-
-      <div class="row" *ngIf="workForceInvalid">
-        <div class="col-sm-12" style="left: 200px;">
-          <small class="p-invalid">Mano de obra no valido.</small>
-        </div>
-
+      <div class="col-sm " style="text-align: center; ">
+        <h6 class="mt-4" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;">PRECIO</h6>
       </div>
-
-
-      <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center" style="
-          background-color: white;
-          border-bottom: 2px solid #f6b776;
-          color: black;
-          padding: 0;
-        ">
-        <ng-container *ngIf="!taskSub.require_materials">
-          <h5 class="name" fxFlex="50" style="
-            color: black;
-            text-align: center;
-            border-right: 2px solid black;
-            height: 50px;
-            padding: 10px;
-          ">
-            Materiales
-          </h5>
-          <input class="inputs" placeholder="Valor en €" fxFlex="50"
-            style="height: 50px; border: none; text-align: center" [(ngModel)]="materials"
-            (keyup)="onKeyUpMaterial()" />
-
-        </ng-container>
-      </div>
-      <div class="row" *ngIf="materialInvalid">
-        <div class="col-sm-12" style="left: 200px;">
-          <small class="p-invalid">Material no valido.</small>
-        </div>
-
-      </div>
-      <div class="border-bottom-mod"></div>
-
-      <button class="btn btn-primary" fxFlex="20" fxFlexOffset="5" (click)='sendPresupuesto()'
-        [disabled]="materialInvalid==true || workForceInvalid==true">ENVIAR</button>
     </div>
-  </p-tabPanel>
-  <p-tabPanel header="PRECIO" id="precio">
-  </p-tabPanel>
+  </div>
+
+  <div class="list-group" fxLayout="column" fxLayoutAlign="space-around center" style="background-color: white">
+    <div class="list-group-item list-group-item-action  p-2" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776 ;
+          width: 95%;
+          color: black;
+          
+        ">
+      <h6 fxFlex="50" style="
+            
+            height: 20px;
+            margin-bottom: 0;
+            margin-left: 50px;
+            font-weight: normal;
+                        
+          ">
+        Mano de Obra
+      </h6>
+      <input type="number" placeholder="Valor en €" fxFlex="50" style="height: 20px; border: none; text-align: center"
+        [(ngModel)]="workforce" (keyup)="onKeyUpWorkForce()" />
+    </div>
+
+    <div class="row" *ngIf="workForceInvalid">
+      <div class="col-sm-12" style="left: 200px;">
+        <small class="p-invalid">Mano de obra no valido.</small>
+      </div>
+
+    </div>
+
+    <ng-container *ngIf="!taskSub.require_materials">
+      <div class="list-group-item list-group-item-action p-2" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776;
+          color: black;
+          width: 95%;
+
+          
+        ">
+        <h6 fxFlex="50" style="
+            
+        height: 20px;
+        margin-bottom: 0;
+        margin-left: 50px;
+        font-weight: normal;
+                    
+      ">
+          Materiales
+        </h6>
+        <input type="number" placeholder="Valor en €" fxFlex="50" style="height: 20px; border: none; text-align: center"
+          [(ngModel)]="materials" (keyup)="onKeyUpMaterial()" />
+
+      </div>
+    </ng-container>
+
+    <div class="row" *ngIf="materialInvalid">
+      <div class="col-sm-12" style="left: 200px;">
+        <small class="p-invalid">Material no valido.</small>
+      </div>
+    </div>
+
+    <div class="list-group-item list-group-item-action  p-2" fxLayout="row" fxLayoutAlign="space-around center" style="
+          background-color: white;
+          border-bottom: 2px solid #f6b776 ;
+          width: 95%;
+          color: black;
+          
+        ">
+      <h6 fxFlex="50" style="
+            
+            height: 20px;
+            margin-bottom: 0;
+            margin-left: 50px;
+            font-weight: normal;
+                        
+          ">
+        TOTAL
+      </h6>
+      <h6 class="m-0" fxFlex="50" style="  font-weight: normal; height: 20px; border: none; text-align: center">
+        {{total}}</h6>
+    </div>
+
+    <button class="btn btn-primary btn-sm mt-4 mb-4" style="color: black" (click)='sendPresupuesto()'
+      [disabled]="materialInvalid==true || workForceInvalid==true || disableEnviarM == true || disableEnviarW == true">ENVIAR</button>
+
+  </div>
 
 </p-tabView>
+
 
 <div class="list-group" *ngIf="!mode && role == 'client'" fxLayout="column" fxLayoutAlign="space-around center">
   <ng-container *ngIf="offersList">
@@ -164,7 +195,7 @@
     </div>
   </ng-container>
 </div>
-<div class="border-bottom-mod"></div>
+
 
 <p-galleria [(value)]="images" [(visible)]="displayBasic2" [containerStyle]="{'max-width': '850px'}" [numVisible]="7"
   [circular]="true" [fullScreen]="true" [showItemNavigators]="true" [showThumbnails]="false" [baseZIndex]="100000">
