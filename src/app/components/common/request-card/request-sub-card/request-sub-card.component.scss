@@ -5,6 +5,10 @@
 	padding: 0;
 }
 
+/* :host ::ng-deep .p-galleria-mask {
+	width: 100%;
+} */
+
 .anchoColumn {
 	height: 120px;
 }
@@ -40,6 +44,11 @@
 
 :host ::ng-deep .list-group {
 	background-color: $primary-color;
+
+	img.ng-star-inserted {
+		border-radius: 5px;
+	}
+
 	.img-container {
 		cursor: pointer;
 		height: 60px;
@@ -63,17 +72,18 @@
 		.p-rating .p-rating-icon.pi-star {
 			color: $secondary-color;
 		}
-		.chat-button {
-			svg {
-				color: white;
-				font-size: 25px;
-			}
-			span {
-				color: white;
-				font-size: 14px;
-			}
+		.icon-cog {
+			color: black;
 		}
 	}
+
+	.chat-button {
+		span {
+			color: black;
+			font-size: 13px;
+		}
+	}
+
 	.chat-button:hover {
 		cursor: pointer;
 	}
@@ -108,7 +118,7 @@
 	position: relative;
 	height: 80px;
 	width: 80px;
-	//border-radius: 4px;
+	border-radius: 4px;
 	flex: none !important;
 	//background-color: transparent;
 
@@ -116,7 +126,7 @@
 		//opacity: 0.5;
 		height: 100%;
 		width: 100%;
-		//border-radius: 4px;
+		border-radius: 4px;
 		background-color: rgba(0, 0, 0, 0.4);
 		outline: none;
 	}
@@ -148,4 +158,14 @@
 }
 svg {
 	color: white !important;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number] {
+	-moz-appearance: textfield;
 }

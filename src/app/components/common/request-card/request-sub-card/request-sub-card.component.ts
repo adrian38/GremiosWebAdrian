@@ -173,6 +173,11 @@ export class RequestSubCardComponent implements OnInit {
 		}
 	}
 
+	edtiName(name: string) {
+		let temp = name.split(' ');
+		return temp[0] + ' ' + temp[1].slice(0, 1) + '.';
+	}
+
 	onClickOffer(offer: any) {
 		this.currentOffer = null;
 		this.displayModal = !this.displayModal;

@@ -112,8 +112,8 @@
       ">
           Materiales
         </h6>
-        <input type="number" placeholder="Valor en €" fxFlex="50" style="height: 20px; border: none; text-align: center"
-          [(ngModel)]="materials" (keyup)="onKeyUpMaterial()" />
+        <input class="p-0" type="number" placeholder="Valor en €" fxFlex="50"
+          style="height: 20px; border: none; text-align: center" [(ngModel)]="materials" (keyup)="onKeyUpMaterial()" />
 
       </div>
     </ng-container>
@@ -153,54 +153,68 @@
 </p-tabView>
 
 
-<div class="list-group" *ngIf="!mode && role == 'client'" fxLayout="column" fxLayoutAlign="space-around center">
+<div class="list-group container p-2" *ngIf="!mode && role == 'client'">
   <ng-container *ngIf="offersList">
-    <div class="list-group-item list-group-item-action" fxLayout="row" fxLayoutAlign="space-around center"
-      *ngFor="let offer of offersList">
-      <div *ngIf="offer.photoProvider" class="img-container" fxFlex="10" (click)="onClickOffer(offer)" style="
-      background-size: cover;
-      background-position: center center;
-      flex: none;
-      " [style.background-image]="
-      getSafeImage(offer.photoProvider)"> </div>
-      <div *ngIf="!offer.photoProvider" class="img-container" fxFlex="10" (click)="onClickOffer(offer)" style="
-      background-size: cover;
-      background-position: center center;
-      flex: none;
-    " [style.background-image]="
-      getSafeImage('../../../assets/img/noImage.png')
-    ">
+    <div *ngFor="let offer of offersList ; let i = index">
+
+      <div class="row ml-4 pt-2  align-items-center" style="height: 70px ; width: 97%;">
+
+        <div class="col-1 ml-4 p-0" style="text-align: center;">
+          <p-avatar size="large" image={{offer.photoProvider}}>
+          </p-avatar>
+        </div>
+
+        <div class="col-2 mt-2 pl-2">
+          <h6
+            style=" pointer-events: none; color: white; font-family: Arial, Helvetica, sans-serif; font-weight: 700; ">
+            {{edtiName(offer.provider_name.toString())}}</h6>
+        </div>
+        <div class="col-3 p-1 list-group-item">
+          <p-rating [ngModel]="offer.ranking" readonly="true" stars="5" [cancel]="false" style="pointer-events: none;">
+          </p-rating>
+        </div>
+        <div class="chat-button col-1" fxLayout="column" fxLayoutAlign="space-around center"
+          (click)="goToChat(offer.id)">
+          <input type=image src="'../../../../../../../assets/img/iconChat.svg" width="30" height="20">
+          <span>Chat</span>
+        </div>
+
+        <div class="col-1 ml-4 p-0" fxLayout="column" fxLayoutAlign="space-around center" style="cursor: pointer"
+          (click)="acceptOffer(offer.id)">
+          <i class="fas fa-check-square fa-lg"></i>
+          <span style="color: white; font-size: 13px; ">Aceptar</span>
+        </div>
+
+        <div class="col-1 ml-0 p-0" fxLayout="column" fxLayoutAlign="space-around center" style="cursor: pointer"
+          (click)="cancelOffer(offer.id)">
+          <i class="fas fa-window-close fa-lg"></i>
+          <span style="color: white; font-size: 13px;">Cancelar</span>
+        </div>
+
+        <div class="col-1 ml-4 p-0" style="text-align: right;">
+          <h2>{{ offer.budget }}€</h2>
+        </div>
+
       </div>
-      <h5 class="name" fxFlex="15" fxFlexOffset="1" (click)="displayModal = !displayModal">
-        {{ offer.provider_name }}
-      </h5>
-      <p-rating [ngModel]="offer.ranking" readonly="true" stars="5" [cancel]="false" fxFlex="20" fxFlexOffset="8"
-        class="mb-2" style="pointer-events: none;"></p-rating>
-      <div class="chat-button" fxLayout="column" fxFlexOffset="15" fxLayoutAlign="space-around center"
-        (click)="goToChat(offer.id)">
-        <i class="far fa-comment-alt"></i>
-        <span>Chat</span>
+      <div class="row ml-2">
+        <div class="col">
+          <div *ngIf="offersList.length - 1 != i" style=" border-bottom: 1px solid white ; width: 97%;"></div>
+        </div>
       </div>
-      <div class="chat-button" fxLayout="column" fxFlexOffset="5" fxLayoutAlign="space-around center"
-        (click)="acceptOffer(offer.id)">
-        <i class="fas fa-check-square"></i>
-        <span>Aceptar</span>
-      </div>
-      <div class="chat-button" fxLayout="column" fxFlexOffset="2" fxLayoutAlign="space-around center"
-        (click)="cancelOffer(offer.id)">
-        <i class="fas fa-window-close"></i>
-        <span>Cancelar</span>
-      </div>
-      <h2 fxFlexOffset="5">{{ offer.budget }}€</h2>
+
+
+
+
+
     </div>
   </ng-container>
 </div>
 
 
-<p-galleria [(value)]="images" [(visible)]="displayBasic2" [containerStyle]="{'max-width': '850px'}" [numVisible]="7"
-  [circular]="true" [fullScreen]="true" [showItemNavigators]="true" [showThumbnails]="false" [baseZIndex]="100000">
+<p-galleria [(value)]="images" [(visible)]="displayBasic2" [numVisible]="7" [circular]="true" [fullScreen]="true"
+  [showItemNavigators]="true" [showThumbnails]="false" [baseZIndex]="100000">
   <ng-template pTemplate="item" let-item>
-    <img [src]="item.previewImageSrc" style="width: 100%; display: block;" />
+    <img [src]="item.previewImageSrc" style="width: 100%;height: 100%; display: block;" />
   </ng-template>
 
 </p-galleria>
