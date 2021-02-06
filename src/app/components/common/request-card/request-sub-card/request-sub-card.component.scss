@@ -11,6 +11,11 @@
 
 .anchoColumn {
 	height: 120px;
+	margin-top: 5%;
+}
+
+.anchoColumnDescrip {
+	height: 150px;
 }
 
 .destacado {
@@ -169,3 +174,47 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
 	-moz-appearance: textfield;
 }
+
+:host ::ng-deep .map {
+	.p-dialog {
+		width: 1000px !important;
+		max-width: 4000px;
+		height: 700px !important;
+
+		.p-dialog-header {
+			color: black;
+			border-radius: 15px 15px 0 0;
+		}
+
+		.p-dialog-content {
+			border-radius: 0 0 15px 15px;
+		}
+
+		agm-map {
+			width: 100%;
+			height: 100%;
+		}
+	}
+}
+
+/* @media all and (max-width: 1500px) {
+	.p-dialog {
+		width: 500px !important;
+		height: 400px !important;
+
+		.p-dialog-header {
+			color: black;
+			border-radius: 15px 15px 0 0;
+		}
+
+		.p-dialog-content {
+			height: 100% !important;
+			border-radius: 0 0 15px 15px;
+		}
+
+		agm-map {
+			width: 100%;
+			height: 100%;
+		}
+	}
+} */

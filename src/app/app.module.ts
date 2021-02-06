@@ -4,9 +4,12 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { app_routing } from './app.routes';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+
+//Otros
+import { AgmCoreModule } from '@agm/core';
 
 //NgPrime
 import { CarouselModule } from 'primeng/carousel';
@@ -28,16 +31,14 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-import {AvatarModule} from 'primeng/avatar';
-import {GalleriaModule} from 'primeng/galleria';
+import { AvatarModule } from 'primeng/avatar';
+import { GalleriaModule } from 'primeng/galleria';
 
 //pipes
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-AR';
 import { registerLocaleData } from '@angular/common';
-registerLocaleData(localeEsAr, 'es')
-
-
+registerLocaleData(localeEsAr, 'es');
 
 // Services
 import { AuthOdooService } from './services/auth-odoo.service';
@@ -66,74 +67,71 @@ import { NewChatComponent } from './components/new-chat/new-chat.component';
 import { PaymentStripeComponent } from './components/payment-stripe/payment-stripe.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarGremioComponent,
-    LoginComponent,
-    HomeGremioComponent,
-    PlaceHolderDirective,
-    NewRequestComponent,
-    DashboardGremioComponent,
+	declarations: [
+		AppComponent,
+		NavbarGremioComponent,
+		LoginComponent,
+		HomeGremioComponent,
+		PlaceHolderDirective,
+		NewRequestComponent,
+		DashboardGremioComponent,
 
+		////////////////////
 
-    ////////////////////
+		RequestCardComponent,
+		RequestSubCardComponent,
+		HireCardComponent,
+		HireSubCardComponent,
+		HistoryCardComponent,
+		HistorySubCardComponent,
+		NewChatComponent,
+		PaymentStripeComponent
+	],
+	imports: [
+		AgmCoreModule.forRoot({
+			apiKey: 'AIzaSyBXq33cjYMCezL6xP-vo3m-qWQ5U9gRTfQ'
+		}),
+		BrowserModule,
+		FormsModule,
+		ReactiveFormsModule,
+		BrowserAnimationsModule,
+		FlexLayoutModule,
+		FieldsetModule,
+		TooltipModule,
+		ToggleButtonModule,
 
-    RequestCardComponent,
-    RequestSubCardComponent,
-    HireCardComponent,
-    HireSubCardComponent,
-    HistoryCardComponent,
-    HistorySubCardComponent,
-    NewChatComponent,
-    PaymentStripeComponent
+		app_routing,
 
-
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    FlexLayoutModule,
-    FieldsetModule,
-    TooltipModule,
-    ToggleButtonModule,
-    
-
-    app_routing,
-
-    ///////////////////
-    CarouselModule,
-    ButtonModule,
-    DialogModule,
-    InputTextModule,
-    CardModule,
-    ProgressSpinnerModule,
-    DropdownModule,
-    CalendarModule,
-    TabViewModule,
-    StepsModule,
-    SignUpModule,
-    RadioButtonModule,
-    InputTextareaModule,
-    RatingModule,
-    ToastModule,
-    LightboxModule,
-    AvatarModule,
-    GalleriaModule,
-
-  ],
-  providers: [
-    AuthOdooService,
-    HttpClientModule,
-    DatePipe,
-    AuthGuardService,
-    TaskOdooService,
-    MessageService,
-    SignUpOdooService,
-    { provide: LOCALE_ID, useValue: 'es' },
-
-  ],
-  bootstrap: [AppComponent]
+		///////////////////
+		CarouselModule,
+		ButtonModule,
+		DialogModule,
+		InputTextModule,
+		CardModule,
+		ProgressSpinnerModule,
+		DropdownModule,
+		CalendarModule,
+		TabViewModule,
+		StepsModule,
+		SignUpModule,
+		RadioButtonModule,
+		InputTextareaModule,
+		RatingModule,
+		ToastModule,
+		LightboxModule,
+		AvatarModule,
+		GalleriaModule
+	],
+	providers: [
+		AuthOdooService,
+		HttpClientModule,
+		DatePipe,
+		AuthGuardService,
+		TaskOdooService,
+		MessageService,
+		SignUpOdooService,
+		{ provide: LOCALE_ID, useValue: 'es' }
+	],
+	bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {}

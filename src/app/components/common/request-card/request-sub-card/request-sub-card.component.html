@@ -2,7 +2,7 @@
 
   <p-tabPanel header="DESCRIPCION">
     <div class="row ">
-      <div class="col-8 anchoColumn ">
+      <div class="col-8 anchoColumnDescrip ">
         <p class="destacado">
           {{ taskSub.description }}
         </p>
@@ -41,9 +41,9 @@
       </div>
 
       <div class="col-3 align-self-center">
-        <div class="location-btn " style="text-align: center;">
-          <button pButton pRipple type="button" icon="fas fa-map-marker-alt" class="p-button-rounded p-button-warning"
-            pTooltip="Google Maps" tooltipPosition="right"></button>
+        <div class="location-btn " style="text-align: center;" (click)="onClickMap()">
+          <button pButton pRipple type="button" icon="fas fa-map-marker-alt" class="p-button-rounded p-button-warning">
+          </button>
         </div>
       </div>
     </div>
@@ -159,7 +159,7 @@
 
       <div class="row ml-4 pt-2  align-items-center" style="height: 70px ; width: 97%;">
 
-        <div class="col-1 ml-4 p-0" style="text-align: center;">
+        <div class="col-1 ml-4 p-0" style="text-align: center; cursor: pointer" (click)="onClickOffer(offer)">
           <p-avatar size="large" image={{offer.photoProvider}}>
           </p-avatar>
         </div>
@@ -219,16 +219,12 @@
 
 </p-galleria>
 
-<p-dialog header=" " [(visible)]="displayModal" [modal]="true" [baseZIndex]="10000" [draggable]="false">
 
-  <div fxLayout="row">
-    <div class="name-container" fxLayout="column" fxFlexOffset="10">
-      <h2 class="name">{{currentOffer?.provider_name}}</h2>
-      <h4 class="job"> FONTANERA</h4>
-      <p-rating [ngModel]="currentOffer?.ranking" readonly="true" stars="5" [cancel]="false" fxFlex="20"
-        fxFlexAlign="center" fxFlexOffset="10" class="mb-2 w-100" style="pointer-events: none;"></p-rating>
-    </div>
-  </div>
+<p-dialog class="map" header=" " [(visible)]="displayModalMap" [modal]="true" [baseZIndex]="10000" [draggable]="false">
+
+  <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng" [mapTypeId]="'hybrid'">
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+  </agm-map>
 
 
 </p-dialog>

@@ -21,6 +21,11 @@ export class RequestSubCardComponent implements OnInit {
 	@Input() role: string;
 	@Input() taskSub: TaskModel;
 	@Input() offersList: TaskModel[];
+
+	lat = 19.29095;
+	lng = -99.653015;
+	zoom = 9;
+
 	currentOffer: TaskModel;
 
 	temp: any;
@@ -31,6 +36,7 @@ export class RequestSubCardComponent implements OnInit {
 
 	numberPhoto: string;
 	displayModal = false;
+	displayModalMap = false;
 
 	userType: string = '';
 	user: UsuarioModel;
@@ -178,10 +184,17 @@ export class RequestSubCardComponent implements OnInit {
 		return temp[0] + ' ' + temp[1].slice(0, 1) + '.';
 	}
 
-	onClickOffer(offer: any) {
+	onClickOffer(offer: TaskModel) {
 		this.currentOffer = null;
 		this.displayModal = !this.displayModal;
 		this.currentOffer = offer;
+	}
+
+	onClickMap() {
+		//this.lat = parseFloat(this.taskSub.address.latitude);
+		//this.lng = parseFloat(this.taskSub.longitude);
+		//this.zoom = 9;
+		this.displayModalMap = !this.displayModalMap;
 	}
 
 	resizedataURL(datas, wantedWidth, wantedHeight) {
