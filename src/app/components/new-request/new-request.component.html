@@ -12,7 +12,9 @@
 
     <div class="form-container">
       <form autocomplete="off" [formGroup]="newServiceForm" (ngSubmit)="createNewService()">
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1">
+
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1 "
+          style="padding-bottom: 50px;">
           <div fxFlex="45">
             <span>Titulo del servicio</span>
           </div>
@@ -25,18 +27,21 @@
             <small class="p-invalid" *ngIf="tituloNoValido">*Este campo es requerido.</small>
           </div>
         </div>
+
+
         <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3"
           style="padding-bottom: 15px; border-bottom: 3px solid #f6b776">
           <div fxFlex="45">
             <span>¿Dispone de los materiales?</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start center" fxFlex="45">
+
             <div class="p-field-radiobutton">
               <p-radioButton name="available" inputId="available1" name="materials" formControlName="materials"
                 value="1" [class.is-invalid]="materialsNoValido"></p-radioButton>
               <label class="mb-0" for="available1">Si</label>
             </div>
-            <div class="p-field-radiobutton ml-3">
+            <div class="p-field-radiobutton ml-5">
               <p-radioButton name="available" inputId="available2" name="materials" formControlName="materials"
                 value="0" [class.is-invalid]="materialsNoValido"></p-radioButton>
               <label class="mb-0" for="available2">No</label>
@@ -44,7 +49,10 @@
             <small class="p-invalid" *ngIf="materialsNoValido">*Este campo es requerido.</small>
           </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 m t-3 section-1">
+
+
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 m t-3 section-1"
+          style="padding-bottom: 50px;">
           <div fxFlex="45">
             <span>¿Cuando necesita el servicio?</span>
           </div>
@@ -63,7 +71,10 @@
             </div>
           </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1">
+
+
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1 "
+          style="padding-bottom: 50px;">
           <div fxFlex="45">
             <span>Describa el servicio que necesita (Opcional)</span>
           </div>
@@ -75,68 +86,13 @@
             </div>
           </div>
         </div>
-        <form [formGroup]="this.newServiceForm.get('address')">
-          <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1">
-            <div fxFlex="45">
-              <span>Direccion en que se realiza el servicio</span>
-            </div>
 
-            <div fxLayout="row wrap" fxLayoutAlign="space-between start" fxFlex="45" fxLayoutGap>
-              <div fxFlex="100" fxFlexAlign="end" class="autofill-btn">
-                <p-toggleButton [(ngModel)]="Autofill" [ngModelOptions]="{standalone: true}" onLabel="Manual"
-                  offLabel="Autocompletar" onIcon="pi pi-pencil" offIcon="pi pi-bars" (onChange)="autofillChange()">
-                </p-toggleButton>
-              </div>
-              <div class="p-field" fxFlex="48">
-                <input class="w-100" inputId="street" id="street" pInputText placeholder="No. de calle"
-                  formControlName="calle" [(ngModel)]="myAddress.street" />
-                <small class="p-invalid" *ngIf="calleNoValido">*Este campo es requerido.</small>
-              </div>
-              <div class="p-field" fxFlex="48" fxFlexOffset="4">
-                <input class="w-100" inputId="floor" id="floor" pInputText placeholder="Piso" formControlName="piso"
-                  [(ngModel)]="myAddress.floor" />
-                <small class="p-invalid" *ngIf="pisoNoValido">*Este campo es requerido.</small>
-              </div>
-              <br />
-              <div class="p-field" fxFlex="48">
-                <input class="w-100" inputId="num" id="num" pInputText placeholder="Numero" formControlName="numero"
-                  [(ngModel)]="myAddress.number" />
-                <small class="p-invalid" *ngIf="numeroNoValido">*Este campo es requerido.</small>
-              </div>
-              <div class="p-field" fxFlex="48">
-                <input class="w-100" inputId="door" id="door" pInputText placeholder="Puerta" formControlName="puerta"
-                  [(ngModel)]="myAddress.door" />
-                <small class="p-invalid" *ngIf="puertaNoValido">*Este campo es requerido.</small>
-              </div>
-              <div class="p-field" fxFlex="48">
-                <input class="w-100" inputId="portal" id="portal" pInputText placeholder="Portal"
-                  formControlName="portal" [(ngModel)]="myAddress.portal" />
-                <small class="p-invalid" *ngIf="portalNoValido">*Este campo es requerido.</small>
-              </div>
-              <div class="p-field" fxFlex="48">
-                <input class="w-100" inputId="cod" id="cod" pInputText placeholder="Cod. Postal" formControlName="cp"
-                  [(ngModel)]="myAddress.cp" />
-                <small class="p-invalid" *ngIf="cpNoValido">*Este campo es requerido.</small>
-              </div>
-              <div class="p-field" fxFlex="48">
-                <input class="w-100" inputId="stairs" id="stairs" pInputText placeholder="Escaleras"
-                  formControlName="escalera" [(ngModel)]="myAddress.stair" />
-                <small class="p-invalid" *ngIf="escaleraNoValido">*Este campo es requerido.</small>
-              </div>
-
-              <div fxFlexOffset="3" fxFlex="12" fxFlexAlign="end" class="location-btn">
-                <button pButton pRipple type="button" icon="fas fa-map-marker-alt"
-                  class="p-button-rounded p-button-warning" pTooltip="Google Maps" tooltipPosition="right"></button>
-              </div>
-            </div>
-          </div>
-        </form>
-
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-3 section-1">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-4 section-1 "
+          style="padding-bottom: 50px;">
           <div fxFlex="45">
             <span>Fotos del Proyecto (Opcional)</span>
           </div>
-          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="15" *ngFor="let i of [0, 1, 2]">
+          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="13" *ngFor="let i of [0, 1, 2]">
             <div *ngIf="loadImage[i]" class="avatar-profile" fxFlex="row" fxLayoutAlign="center center" style="
                 background-size: cover;
                 background-position: center center;
@@ -162,6 +118,60 @@
               (change)="handleFileSelect($event, i)" />
           </div>
         </div>
+
+        <form [formGroup]="this.newServiceForm.get('address')">
+          <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 mt-5 " style="padding-bottom: 10%;">
+            <div fxFlex="45">
+              <span>Direccion en que se realiza el servicio</span>
+            </div>
+
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start" fxFlex="45" fxLayoutGap>
+              <div fxFlex="100" fxFlexAlign="end" class="autofill-btn">
+                <p-toggleButton [(ngModel)]="Autofill" [ngModelOptions]="{standalone: true}" onLabel="Manual"
+                  offLabel="Autocompletar" onIcon="pi pi-pencil" offIcon="pi pi-bars" (onChange)="autofillChange()">
+                </p-toggleButton>
+              </div>
+              <div class="p-field" fxFlex="48">
+                <input class="w-100" inputId="street" id="street" pInputText placeholder="No. de calle"
+                  formControlName="calle" />
+                <small class="p-invalid" *ngIf="calleNoValido">*Este campo es requerido.</small>
+              </div>
+              <div class="p-field" fxFlex="48" fxFlexOffset="4">
+                <input class="w-100" inputId="floor" id="floor" pInputText placeholder="Piso" formControlName="piso" />
+                <small class="p-invalid" *ngIf="pisoNoValido">*Este campo es requerido.</small>
+              </div>
+              <br />
+              <div class="p-field" fxFlex="48">
+                <input class="w-100" inputId="num" id="num" pInputText placeholder="Numero" formControlName="numero" />
+                <small class="p-invalid" *ngIf="numeroNoValido">*Este campo es requerido.</small>
+              </div>
+              <div class="p-field" fxFlex="48">
+                <input disabled=myaddress class="w-100" inputId="door" id="door" pInputText placeholder="Puerta"
+                  formControlName="puerta" />
+                <small class="p-invalid" *ngIf="puertaNoValido">*Este campo es requerido.</small>
+              </div>
+              <div class="p-field" fxFlex="48">
+                <input class="w-100" inputId="portal" id="portal" pInputText placeholder="Portal"
+                  formControlName="portal" />
+                <small class="p-invalid" *ngIf="portalNoValido">*Este campo es requerido.</small>
+              </div>
+              <div class="p-field" fxFlex="48">
+                <input class="w-100" inputId="cod" id="cod" pInputText placeholder="Cod. Postal" formControlName="cp" />
+                <small class="p-invalid" *ngIf="cpNoValido">*Este campo es requerido.</small>
+              </div>
+              <div class="p-field" fxFlex="48">
+                <input class="w-100" inputId="stairs" id="stairs" pInputText placeholder="Escaleras"
+                  formControlName="escalera" />
+                <small class="p-invalid" *ngIf="escaleraNoValido">*Este campo es requerido.</small>
+              </div>
+
+              <div fxFlexOffset="3" fxFlex="15" fxFlexAlign="end" class="location-btn mr-3" (click)="onClickMap()">
+                <button pButton pRipple type="button" icon="fas fa-map-marker-alt"
+                  class="p-button-rounded p-button-warning" pTooltip="Google Maps" tooltipPosition="right"></button>
+              </div>
+            </div>
+          </div>
+        </form>
       </form>
     </div>
 
@@ -172,3 +182,22 @@
         (click)="cancelNewService()"></button>
     </div>
   </div>
+
+
+  <p-dialog class="map" header={{headerString}} [(visible)]="displayModalMap" [modal]="true" [baseZIndex]="10000"
+    [draggable]="false">
+
+    <agm-map (mapClick)="agregarMarcador($event)" [latitude]="lat" [longitude]="lng" [zoom]=18 mapTypeId='hybrid'>
+
+      <agm-marker *ngFor="let marcador of marcadores" [latitude]="marcador.lat" [longitude]="marcador.lng">
+
+
+      </agm-marker>
+
+
+    </agm-map>
+
+    <!-- <button (click)="getCurrentPosition()">adrian</button> -->
+
+
+  </p-dialog>

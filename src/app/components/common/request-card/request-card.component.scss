@@ -1,18 +1,17 @@
 @import '../../../../assets/mystyle.scss';
 .list-card {
 	flex-direction: column;
-	box-sizing: content-box;
+	box-sizing: border-box;
 	display: flex;
 	place-content: center space-around;
 	align-items: center;
-	overflow: hidden;
+
 	padding: 3em;
 
 	.pcard-container {
 		box-sizing: border-box;
 		width: 60vw;
 		max-width: 70%;
-		overflow: hidden;
 
 		.p-component {
 			border-radius: 70px 10px 10px 10px;

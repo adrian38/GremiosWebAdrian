@@ -89,7 +89,8 @@ import { PaymentStripeComponent } from './components/payment-stripe/payment-stri
 	],
 	imports: [
 		AgmCoreModule.forRoot({
-			apiKey: 'AIzaSyBXq33cjYMCezL6xP-vo3m-qWQ5U9gRTfQ'
+			apiKey: 'AIzaSyBXq33cjYMCezL6xP-vo3m-qWQ5U9gRTfQ',
+			libraries: [ 'places' ]
 		}),
 		BrowserModule,
 		FormsModule,
