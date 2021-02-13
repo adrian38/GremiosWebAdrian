@@ -100,15 +100,20 @@
 	}
 
 	.location-btn {
-		button {
-			height: 100% !important;
-			width: 80%;
-			border-radius: 10px !important;
-			background-color: #f6b776;
-			svg {
-				color: white;
-			}
-		}
+		padding: 0;
+		border: none;
+		height: 45px;
+		width: 45px;
+		outline: none;
+		background-color: white;
+		background-image: url('../../../assets/img/geolocalization.svg');
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
+
+	input[type="button"]:disabled {
+		-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+		filter: grayscale(100%);
 	}
 
 	.button-container {

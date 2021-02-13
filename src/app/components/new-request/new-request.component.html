@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<div class="view-container">
+<div class="view-container" [(ngModel)]="mygeo">
   <div class="p-dialog">
     <div class="p-dialog-header">
       <h5>NUEVA SOLICITUD DE {{ serviceName | uppercase }}</h5>
@@ -146,7 +146,7 @@
                 <small class="p-invalid" *ngIf="numeroNoValido">*Este campo es requerido.</small>
               </div>
               <div class="p-field" fxFlex="48">
-                <input disabled=myaddress class="w-100" inputId="door" id="door" pInputText placeholder="Puerta"
+                <input class="w-100" inputId="door" id="door" pInputText placeholder="Puerta"
                   formControlName="puerta" />
                 <small class="p-invalid" *ngIf="puertaNoValido">*Este campo es requerido.</small>
               </div>
@@ -159,16 +159,17 @@
                 <input class="w-100" inputId="cod" id="cod" pInputText placeholder="Cod. Postal" formControlName="cp" />
                 <small class="p-invalid" *ngIf="cpNoValido">*Este campo es requerido.</small>
               </div>
+
               <div class="p-field" fxFlex="48">
                 <input class="w-100" inputId="stairs" id="stairs" pInputText placeholder="Escaleras"
                   formControlName="escalera" />
                 <small class="p-invalid" *ngIf="escaleraNoValido">*Este campo es requerido.</small>
               </div>
 
-              <div fxFlexOffset="3" fxFlex="15" fxFlexAlign="end" class="location-btn mr-3" (click)="onClickMap()">
-                <button pButton pRipple type="button" icon="fas fa-map-marker-alt"
-                  class="p-button-rounded p-button-warning" pTooltip="Google Maps" tooltipPosition="right"></button>
+              <div fxFlexOffset="0" fxFlex="15" fxFlexAlign="end" class="mt-4">
+                <input class="location-btn" type="button" (click)="onClickMap()" formControlName="geo" />
               </div>
+
             </div>
           </div>
         </form>
@@ -177,7 +178,7 @@
 
     <div class="button-container" div fxLayout="row" fxLayoutAlign="space-evenly center">
       <button pButton pRipple type="button" label="ACEPTAR" class="p-button-raised" type="submit"
-        (click)="createNewService()" [disabled]="this.newServiceForm.invalid"></button>
+        (click)="createNewService()" [disabled]="this.newServiceForm.invalid || mygeo "></button>
       <button pButton pRipple type="button" label="CANCELAR" class="p-button-raised"
         (click)="cancelNewService()"></button>
     </div>

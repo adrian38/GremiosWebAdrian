@@ -26,7 +26,8 @@ export class NewRequestComponent implements OnInit {
 	task: any;
 	user: UsuarioModel = new UsuarioModel();
 
-	myaddress: boolean = false;
+	mygeo: boolean = true;
+	//geo: boolean = true;
 
 	Autofill: boolean = false;
 
@@ -168,6 +169,7 @@ export class NewRequestComponent implements OnInit {
 
 		if (nuevoMarcador) {
 			this.marcadores.push(nuevoMarcador);
+			this.mygeo = false;
 			this.headerString = 'Marcador agregado correctamente.';
 			setTimeout(() => {
 				this.headerString = ' ';
@@ -202,7 +204,7 @@ export class NewRequestComponent implements OnInit {
 			title: [ '', [ Validators.required ] ],
 			date: [ null, [ Validators.required ] ],
 			time: [ null, [ Validators.required ] ],
-			description: [ '', [ Validators.required ] ],
+			description: [ '' ],
 			photos: this.fb.array([
 				[ '../../../../assets/img/noImage.png' ],
 				[ '../../../../assets/img/noImage.png' ],
@@ -215,50 +217,49 @@ export class NewRequestComponent implements OnInit {
 				escalera: [ '', [ Validators.required ] ],
 				piso: [ '', [ Validators.required ] ],
 				puerta: [ '', [ Validators.required ] ],
-				cp: [ '', [ Validators.required ] ]
+				cp: [ '', [ Validators.required ] ],
+				geo: [ '' ]
 			}),
+
 			materials: [ '', [ Validators.required ] ]
 		});
 	}
 	createNewService() {
 		this.isLoading = true;
 
-		if (this.newServiceForm.invalid) {
-			return Object.values(this.newServiceForm.controls).forEach((control) => {
-				if (control instanceof FormGroup) {
-					Object.values(control.controls).forEach((control) => control.markAsTouched());
-				}
-				control.markAsTouched();
-			});
-		}
-		// document.getElementById('close-newService-modal').click();
-
 		this.task.title = this.newServiceForm.value['title'];
 		this.task.date = this.date.transform(this.newServiceForm.value['date'], 'yyyy-MM-dd');
 		this.task.time = this.date.transform(this.newServiceForm.value['time'], 'HH:mm:ss');
 		this.task.description = this.newServiceForm.value['description'];
-		this.task.address = new Address(
-			this.newServiceForm.value['address']['calle'],
-			this.newServiceForm.value['address']['numero'],
-			this.newServiceForm.value['address']['portal'],
-			this.newServiceForm.value['address']['escalera'],
-			this.newServiceForm.value['address']['piso'],
-			this.newServiceForm.value['address']['puerta'],
-			this.newServiceForm.value['address']['cp'],
-			'',
-			''
-		);
+
+		if (this.Autofill) {
+			this.task.address = this.user.address;
+		} else {
+			this.task.address = new Address(
+				this.newServiceForm.value['address']['calle'],
+				this.newServiceForm.value['address']['numero'],
+				this.newServiceForm.value['address']['portal'],
+				this.newServiceForm.value['address']['escalera'],
+				this.newServiceForm.value['address']['piso'],
+				this.newServiceForm.value['address']['puerta'],
+				this.newServiceForm.value['address']['cp'],
+				'',
+				''
+			);
+			this.task.address.latitude = String(this.marcadores[0].lat);
+			this.task.address.longitude = String(this.marcadores[0].lng);
+		}
 		this.task.require_materials = Boolean(Number(this.newServiceForm.value['materials']));
 		this.task.client_id = this.user.partner_id;
 
-		this._taskOdoo.newTask(this.task);
+		//this._taskOdoo.newTask(this.task);
 
 		console.log(this.task, 'tarea a crear');
-		this.isLoading = false;
+		//this.isLoading = false;
 
-		this.createForm();
-		this.task = new TaskModel();
-		this.imageArticle = [];
+		//this.createForm();
+		//this.task = new TaskModel();
+		//this.imageArticle = [];
 	}
 
 	openFileBrowser(event, index) {
@@ -328,11 +329,11 @@ export class NewRequestComponent implements OnInit {
 					numero: this.user.address.number,
 					portal: this.user.address.portal,
 					cp: this.user.address.cp,
-					escalera: this.user.address.stair,
-					disable: true
+					escalera: this.user.address.stair
 				}
 			});
 			this.newServiceForm.controls['address'].disable();
+			this.mygeo = false;
 		} else {
 			this.newServiceForm.patchValue({
 				address: {
@@ -345,6 +346,7 @@ export class NewRequestComponent implements OnInit {
 					escalera: ''
 				}
 			});
+
 			this.newServiceForm.controls['address'].enable();
 		}
 	}
