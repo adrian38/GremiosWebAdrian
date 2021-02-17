@@ -25,7 +25,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RatingModule } from 'primeng/rating';
 import { ToastModule } from 'primeng/toast';
-import { LightboxModule } from 'primeng/lightbox';
+//import { LightboxModule } from 'primeng/lightbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
@@ -33,6 +33,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { AvatarModule } from 'primeng/avatar';
 import { GalleriaModule } from 'primeng/galleria';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 //pipes
 import { DatePipe } from '@angular/common';
@@ -119,9 +120,10 @@ import { PaymentStripeComponent } from './components/payment-stripe/payment-stri
 		InputTextareaModule,
 		RatingModule,
 		ToastModule,
-		LightboxModule,
+		//LightboxModule,
 		AvatarModule,
-		GalleriaModule
+		GalleriaModule,
+		ProgressBarModule
 	],
 	providers: [
 		AuthOdooService,

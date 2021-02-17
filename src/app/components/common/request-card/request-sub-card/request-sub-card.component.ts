@@ -1,5 +1,5 @@
 import { _isNumberValue } from '@angular/cdk/coercion';
-import { AfterViewInit, Component, Input, NgZone, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { UsuarioModel } from 'src/app/models/usuario.model';
@@ -7,9 +7,6 @@ import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { TaskModel } from '../../../../models/task.model';
 import { Observable, Subscription } from 'rxjs';
-import { CATCH_ERROR_VAR } from '@angular/compiler/src/output/output_ast';
-import { getDataUrlFromFile } from 'browser-image-compression';
-import { AvatarModule } from 'primeng/avatar';
 
 @Component({
 	selector: 'app-request-sub-card',
@@ -69,8 +66,6 @@ export class RequestSubCardComponent implements OnInit {
 				this.images.push({ previewImageSrc: element });
 			});
 		}
-
-		//this.resizedataURL(this.taskSub.photoNewTaskArray[0], 50, 50);
 
 		if (this.role == 'provider') {
 			this.notificationSendOffertOk$ = this._taskOdoo.getnotificationSendOffertOk$();
@@ -195,18 +190,5 @@ export class RequestSubCardComponent implements OnInit {
 		//this.lng = parseFloat(this.taskSub.longitude);
 		//this.zoom = 9;
 		this.displayModalMap = !this.displayModalMap;
-	}
-
-	resizedataURL(datas, wantedWidth, wantedHeight) {
-		var img = document.createElement('img');
-		img.src = datas;
-		img.onload = () => {
-			let canvas = document.createElement('canvas');
-			let ctx = canvas.getContext('2d');
-			canvas.width = wantedWidth;
-			canvas.height = wantedHeight;
-			ctx.drawImage(img, 0, 0, wantedWidth, wantedHeight);
-			//this.taskSub.photoNewTaskArrayThumb[0] = canvas.toDataURL();
-		};
 	}
 }

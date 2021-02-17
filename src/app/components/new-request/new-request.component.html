@@ -1,15 +1,9 @@
 <p-toast></p-toast>
-<div class="view-container" [(ngModel)]="mygeo">
+<div class="view-container">
   <div class="p-dialog">
-    <div class="p-dialog-header">
+    <div class="p-dialog-header" [(ngModel)]="mygeo" ngDefaultControl>
       <h5>NUEVA SOLICITUD DE {{ serviceName | uppercase }}</h5>
     </div>
-    <div class="spinner-container" *ngIf="isLoading">
-      <div class="backdrop"></div>
-
-      <p-progressSpinner [style]="{ width: '150px', height: '150px' }"></p-progressSpinner>
-    </div>
-
     <div class="form-container">
       <form autocomplete="off" [formGroup]="newServiceForm" (ngSubmit)="createNewService()">
 
@@ -178,7 +172,7 @@
 
     <div class="button-container" div fxLayout="row" fxLayoutAlign="space-evenly center">
       <button pButton pRipple type="button" label="ACEPTAR" class="p-button-raised" type="submit"
-        (click)="createNewService()" [disabled]="this.newServiceForm.invalid || mygeo "></button>
+        (click)="createNewService()"></button>
       <button pButton pRipple type="button" label="CANCELAR" class="p-button-raised"
         (click)="cancelNewService()"></button>
     </div>
@@ -187,18 +181,21 @@
 
   <p-dialog class="map" header={{headerString}} [(visible)]="displayModalMap" [modal]="true" [baseZIndex]="10000"
     [draggable]="false">
-
     <agm-map (mapClick)="agregarMarcador($event)" [latitude]="lat" [longitude]="lng" [zoom]=18 mapTypeId='hybrid'>
-
       <agm-marker *ngFor="let marcador of marcadores" [latitude]="marcador.lat" [longitude]="marcador.lng">
-
-
       </agm-marker>
-
-
     </agm-map>
-
     <!-- <button (click)="getCurrentPosition()">adrian</button> -->
-
-
   </p-dialog>
+
+  <p-dialog class="cargado" header={{headerString}} [(visible)]="displayModalLoading" [modal]="true"
+    [baseZIndex]="10000" [draggable]="false">
+    <h1 style="text-align: center; font-weight: 400; margin-top: 10%;">Creando solicitud</h1>
+    <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+  </p-dialog>
+
+
+</div>
+
+
+<!-- [disabled]="this.newServiceForm.invalid || mygeo " -->

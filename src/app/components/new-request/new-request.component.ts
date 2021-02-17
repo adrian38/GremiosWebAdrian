@@ -38,6 +38,7 @@ export class NewRequestComponent implements OnInit {
 	marcadores: Marcador[] = [];
 	zoom = 9;
 	displayModalMap = false;
+	displayModalLoading = false;
 
 	selectedTab: String;
 	isLoading: boolean;
@@ -138,6 +139,8 @@ export class NewRequestComponent implements OnInit {
 		this.subscriptioNewSoClient = this.notificationNewSoClient$.subscribe((notificationNewSoClient) => {
 			this.ngZone.run(() => {
 				if (notificationNewSoClient) {
+					this.mygeo = false;
+					this.displayModalLoading = false;
 					console.log('Se creo correctamente la tarea');
 					this.messageService.add({
 						severity: 'success',
@@ -156,6 +159,7 @@ export class NewRequestComponent implements OnInit {
 		this.subscriptionError = this.notificationError$.subscribe((notificationError) => {
 			this.ngZone.run(() => {
 				if (notificationError) {
+					this.displayModalLoading = false;
 					this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error creando tarea.' });
 				}
 			});
@@ -225,7 +229,7 @@ export class NewRequestComponent implements OnInit {
 		});
 	}
 	createNewService() {
-		this.isLoading = true;
+		/* this.displayModalLoading = true;
 
 		this.task.title = this.newServiceForm.value['title'];
 		this.task.date = this.date.transform(this.newServiceForm.value['date'], 'yyyy-MM-dd');
@@ -250,16 +254,20 @@ export class NewRequestComponent implements OnInit {
 			this.task.address.longitude = String(this.marcadores[0].lng);
 		}
 		this.task.require_materials = Boolean(Number(this.newServiceForm.value['materials']));
-		this.task.client_id = this.user.partner_id;
+		this.task.client_id = this.user.partner_id; */
 
-		//this._taskOdoo.newTask(this.task);
+		/* if (typeof this.this.resizedataURL(photo, 1280, 960, index); !== 'undefined' && this.task.photoNewTaskArray.length > 0) {
+			let index = 0;
+			for (let photo of this.task.photoNewTaskArray) {
+				this.resizedataURL(photo, 1280, 960, index);
+				index++;
+			}
+		} */
 
+		this.resizedataURL(this.task.photoNewTaskArray[0], 50, 50, 0);
+		//1280x960
 		console.log(this.task, 'tarea a crear');
-		//this.isLoading = false;
-
-		//this.createForm();
-		//this.task = new TaskModel();
-		//this.imageArticle = [];
+		//this._taskOdoo.newTask(this.task);
 	}
 
 	openFileBrowser(event, index) {
@@ -273,7 +281,6 @@ export class NewRequestComponent implements OnInit {
 		this.currentIndex = index;
 		const files = evt.target.files;
 		const file = files[0];
-		///data:type/example;base64,
 		this.urlImage = `data:${file.type};base64,`;
 		if (files[0].size < this.imageSizeLimit) {
 			if (files && file) {
@@ -293,16 +300,13 @@ export class NewRequestComponent implements OnInit {
 	async handleReaderLoaded(readerEvt) {
 		const binaryString = readerEvt.target.result;
 		this.base64textString = btoa(binaryString);
-		//this.task.photoNewTaskArray[this.currentIndex] = this.base64textString;
 		this.task.photoNewTaskArray[this.currentIndex] = this.base64textString;
-		console.log(this.base64textString);
+
 		this.imageArticle[this.currentIndex] = this.urlImage + this.base64textString;
 		try {
 			this.loadImage[this.currentIndex] = true;
-			// this.imageArticleChange = true;
 		} catch (error) {
 			this.loadImage[this.currentIndex] = true;
-			// this.imageArticleChange = true;
 		}
 		console.log(this.imageArticle);
 	}
@@ -348,16 +352,21 @@ export class NewRequestComponent implements OnInit {
 			});
 
 			this.newServiceForm.controls['address'].enable();
+			this.mygeo = true;
 		}
 	}
 
-	_base64ToArrayBuffer(base64) {
-		var binary_string = window.atob(base64);
-		var len = binary_string.length;
-		var bytes = new Uint8Array(len);
-		for (var i = 0; i < len; i++) {
-			bytes[i] = binary_string.charCodeAt(i);
-		}
-		return bytes.buffer;
+	resizedataURL(datas, wantedWidth, wantedHeight, index) {
+		var img = document.createElement('img');
+		img.src = datas;
+		img.onload = () => {
+			let canvas = document.createElement('canvas');
+			let ctx = canvas.getContext('2d');
+			canvas.width = wantedWidth;
+			canvas.height = wantedHeight;
+			ctx.drawImage(img, 0, 0, wantedWidth, wantedHeight);
+			//this.task.photoNewTaskArray[index] = canvas.toDataURL();
+			//console.log(this.task.photoNewTaskArray[index], 'foto rezising');
+		};
 	}
 }

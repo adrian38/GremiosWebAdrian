@@ -131,16 +131,6 @@ export class AuthOdooService {
 						usuario.type = 'provider';
 						console.log('proveedor');
 					}
-					/*
-                    if (value[0].classification === "custumer") {
-                      usuario.type = "client"
-                      console.log("cliente");
-
-                    } else {
-                      usuario.type = "provider"
-                      console.log("proveedor");
-                    } */
-
 					search_partner_fields(usuario.id);
 				}
 			});
