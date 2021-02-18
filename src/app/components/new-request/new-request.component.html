@@ -172,7 +172,7 @@
 
     <div class="button-container" div fxLayout="row" fxLayoutAlign="space-evenly center">
       <button pButton pRipple type="button" label="ACEPTAR" class="p-button-raised" type="submit"
-        (click)="createNewService()"></button>
+        (click)="createNewService()" [disabled]="this.newServiceForm.invalid || mygeo "></button>
       <button pButton pRipple type="button" label="CANCELAR" class="p-button-raised"
         (click)="cancelNewService()"></button>
     </div>
@@ -196,6 +196,3 @@
 
 
 </div>
-
-
-<!-- [disabled]="this.newServiceForm.invalid || mygeo " -->

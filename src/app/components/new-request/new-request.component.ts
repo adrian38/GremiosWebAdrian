@@ -27,7 +27,6 @@ export class NewRequestComponent implements OnInit {
 	user: UsuarioModel = new UsuarioModel();
 
 	mygeo: boolean = true;
-	//geo: boolean = true;
 
 	Autofill: boolean = false;
 
@@ -48,7 +47,7 @@ export class NewRequestComponent implements OnInit {
 	imageSizeLimit: number = 12000000;
 	imageSizeLimitKb = Math.round(this.imageSizeLimit / 1000);
 	errorMessageImage: string = 'La imagen sobrepasa los ';
-	imageArticle = [ '', '', '' ];
+	imageArticle: any[] = [];
 	currentIndex: number;
 
 	get tituloNoValido() {
@@ -139,7 +138,7 @@ export class NewRequestComponent implements OnInit {
 		this.subscriptioNewSoClient = this.notificationNewSoClient$.subscribe((notificationNewSoClient) => {
 			this.ngZone.run(() => {
 				if (notificationNewSoClient) {
-					this.mygeo = false;
+					this.mygeo = true;
 					this.displayModalLoading = false;
 					console.log('Se creo correctamente la tarea');
 					this.messageService.add({
@@ -218,8 +217,8 @@ export class NewRequestComponent implements OnInit {
 				calle: [ '', [ Validators.required ] ],
 				numero: [ '', [ Validators.required ] ],
 				portal: [ '', [ Validators.required ] ],
-				escalera: [ '', [ Validators.required ] ],
-				piso: [ '', [ Validators.required ] ],
+				escalera: [ '' ],
+				piso: [ '' ],
 				puerta: [ '', [ Validators.required ] ],
 				cp: [ '', [ Validators.required ] ],
 				geo: [ '' ]
@@ -229,7 +228,7 @@ export class NewRequestComponent implements OnInit {
 		});
 	}
 	createNewService() {
-		/* this.displayModalLoading = true;
+		this.displayModalLoading = true;
 
 		this.task.title = this.newServiceForm.value['title'];
 		this.task.date = this.date.transform(this.newServiceForm.value['date'], 'yyyy-MM-dd');
@@ -254,20 +253,22 @@ export class NewRequestComponent implements OnInit {
 			this.task.address.longitude = String(this.marcadores[0].lng);
 		}
 		this.task.require_materials = Boolean(Number(this.newServiceForm.value['materials']));
-		this.task.client_id = this.user.partner_id; */
+		this.task.client_id = this.user.partner_id;
 
-		/* if (typeof this.this.resizedataURL(photo, 1280, 960, index); !== 'undefined' && this.task.photoNewTaskArray.length > 0) {
+		if (typeof this.imageArticle !== 'undefined' && this.imageArticle.length > 0) {
 			let index = 0;
-			for (let photo of this.task.photoNewTaskArray) {
-				this.resizedataURL(photo, 1280, 960, index);
+			for (let photo of this.imageArticle) {
+				if (Buffer.from(photo.substring(photo.indexOf(',') + 1)).length / 1e6 > 0.322216) {
+					this.resizedataURL(photo, 1280, 960, index);
+				} else {
+					this.task.photoNewTaskArray[index] = photo.substring(photo.indexOf(',') + 1);
+				}
+
 				index++;
 			}
-		} */
+		}
 
-		this.resizedataURL(this.task.photoNewTaskArray[0], 50, 50, 0);
-		//1280x960
-		console.log(this.task, 'tarea a crear');
-		//this._taskOdoo.newTask(this.task);
+		this._taskOdoo.newTask(this.task);
 	}
 
 	openFileBrowser(event, index) {
@@ -300,15 +301,12 @@ export class NewRequestComponent implements OnInit {
 	async handleReaderLoaded(readerEvt) {
 		const binaryString = readerEvt.target.result;
 		this.base64textString = btoa(binaryString);
-		this.task.photoNewTaskArray[this.currentIndex] = this.base64textString;
-
 		this.imageArticle[this.currentIndex] = this.urlImage + this.base64textString;
 		try {
 			this.loadImage[this.currentIndex] = true;
 		} catch (error) {
 			this.loadImage[this.currentIndex] = true;
 		}
-		console.log(this.imageArticle);
 	}
 
 	public getSafeImage(url: string) {
@@ -365,8 +363,8 @@ export class NewRequestComponent implements OnInit {
 			canvas.width = wantedWidth;
 			canvas.height = wantedHeight;
 			ctx.drawImage(img, 0, 0, wantedWidth, wantedHeight);
-			//this.task.photoNewTaskArray[index] = canvas.toDataURL();
-			//console.log(this.task.photoNewTaskArray[index], 'foto rezising');
+			let temp = canvas.toDataURL('image/jpeg', [ 0.0, 1.0 ]);
+			this.task.photoNewTaskArray[index] = temp.substring(temp.indexOf(',') + 1);
 		};
 	}
 }

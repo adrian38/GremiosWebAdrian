@@ -1,13 +1,22 @@
 <p-tabView *ngIf="mode ">
 
   <p-tabPanel header="DESCRIPCION">
-    <div class="row ">
-      <div class="col-8 anchoColumnDescrip ">
-        <p class="destacado">
-          {{ taskSub.description }}
-        </p>
+    <div class="row anchoColumnDescrip">
+
+      <div class="col-8 mt-3 ">
+        <div *ngIf="taskSub.description">
+          <p class="destacado">
+            {{ taskSub.description }}
+          </p>
+        </div>
+        <div *ngIf="!taskSub.description">
+          <p class="destacado">
+            Esta solicitud no contiene informacion adicional
+          </p>
+        </div>
       </div>
-      <div class="col-3 ">
+
+      <div class="col-3  mt-3">
         <div *ngIf="!taskSub.photoNewTaskArray[0]" class="photo-profile " fxFlex="row" fxLayoutAlign="center center"
           style="
             background-size: cover;
@@ -34,7 +43,7 @@
     <div class="row ">
       <div class="col-8 anchoColumn">
         <p class="destacado">
-          {{ taskSub.address.street }}, {{ taskSub.address.number }}<br>
+          Calle {{ taskSub.address.street }}, # {{ taskSub.address.number }}<br>
           Portal {{ taskSub.address.portal }}, Escalera {{ taskSub.address.stair }}, Planta {{ taskSub.address.floor }},
           Puerta {{ taskSub.address.door }}, Codigo Postal {{ taskSub.address.cp }}
         </p>
