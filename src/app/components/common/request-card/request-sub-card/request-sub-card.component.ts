@@ -32,7 +32,7 @@ export class RequestSubCardComponent implements OnInit {
 	displayBasic2;
 
 	numberPhoto: string;
-	displayModal = false;
+	displayModalWorker = false;
 	displayModalMap = false;
 
 	userType: string = '';
@@ -181,8 +181,9 @@ export class RequestSubCardComponent implements OnInit {
 
 	onClickOffer(offer: TaskModel) {
 		this.currentOffer = null;
-		this.displayModal = !this.displayModal;
 		this.currentOffer = offer;
+		console.log(this.currentOffer, 'carnet');
+		this.displayModalWorker = !this.displayModalWorker;
 	}
 
 	onClickMap() {

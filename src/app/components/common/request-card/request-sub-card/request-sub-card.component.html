@@ -190,13 +190,13 @@
 
         <div class="col-1 ml-4 p-0" fxLayout="column" fxLayoutAlign="space-around center" style="cursor: pointer"
           (click)="acceptOffer(offer.id)">
-          <i class="fas fa-check-square w-16 fa-lg"></i>
+          <input type=image src="'../../../../../../../assets/img/aceptarBlanco.svg" width="30" height="20">
           <span style="color: white; font-size: 13px; ">Aceptar</span>
         </div>
 
         <div class="col-1 ml-0 p-0" fxLayout="column" fxLayoutAlign="space-around center" style="cursor: pointer"
           (click)="cancelOffer(offer.id)">
-          <i class="fas fa-window-close fa-lg"></i>
+          <input type=image src="'../../../../../../../assets/img/cancelarBlanco.svg" width="30" height="20">
           <span style="color: white; font-size: 13px;">Cancelar</span>
         </div>
 
@@ -210,11 +210,6 @@
           <div *ngIf="offersList.length - 1 != i" style=" border-bottom: 1px solid white ; width: 97%;"></div>
         </div>
       </div>
-
-
-
-
-
     </div>
   </ng-container>
 </div>
@@ -236,4 +231,12 @@
   </agm-map>
 
 
+</p-dialog>
+
+<p-dialog class="worker " header=" " [(visible)]="displayModalWorker" [modal]="true" [baseZIndex]="10000"
+  [draggable]="false">
+
+  <div class="msg-header-img">
+    <!--  <img src={{currentOffer.photoProvider}}> -->
+  </div>
 </p-dialog>
