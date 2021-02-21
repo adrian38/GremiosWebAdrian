@@ -1,6 +1,112 @@
 <p-toast></p-toast>
 
-<div class="view-container">
+<div class="view-container " fxLayout="row">
+
+    <div class="container-info">
+        <div class="msg-header">
+            <h4 class="active-info">{{task.title}}</h4>
+        </div>
+        <div class="input-page">
+            <div class="info-inbox">
+                <div class="info">
+
+                    <div class="container-input">
+
+                        <div class="row ml-2">
+                            <div class="col">
+                                <h6 style="color: #f6b776 ;">Presupuesto</h6>
+                            </div>
+                        </div>
+
+                        <div class="row ml-2 align-items-center">
+                            <div class="col-9">
+                                <h6>{{task.budget}}€</h6>
+                            </div>
+
+                            <div class="col" *ngIf="user.type != 'client'">
+                                <input [disabled]="true" class="location-btn" type="button">
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 "
+                            style="padding-bottom: 10px; border-bottom: 3px solid #f6b776;">
+                        </div>
+
+                        <div class="row ml-2 mt-4">
+                            <div class="col">
+                                <h6 style="color: #f6b776 ;">Fecha</h6>
+                            </div>
+
+                        </div>
+                        <div class="row ml-2 align-items-center">
+                            <div class="col-9">
+                                <h6>{{ task.date_planned | date: "EEEE, MMMM
+                                    d, y" }}</h6>
+                            </div>
+
+                            <div class="col" *ngIf="user.type == 'client'">
+                                <input [disabled]="true" class="location-btn" type="button">
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 "
+                            style="padding-bottom: 10px; border-bottom: 3px solid #f6b776;">
+                        </div>
+
+                        <div class="row ml-2 mt-4">
+                            <div class="col">
+                                <h6 style="color: #f6b776 ;">Hora</h6>
+                            </div>
+
+                        </div>
+                        <div class="row ml-2 align-items-center">
+                            <div class="col-9">
+                                <h6>{{ task.time | date :
+                                    'h:mm a' }}</h6>
+                            </div>
+
+                            <div class="col" *ngIf="user.type == 'client'">
+                                <input [disabled]="true" class="location-btn" type="button">
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 "
+                            style="padding-bottom: 10px; border-bottom: 3px solid #f6b776;">
+                        </div>
+
+                        <div class="row ml-2 mt-5 ">
+                            <div class="col-5">
+                                <button class=" btn  btn-sm" disabled style="color: white; background-color:#31b0b9;">
+                                    ACTUALIZAR
+                                </button>
+                            </div>
+
+                            <div class="col-2">
+                                <button class=" btn  btn-sm"
+                                    style=" height: 30px;width: 40px;background-repeat: no-repeat;
+                                    background-size: contain; background-image: url('../../../assets/img/aceptarAzul.svg')">
+
+                                </button>
+                            </div>
+
+                            <div class="col-2">
+                                <button class=" btn  btn-sm"
+                                    style=" height: 30px;width: 40px;background-repeat: no-repeat;
+                                    background-size: contain; background-image: url('../../../assets/img/cancelarAzul.svg')">
+
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
     <div class="container">
         <div class="msg-header">
             <div class="msg-header-img">

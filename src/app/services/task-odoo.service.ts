@@ -1064,7 +1064,7 @@ export class TaskOdooService {
 						//temp.id_string = task['name'];
 						//temp.date = task['date_order'];
 						temp.date_planned = String(task['commitment_date']).slice(0, 10);
-						//temp.time = String(task['commitment_date']).slice(10, String(task['commitment_date']).length);
+						temp.time = String(task['commitment_date']);
 						temp.title = task['title'];
 						temp.address = new Address(
 							task['address_street'],

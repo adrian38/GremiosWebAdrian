@@ -8,11 +8,13 @@
 		margin-top: 80px;
 		font-family: sans-serif;
 		letter-spacing: 0.5px;
+		margin-right: 22vw;
 	}
 
 	@media all and (max-width: 1500px) {
 		.container {
 			width: 40%;
+			margin-right: 11vw;
 		}
 	}
 
@@ -194,5 +196,75 @@
 		border-color: none !important;
 		box-shadow: none !important;
 		border-radius: 20px;
+	}
+
+	.container-info {
+		width: 20%;
+		//margin: auto;
+		margin-top: 140px;
+		margin-left: 12vw;
+		font-family: sans-serif;
+		letter-spacing: 0.5px;
+	}
+
+	@media all and (max-width: 1680px) {
+		.container-info {
+			width: 25%;
+			margin-left: 10vw;
+		}
+	}
+
+	@media all and (max-width: 1050px) {
+		.container-info {
+			width: 30%;
+		}
+	}
+
+	.active-info {
+		width: 80%;
+		float: left;
+		margin-top: 20px;
+		margin-left: 30px;
+		font-family: $font-family;
+	}
+
+	.input-page {
+		padding: 0 0 50px 0;
+		margin-top: -8px;
+	}
+
+	.location-btn {
+		margin-top: -8px;
+		padding: 0;
+		border: none;
+		height: 30px;
+		width: 40px;
+		outline: none;
+		background-color: white;
+		background-image: url('../../../assets/img/editar.svg');
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
+	input[type="button"]:disabled {
+		-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+		filter: grayscale(100%);
+	}
+
+	.info-inbox {
+		border: 1px solid #ccc;
+		overflow: hidden;
+		padding-bottom: 2px;
+		background: white;
+		border-radius: 0 0 20px 20px;
+	}
+
+	.info-inbox ::-webkit-scrollbar {
+		display: none;
+	}
+
+	.info {
+		padding: 30px 15px 0 15px;
+		height: 450px;
+		overflow-y: auto;
 	}
 }
