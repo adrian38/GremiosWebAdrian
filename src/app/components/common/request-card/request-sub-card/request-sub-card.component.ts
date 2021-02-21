@@ -186,9 +186,9 @@ export class RequestSubCardComponent implements OnInit {
 	}
 
 	onClickMap() {
-		//this.lat = parseFloat(this.taskSub.address.latitude);
-		//this.lng = parseFloat(this.taskSub.longitude);
-		//this.zoom = 9;
+		this.lat = parseFloat(this.taskSub.address.latitude);
+		this.lng = parseFloat(this.taskSub.address.longitude);
+		this.zoom = 15;
 		this.displayModalMap = !this.displayModalMap;
 	}
 }

@@ -975,6 +975,42 @@ export class TaskOdooService {
 	requestTask(id: number) {
 		let id_po = [];
 
+		let search_avatar_provider = function() {
+			let inParams = [];
+			inParams.push([ [ 'partner_id', '=', tasksList[0].provider_id ] ]);
+			inParams.push([ 'image_1920' ]);
+			let params = [];
+			params.push(inParams);
+
+			let fparams = [];
+			fparams.push(jaysonServer.db);
+			fparams.push(12);
+			fparams.push(jaysonServer.password);
+			fparams.push('res.users'); //model
+			fparams.push('search_read'); //method
+
+			for (let i = 0; i < params.length; i++) {
+				fparams.push(params[i]);
+			}
+
+			client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function(
+				err,
+				error,
+				value
+			) {
+				if (err) {
+					console.log(err, 'Error search_avatar_provider');
+				} else {
+					console.log(value, 'photo');
+					if (knownTypes[value[0].image_1920[0]]) {
+						tasksList[0].photoProvider = knownTypes[value[0].image_1920[0]] + value[0].image_1920;
+					}
+					console.log(tasksList);
+					task$.next(tasksList);
+				}
+			});
+		};
+
 		let get_po_by_id = function() {
 			id_po.push(id);
 			let inParams = [];
@@ -1044,8 +1080,8 @@ export class TaskOdooService {
 
 						tasksList.push(temp);
 					}
-					console.log(tasksList);
-					task$.next(tasksList);
+					search_avatar_provider();
+					//task$.next(tasksList);
 				}
 			});
 		};

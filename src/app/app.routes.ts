@@ -12,7 +12,7 @@ const app_routes: Routes = [
 		path: 'signup',
 		loadChildren: () => import('./components/sign-up/sign-up.module').then((m) => m.SignUpModule)
 	},
-	// { path: 'new-request', component: NewRequestComponent },
+
 	{ path: 'new-request', component: NewRequestComponent, canActivate: [ AuthGuardService ] },
 	{ path: 'dashboard', component: DashboardGremioComponent, canActivate: [ AuthGuardService ] },
 	{ path: 'chat/:id', component: NewChatComponent, canActivate: [ AuthGuardService ] },
