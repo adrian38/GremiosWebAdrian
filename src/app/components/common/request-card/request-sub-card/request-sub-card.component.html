@@ -1,3 +1,5 @@
+<ng-template appPlaceholder></ng-template>
+
 <p-tabView *ngIf="mode ">
 
   <p-tabPanel header="DESCRIPCION">
@@ -189,7 +191,7 @@
         </div>
 
         <div class="col-1 ml-4 p-0" fxLayout="column" fxLayoutAlign="space-around center" style="cursor: pointer"
-          (click)="acceptOffer(offer.id)">
+          (click)="acceptOffer(offer)">
           <input type=image src="'../../../../../../../assets/img/aceptarBlanco.svg" width="30" height="20">
           <span style="color: white; font-size: 13px; ">Aceptar</span>
         </div>

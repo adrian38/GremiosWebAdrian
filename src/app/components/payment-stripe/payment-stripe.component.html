@@ -1,25 +1,31 @@
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div class="content card">
-    <h2 class="title"> Payment </h2>
-  
-    <form action="/charge" method="post" id="payment-form">
-  
-      <div class="paymentBox">
-        <div id="card-element">
-        </div>
-  
-        <button id="button"> Pay </button>
-        <div id="card-errors" role="alert"></div>
-      </div>
-  
-    </form>
+<p-dialog header=" " [(visible)]="displayModalWorker" [modal]="true" [baseZIndex]="10000" [draggable]="false">
+
+  <div class="spinner-container" style="text-align: center;" *ngIf="isLoading">
+    <div class="backdrop"></div>
+    <p-progressSpinner [style]="{ width: '150px', height: '150px' }"></p-progressSpinner>
   </div>
+
+  <div class="card_number mt-4" id="card-container">
+    <input type="text" class="input" id="card" placeholder="0000 0000 0000 0000">
+    <div id="logo"></div>
+  </div>
+  <div class="card_grp">
+    <div class="expiry_date">
+      <input type="text" class="expiry_input" data-mask="00" placeholder="00">
+      <input type="text" class="expiry_input" data-mask="00" placeholder="00">
+    </div>
+    <div class="cvc">
+      <input type="text" class="cvc_input" data-mask="000" placeholder="000">
+      <div class="cvc_img">
+        ?
+        <div class="img">
+          <img src="https://i.imgur.com/2ameC0C.png" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div (click)="pagar()" class="btn">
+    Pagar
+  </div>
+
+</p-dialog>

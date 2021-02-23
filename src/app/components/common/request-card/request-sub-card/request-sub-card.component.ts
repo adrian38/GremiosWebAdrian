@@ -1,5 +1,13 @@
 import { _isNumberValue } from '@angular/cdk/coercion';
-import { Component, Input, NgZone, OnInit } from '@angular/core';
+import {
+	Component,
+	ViewEncapsulation,
+	ViewChild,
+	ComponentFactoryResolver,
+	Input,
+	NgZone,
+	OnInit
+} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { UsuarioModel } from 'src/app/models/usuario.model';
@@ -7,6 +15,9 @@ import { AuthOdooService } from 'src/app/services/auth-odoo.service';
 import { TaskOdooService } from 'src/app/services/task-odoo.service';
 import { TaskModel } from '../../../../models/task.model';
 import { Observable, Subscription } from 'rxjs';
+import { PlaceHolderDirective } from '../../../shared/placeholder/placeholder.directive';
+import { PaymentStripeComponent } from '../../../payment-stripe/payment-stripe.component';
+declare const $: any;
 
 @Component({
 	selector: 'app-request-sub-card',
@@ -46,12 +57,16 @@ export class RequestSubCardComponent implements OnInit {
 	notificationSendOffertOk$ = new Observable<number>();
 	subscriptioSendOffertOk: Subscription;
 
+	@ViewChild(PlaceHolderDirective, { static: false })
+	loginHost: PlaceHolderDirective;
+
 	constructor(
 		private router: Router,
 		public sanitizer: DomSanitizer,
 		private _taskOdoo: TaskOdooService,
 		private _authOdoo: AuthOdooService,
-		private ngZone: NgZone
+		private ngZone: NgZone,
+		private componentFactoryResolver: ComponentFactoryResolver
 	) {}
 
 	goToChat(id) {
@@ -108,11 +123,17 @@ export class RequestSubCardComponent implements OnInit {
 		return this.sanitizer.bypassSecurityTrustStyle(`url(${url})`);
 	}
 
-	acceptOffer(offerId) {
-		alert('Accept Method ');
+	acceptOffer(offer) {
+		this._taskOdoo.setTaskPayment(offer);
+		const loginCompFactory = this.componentFactoryResolver.resolveComponentFactory(PaymentStripeComponent);
+
+		const hostViewContainerRef = this.loginHost.viewContainerRef;
+		hostViewContainerRef.clear();
+
+		const componentRef = hostViewContainerRef.createComponent(loginCompFactory);
 	}
 	cancelOffer(offerId) {
-		alert('Cancel Method ');
+		//this.displayModalCredit = !this.displayModalCredit;
 	}
 	public disableEnviarM: boolean = true;
 	public disableEnviarW: boolean = true;
@@ -182,7 +203,6 @@ export class RequestSubCardComponent implements OnInit {
 	onClickOffer(offer: TaskModel) {
 		this.currentOffer = null;
 		this.currentOffer = offer;
-		console.log(this.currentOffer, 'carnet');
 		this.displayModalWorker = !this.displayModalWorker;
 	}
 

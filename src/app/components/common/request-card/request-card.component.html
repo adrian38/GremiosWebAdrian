@@ -61,9 +61,9 @@
 
                   <div class="col-1 p-0 ml-5" style="text-align: center;" (click)="goToChat()" id="chatSubRequest"
                     *ngIf="role=='provider' && task.offer_send.toString() == 'sent'">
-                    <i class="far fa-comment-alt" style="color: black;"></i>
-                    <div class="col p-0">
-                      <span style="color: black; text-align: center;"><small>Chat</small></span>
+                    <div class="chat-button col-1" fxLayout="column" fxLayoutAlign="space-around center">
+                      <input type=image src="'../../../../../../../assets/img/iconChat.svg" width="30" height="20">
+                      <span>Chat</span>
                     </div>
                   </div>
 
