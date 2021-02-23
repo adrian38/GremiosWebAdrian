@@ -186,7 +186,7 @@ export class TaskOdooService {
 					if (err) {
 						console.log(err, 'Error poll');
 					} else {
-						console.log(value, 'Notificaciones');
+						//console.log(value, 'Notificaciones');
 						id_po = [];
 						id_messg = [];
 						new_offert = [];
@@ -415,7 +415,6 @@ export class TaskOdooService {
 		return notificationSoCancelled$.asObservable();
 	}
 
-	//////// De la forma de Michel
 	newTask(task: TaskModel) {
 		let count: number;
 
@@ -996,6 +995,95 @@ export class TaskOdooService {
 	requestTaskListClient() {
 		let tasksList = [];
 		let SO_id = [];
+		let contratados_id = [];
+		let partner_id = [];
+
+		let search_avatar_provider = function() {
+			console.log(partner_id, 'partner_id provider');
+			let inParams = [];
+
+			inParams.push([ [ 'partner_id', 'in', partner_id ] ]);
+			inParams.push([ 'partner_id', 'image_1920' ]);
+			let params = [];
+			params.push(inParams);
+
+			let fparams = [];
+			fparams.push(jaysonServer.db);
+			fparams.push(user.id);
+			fparams.push(jaysonServer.password);
+			fparams.push('res.users'); //model
+			fparams.push('search_read'); //method
+
+			for (let i = 0; i < params.length; i++) {
+				fparams.push(params[i]);
+			}
+
+			client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function(
+				err,
+				error,
+				value
+			) {
+				if (err) {
+					console.log(err, 'Error search_avatar_provider');
+				} else {
+					for (let resId of value) {
+						for (let task of tasksList) {
+							if (task.provider_id === resId.partner_id[0]) {
+								if (knownTypes[resId.image_1920[0]]) {
+									task.photoProvider = knownTypes[resId.image_1920[0]] + resId.image_1920;
+								}
+							}
+						}
+					}
+					tasksList$.next(tasksList);
+				}
+			});
+		};
+
+		let get_po_of_task = function() {
+			let inParams = [];
+			inParams.push([ [ 'origin', 'in', contratados_id ] ]);
+			inParams.push([ 'partner_id', 'amount_total', 'origin' ]);
+
+			let params = [];
+			params.push(inParams);
+
+			let fparams = [];
+			fparams.push(jaysonServer.db);
+			fparams.push(user.id);
+			fparams.push(jaysonServer.password);
+			fparams.push('purchase.order'); //model
+			fparams.push('search_read'); //method
+
+			for (let i = 0; i < params.length; i++) {
+				fparams.push(params[i]);
+			}
+
+			client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function(
+				err,
+				error,
+				value
+			) {
+				if (err || !value) {
+					console.log(err, 'Error requestOffersForTask');
+				} else {
+					console.log(value, 'po contratada');
+
+					for (let task of tasksList) {
+						let temp = value.find((element) => element.origin === task.id_string);
+						if (temp) {
+							task.provider_id = temp['partner_id'][0];
+							partner_id.push(temp['partner_id'][0]);
+							task.provider_name = temp['partner_id'][1];
+							task.id_Po = temp['id'];
+							task.budget = temp['amount_total'];
+							task.origin = temp['origin'];
+						}
+					}
+					search_avatar_provider();
+				}
+			});
+		};
 
 		let get_photo_so = function() {
 			console.log('entrando a buscar fotos');
@@ -1036,8 +1124,8 @@ export class TaskOdooService {
 							}
 						}
 					}
-
-					tasksList$.next(tasksList);
+					///
+					get_po_of_task();
 				}
 			});
 		};
@@ -1126,15 +1214,19 @@ export class TaskOdooService {
 				if (err) {
 					console.log(err || !value, 'get_so_list');
 				} else {
-					SO_id = [];
 					console.log(value, 'task-odoo');
 					for (let order of value) {
+						console.log(order, 'todas las solicitudes');
 						let temp = new TaskModel();
+
+						if (order['invoice_status'] === 'invoiced') {
+							contratados_id.push(order['name']);
+						}
+
 						SO_id.push(order['id']);
 						temp.description = order['note'];
 						temp.type = order['client_order_ref'];
 						temp.client_id = order['partner_id'][0];
-
 						temp.client_name = order['partner_id'][1];
 						temp.id_string = order['name'];
 						temp.id = order['id'];

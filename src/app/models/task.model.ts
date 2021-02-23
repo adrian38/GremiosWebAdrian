@@ -60,6 +60,8 @@ export class TaskModel {
 	photoProvider: any;
 	comment: string;
 	ranking: number;
+	id_Po: number;
+	id_string_Po: string;
 
 	constructor(
 		product_id: number = 0,
@@ -82,7 +84,9 @@ export class TaskModel {
 		origin_id = 0,
 		photoProvider = '',
 		comment = '',
-		ranking = 0
+		ranking = 0,
+		id_Po = 0,
+		id_string_Po = ''
 	) {
 		this.photoNewTaskArrayThumb = [];
 		this.comment = comment;
@@ -107,5 +111,7 @@ export class TaskModel {
 		this.time = time;
 		this.title = title;
 		this.require_materials = require_materials;
+		this.id_Po = id_Po;
+		this.id_string_Po = id_string_Po;
 	}
 }
