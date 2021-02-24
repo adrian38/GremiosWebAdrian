@@ -1,50 +1,104 @@
 <div class="container list-card">
-    <div class="pcard-container">
+
+    <div class="pcard-container ">
         <p-card>
-            <div class="container p-0">
+            <div class="container-fluid p-0">
                 <div class="row m-0">
                     <div class="col-3 p-0">
                         <div class="image-left">
                             <img src="assets/img/home1.jpg" class="heaven" />
                         </div>
                     </div>
+
                     <div class="col-9">
-                        <div class="container py-2">
-                            <h3>FONTANERIA</h3>
-                            <div fxLayout="row" fxLayoutAlign="space-between center">
-                                <span><i class="far fa-calendar mr-2"></i>Miercoles, 9 de septiembre 2020</span>
-                                <button class="btn btn-primary p-0" fxFlex="16" *ngIf="role == 'client'">Calificar</button>
+                        <div class="container-fluid ">
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <h3>{{ task.title }}</h3>
+                                </div>
+                                <div class="col" style="text-align: right;">
+                                    <span type="button" class="text-green">Plumber</span><br />
+                                    <div style="text-align: center;">
+                                        <p-progressSpinner class="spinner-container-card" *ngIf="isLoading1"
+                                            [style]="{ width: '40px', height: '40px' }"></p-progressSpinner>
+                                    </div>
+                                </div>
                             </div>
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="my-2">
-                                <span><i class="far fa-clock mr-2"></i>Horario de servicio, 9:00am - 10:00am</span>
-                                <button class="btn btn-primary p-0" fxFlex="16" *ngIf="role == 'client'">Denunciar</button>
-                            </div>
-                            <span *ngIf="role == 'provider'"><i class="far fa-user mr-2" ></i>Cliente: Adrian J.</span>
-                            <span *ngIf="role == 'client'"><i class="fas fa-wallet mr-2"></i>20€</span>
-                            <div class="buttons-cont" fxLayout="row">
-                                <button class="btn btn-primary" fxFlex="15">FACTURA</button>
-                                <button class="btn btn-primary" fxFlex="role =='client' ? 15 : 25" fxFlexOffset="3" (click)="onShowSubCard(true)">{{role == 'client' ? 'DETALLES': 'COSTOS EXTRAS'}}</button>
-                                <button class="btn btn-primary" fxFlex="16" fxFlexOffset="3">FINALIZAR</button>
-                                <div class="chat-button" fxLayout="column" fxFlexOffset="5" fxLayoutAlign="space-around center">
-                                    <i class="far fa-comment-alt"></i>
-                                    <span>Chat</span>
+                                <div>
+                                    <i class=" far fa-calendar mr-2"></i>
+                                    <span style="color: black">{{ task.date_planned |
+                                        date: "EEEE, MMMM
+                                        d, y" }}</span>
                                 </div>
-                                <div fxFlex="10" fxFlexOffset="20">
-                                    <p>Solicitado:</p>
-                                    <p>08.09.2020</p>
-                                </div>
+                                <button class="btn btn-primary p-0 " fxFlex="16">Denunciar</button>
 
                             </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <div>
+                                    <i class="far fa-clock mr-2"></i>
+                                    <span style="color: black">Horario de servicio: {{ task.time | date :
+                                        'h:mm a' }}</span>
+
+                                </div>
+                                <button class="btn btn-primary p-0" fxFlex="16"
+                                    *ngIf="role == 'client'">Calificar</button>
+                            </div>
+                            <div class="col; p-0 ">
+                                <span><i class="far fa-user mr-2"></i>Cliente: <span
+                                        style="color:#31b0b9 ;">{{task.client_name}}</span></span>
+                            </div>
+
+                            <div class="container  mt-4 mb-3 ">
+                                <div class="row ">
+
+                                    <div class="align-self-center col-2 mr-1  p-0">
+                                        <button class=" btn btn-primary btn-sm  " style="color: black">
+                                            FACTURA
+                                        </button>
+                                    </div>
+
+                                    <div class="col-2 ml-2 p-0 align-self-center" style="text-align: right;">
+                                        <button class=" btn btn-primary btn-sm" style="color: black;">
+                                            DETALLES
+                                        </button>
+                                    </div>
+
+                                    <div class="col-2 ml-3 p-0 mr-3 align-self-center" style="text-align: right;">
+                                        <button class=" btn btn-primary btn-sm" style="color: black;">
+                                            FINALIZAR
+                                        </button>
+                                    </div>
+
+
+                                    <div class="col-1 p-0 ml-3" style="text-align: center;" id="chatSubRequest">
+                                        <div class="chat-button col-1" fxLayout="column"
+                                            fxLayoutAlign="space-around center">
+                                            <input type=image src="'../../../../../../../assets/img/iconChat.svg"
+                                                width="30" height="20">
+                                            <span>Chat</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col pr-0" style="text-align: right;">
+                                        <span style="color: black;"><small>Solicitado:</small></span><br />
+                                        <span style="color: black;"><small>{{ task.date | date: 'dd.MM.yyyy'
+                                                }}</small></span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </p-card>
+
         <div class="fade-down" *ngIf="showSubCard">
             <p-card>
-                <app-hire-sub-card [mode]="offersDetail"></app-hire-sub-card>
+                <app-request-sub-card [mode]="offersDetail" [role]="role" [taskSub]="task" [offersList]="offersList">
+                </app-request-sub-card>
             </p-card>
         </div>
-
     </div>
 </div>
