@@ -3,8 +3,8 @@ import { UsuarioModel, Address } from '../models/usuario.model';
 import { Observable, Subject } from 'rxjs';
 let jayson = require('../../../node_modules/jayson/lib/client/');
 let jaysonServer = {
-	host: '192.168.0.102',
-	//host: '192.168.0.106',
+	//host: '192.168.0.102',
+	host: '192.168.0.106',
 	//host: 'todoenunapp.com',
 
 	port: '8069',
@@ -117,7 +117,6 @@ export class AuthOdooService {
 				if (err || !value) {
 					console.log(err, 'Error get_user');
 				} else {
-					console.log(value);
 					if (knownTypes[value[0].image_1920[0]]) {
 						usuario.avatar = knownTypes[value[0].image_1920[0]] + value[0].image_1920;
 					}

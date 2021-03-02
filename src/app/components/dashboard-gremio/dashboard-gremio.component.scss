@@ -1,3 +1,14 @@
+.barra {
+	overflow-y: auto;
+	height: 100%;
+}
+.barra ::-webkit-scrollbar {
+	display: none;
+}
+.barra_1 {
+	overflow-y: auto;
+	height: 100%;
+}
 .align-cards {
 	position: relative;
 	top: 100px;

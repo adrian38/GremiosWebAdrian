@@ -47,6 +47,14 @@
 	}
 }
 
+:host ::ng-deep .list-group_factura {
+	border-radius: 50px;
+	.list-group-item {
+		background-color: $primary-color;
+		border: none;
+	}
+}
+
 :host ::ng-deep .list-group {
 	background-color: $primary-color;
 

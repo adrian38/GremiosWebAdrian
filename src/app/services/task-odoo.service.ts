@@ -1083,8 +1083,6 @@ export class TaskOdooService {
 		};
 
 		let get_photo_so = function() {
-			console.log('entrando a buscar fotos');
-
 			let inParams = [];
 			inParams.push([ [ 'res_id', 'in', SO_id ] ]);
 			inParams.push([ 'name', 'res_id', 'res_model', 'url', 'datas', 'mimetype', 'file_size' ]);
@@ -1152,12 +1150,11 @@ export class TaskOdooService {
 				if (err || !value) {
 					console.log(err, 'Error get_so_list');
 				} else {
-					console.log(value, 'posible amount');
 					for (let task of tasksList) {
 						let temp = value.find((element) => element.order_id[0] === task.id);
 						task.type = temp.product_id[1];
 					}
-					console.log(value, 'idSo');
+
 					get_photo_so();
 				}
 			});
@@ -1209,9 +1206,7 @@ export class TaskOdooService {
 				if (err) {
 					console.log(err || !value, 'get_so_list');
 				} else {
-					console.log(value, 'task-odoo');
 					for (let order of value) {
-						console.log(order, 'todas las solicitudes');
 						let temp = new TaskModel();
 
 						if (order['invoice_status'] === 'invoiced') {

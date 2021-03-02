@@ -1,3 +1,4 @@
+<app-navbar-gremio></app-navbar-gremio>
 <p-toast></p-toast>
 <div class="spinner-container_1" *ngIf="isLoading">
 
@@ -7,28 +8,21 @@
 
     <p-progressSpinner [style]="{ width: '250px', height: '250px' }"></p-progressSpinner>
 </div>
-<div *ngIf="activateTab == 'request'" class="align-cards">
-    <app-request-card *ngFor="let task of solicitudesList; let i= index" [task]="task" [role]='usuario.type'>
-    </app-request-card>
-</div>
-<div *ngIf="activateTab == 'hired'" class="align-cards">
-    <app-hire-card *ngFor="let task of contratadosList; let i= index" [task]="task" [role]='usuario.type'>
-    </app-hire-card>
-</div>
-<div *ngIf="activateTab == 'history'" class="align-cards">
-    <app-history-card *ngFor="let task of historialList; let i= index" [task]="task" [role]='usuario.type'>
-    </app-history-card>
-</div>
 
-<!-- <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div>
+<div class="barra">
+    <div class="barra_1">
 
-    <button pButton pRipple type="button" label="Pagar" class="p-button-raised" (click)="pagosComponent()"></button>
-
-</div> -->
+        <div *ngIf="activateTab == 'request'" class="align-cards">
+            <app-request-card *ngFor="let task of solicitudesList; let i= index" [task]="task" [role]='usuario.type'>
+            </app-request-card>
+        </div>
+        <div *ngIf="activateTab == 'hired'" class="align-cards">
+            <app-hire-card *ngFor="let task of contratadosList; let i= index" [task]="task" [role]='usuario.type'>
+            </app-hire-card>
+        </div>
+        <div *ngIf="activateTab == 'history'" class="align-cards">
+            <app-history-card *ngFor="let task of historialList; let i= index" [task]="task" [role]='usuario.type'>
+            </app-history-card>
+        </div>
+    </div>
+</div>

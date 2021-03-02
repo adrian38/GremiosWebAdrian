@@ -1,14 +1,208 @@
-<p-tabView *ngIf="mode">
+<ng-template appPlaceholder></ng-template>
+
+<p-tabView *ngIf="mode ">
+
     <p-tabPanel header="DESCRIPCION">
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-            in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
+        <div class="row anchoColumnDescrip">
+
+            <div class="col-8 mt-3 ">
+                <div *ngIf="taskSub.description">
+                    <p class="destacado">
+                        {{ taskSub.description }}
+                    </p>
+                </div>
+                <div *ngIf="!taskSub.description">
+                    <p class="destacado">
+                        Esta solicitud no contiene informacion adicional
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-3  mt-3">
+                <div *ngIf="!taskSub.photoNewTaskArray[0]" class="photo-profile " fxFlex="row"
+                    fxLayoutAlign="center center" style="
+            background-size: cover;
+            background-position: center center;
+            flex: none;
+          " [style.background-image]="
+            getSafeImage('../../../assets/img/noImage.png')
+          ">
+                </div>
+                <div *ngIf="taskSub.photoNewTaskArray[0]" class="photo-profile" fxFlex="row"
+                    fxLayoutAlign="center center" (click)="displayBasic2 = true" style="
+          background-size: cover;
+          background-position: center center;
+          flex: none;" [style.background-image]="getSafeImage(taskSub.photoNewTaskArray[0])">
+                    <button id="photoCameraBtn" style="position: absolute">
+                        <h2 style="color:white;">{{numberPhoto}}</h2>
+                    </button>
+                </div>
+            </div>
+        </div>
     </p-tabPanel>
+
     <p-tabPanel header="DIRECCION">
-        <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia
-            animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-        </p>
+        <div class="row ">
+            <div class="col-8 anchoColumn">
+                <p class="destacado">
+                    Calle {{ taskSub.address.street }}, # {{ taskSub.address.number }}<br>
+                    Portal {{ taskSub.address.portal }}, Escalera {{ taskSub.address.stair }}, Planta {{
+                    taskSub.address.floor }},
+                    Puerta {{ taskSub.address.door }}, Codigo Postal {{ taskSub.address.cp }}
+                </p>
+            </div>
+
+            <div class="col-3 align-self-center">
+                <div class="location-btn " style="text-align: center;" (click)="onClickMap()">
+                    <button pButton pRipple type="button" icon="fas fa-map-marker-alt"
+                        class="p-button-rounded p-button-warning">
+                    </button>
+                </div>
+            </div>
+        </div>
     </p-tabPanel>
+
 </p-tabView>
+
+
+<p-tabView *ngIf="!mode">
+    <div class="container">
+        <div class="row " style="background-color: #f6b776; height: 60px;">
+
+            <div class="col-sm " style="border-right: 1px solid black; height: 60px; text-align: center;">
+                <h6 class="mt-4" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; ">SERVICIO</h6>
+            </div>
+            <div class="col-sm " style="text-align: center; ">
+                <h6 class="mt-4" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;">PRECIO</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="list-group" fxLayout="column" fxLayoutAlign="space-around center" style="background-color: white">
+        <div class="list-group-item list-group-item-action  p-2" fxLayout="row" fxLayoutAlign="space-around center"
+            style="
+            background-color: white;
+            border-bottom: 2px solid #f6b776 ;
+            width: 95%;
+            color: black;
+            
+          ">
+            <h6 fxFlex="50" style="
+              
+              height: 20px;
+              margin-bottom: 0;
+              margin-left: 50px;
+              font-weight: normal;
+                          
+            ">
+                Mano de Obra
+            </h6>
+
+        </div>
+
+
+        <ng-container *ngIf="!taskSub.require_materials">
+            <div class="list-group-item list-group-item-action p-2" fxLayout="row" fxLayoutAlign="space-around center"
+                style="
+            background-color: white;
+            border-bottom: 2px solid #f6b776;
+            color: black;
+            width: 95%;
+  
+            
+          ">
+                <h6 fxFlex="50" style="
+              
+          height: 20px;
+          margin-bottom: 0;
+          margin-left: 50px;
+          font-weight: normal;
+                      
+        ">
+                    Materiales
+                </h6>
+
+            </div>
+        </ng-container>
+
+
+
+        <div class="list-group-item list-group-item-action  p-2" fxLayout="row" fxLayoutAlign="space-around center"
+            style="
+            background-color: white;
+            width: 95%;
+            color: black;
+            
+          ">
+            <h6 fxFlex="50" style="
+              
+              height: 20px;
+              margin-bottom: 0;
+              margin-left: 50px;
+              font-weight: normal;
+                          
+            ">
+                TOTAL
+            </h6>
+            <h6 class="m-0" fxFlex="50" style="  font-weight: normal; height: 20px; border: none; text-align: center">
+                {{taskSub.budget}}</h6>
+
+        </div>
+
+
+
+    </div>
+
+</p-tabView>
+
+
+
+
+
+
+
+
+<p-galleria [(value)]="images" [(visible)]="displayBasic2" [numVisible]="7" [circular]="true" [fullScreen]="true"
+    [showItemNavigators]="true" [showThumbnails]="false" [baseZIndex]="100000">
+    <ng-template pTemplate="item" let-item>
+        <img [src]="item.previewImageSrc" style="width: 100%;height: 100%; display: block;" />
+    </ng-template>
+
+</p-galleria>
+
+
+<p-dialog class="map" header=" " [(visible)]="displayModalMap" [modal]="true" [baseZIndex]="10000" [draggable]="false">
+
+    <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng" [mapTypeId]="'hybrid'">
+        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    </agm-map>
+
+
+</p-dialog>
+
+<p-dialog class="worker " header=" " [(visible)]="displayModalWorker" [modal]="true" [baseZIndex]="10000"
+    [draggable]="false">
+
+    <div fxLayout="row">
+        <div class="img-container" fxFlex="30" style="
+      background-size: cover;
+      background-position: center center;
+      border-radius: 15px;
+      flex: none;" [style.background-image]="">
+
+        </div>
+        <div class="name-container" fxLayout="column" fxFlexOffset="10">
+            <h2 class="name">{{currentOffer?.provider_name}}</h2>
+            <h4 class="job"> FONTANERO</h4>
+            <p-rating [ngModel]="currentOffer?.ranking" readonly="true" stars="5" [cancel]="false" fxFlex="20"
+                fxFlexAlign="center" fxFlexOffset="10" class="mb-2 w-100" style="pointer-events: none;">
+            </p-rating>
+        </div>
+    </div>
+    <div fxLayout="row" class="mt-5">
+        <p style="text-align: center;">
+            No hay comentarios.
+        </p>
+    </div>
+
+</p-dialog>

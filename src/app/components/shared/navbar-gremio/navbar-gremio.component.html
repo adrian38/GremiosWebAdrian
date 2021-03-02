@@ -1,51 +1,50 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid" fxLayout="row" fxLayoutAlign="space-between center">
-        <div fxFlex="10" fxFlexOffset="5">
-            <a class="navbar-brand" routerLink="/">
-                <img src="assets/img/logoNavbar.png" alt="" class="brand-logo" /></a>
+        <div fxFlex="10" fxFlexOffset="3">
+            <img src="assets/img/logo_header.svg" alt="" class="brand-logo" />
         </div>
-        <ng-container *ngIf= "user.type == 'client'">
-        <div fxFlex="10" fxFlexOffset="5" *ngIf="userConnected()">
-            <p-dropdown [options]="services" [(ngModel)]="selectedService" placeholder="Elegir servicio" optionLabel="name" [showClear]="true" (onChange)="emitRequest()"></p-dropdown>
-        </div>
-     </ng-container>
+        <ng-container *ngIf="user.type == 'client'">
+            <div fxFlex="10" fxFlexOffset="5">
+                <p-dropdown [options]="services" [(ngModel)]="selectedService" placeholder="Elegir servicio"
+                    optionLabel="name" [showClear]="true" (onChange)="emitRequest()"></p-dropdown>
+            </div>
+        </ng-container>
 
-     <ng-container *ngIf= "user.type == 'provider'">
-        <div fxFlex="10" fxFlexOffset="5" >
-          
-        </div>
-     </ng-container>
-        
-     <div fxFlex="15" fxFlexOffset="20" class="button-nav-go" *ngIf="userConnected()">
-            <ng-container *ngIf= "user.type == 'provider'">
-            <span>Ir a Cliente</span>
-            </ng-container>
-            <ng-container *ngIf= "user.type == 'client'">
-                <span>Ir a Trabajador</span>
-                </ng-container>
-        </div>
+        <ng-container *ngIf="user.type == 'provider'">
+            <div fxFlex="10" fxFlexOffset="5">
 
-        <div fxFlex="8" class="button-nav" fxLayout="column" fxLayoutAlign="space-around center" fxFlexOffset="1" *ngIf="userConnected()">
+            </div>
+        </ng-container>
+
+
+        <div fxFlex="8" class="button-nav" fxLayout="column" fxLayoutAlign="space-around center" fxFlexOffset="1">
             <i class="far fa-user-circle"></i>
             <span>Perfil</span>
         </div>
 
-        <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'request' }" fxFlex="8" fxFlexOffset="5" class="button-nav" [ngClass]="{ active: tabActive === 'request' }" fxLayout="column" fxLayoutAlign="space-around center" *ngIf="userConnected()">
+        <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'request' }" fxFlex="8" fxFlexOffset="5"
+            class="button-nav" [ngClass]="{ active: tabActive === 'request' }" fxLayout="column"
+            fxLayoutAlign="space-around center">
             <i class="fas fa-circle-notch"></i>
             <span>Solicitudes</span>
         </div>
-        <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'hired' }" fxFlex="8" fxFlexOffset="1" class="button-nav" [ngClass]="{ active: tabActive === 'hired' }" fxLayout="column" fxLayoutAlign="space-around center" *ngIf="userConnected()">
+        <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'hired' }" fxFlex="8" fxFlexOffset="1"
+            class="button-nav" [ngClass]="{ active: tabActive === 'hired' }" fxLayout="column"
+            fxLayoutAlign="space-around center">
             <i class="far fa-check-circle"></i>
             <span>Contratados</span>
         </div>
-        <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'history' }" fxFlex="8" fxFlexOffset="1" class="button-nav" [ngClass]="{ active: tabActive === 'history' }" fxLayout="column" fxLayoutAlign="space-around center" *ngIf="userConnected()">
+        <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'history' }" fxFlex="8" fxFlexOffset="1"
+            class="button-nav" [ngClass]="{ active: tabActive === 'history' }" fxLayout="column"
+            fxLayoutAlign="space-around center">
             <i class="fas fa-history"></i>
             <span>Historial</span>
         </div>
-      
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto"></ul>

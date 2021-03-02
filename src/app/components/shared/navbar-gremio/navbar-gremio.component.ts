@@ -9,72 +9,52 @@ import { TaskOdooService } from 'src/app/services/task-odoo.service';
 declare const $: any;
 
 @Component({
-  selector: 'app-navbar-gremio',
-  templateUrl: './navbar-gremio.component.html',
-  styleUrls: ['./navbar-gremio.component.scss'],
-  encapsulation: ViewEncapsulation.None
+	selector: 'app-navbar-gremio',
+	templateUrl: './navbar-gremio.component.html',
+	styleUrls: [ './navbar-gremio.component.scss' ],
+	encapsulation: ViewEncapsulation.None
 })
 export class NavbarGremioComponent implements OnInit {
+	user: UsuarioModel = new UsuarioModel();
 
-  task: TaskModel;
-  user: UsuarioModel = new UsuarioModel();
-  user$: Observable<UsuarioModel>;
-  subscriptionUsuario: Subscription;
+	selectedService: any;
+	selectedTab: String;
+	tabActive: string;
 
-  selectedService: any;
-  selectedTab: String;
-  tabActive: string;
-
-  services = [
-    {
-      name: 'Fontaneria'
-    },
-    /* {
+	services = [
+		{
+			name: 'Fontaneria'
+		}
+		/* {
       name: 'Electricidad'
     } */
-  ];
-  constructor(private router: Router,
-    private fb: FormBuilder,
-    private _authOdoo: AuthOdooService,
-    private route: ActivatedRoute,
-    private _taskOdoo: TaskOdooService, private ngZone: NgZone) {
+	];
+	constructor(
+		private router: Router,
+		private fb: FormBuilder,
+		private _authOdoo: AuthOdooService,
+		private route: ActivatedRoute,
+		private _taskOdoo: TaskOdooService,
+		private ngZone: NgZone
+	) {
+		this.user = this._authOdoo.getUser();
+		this.selectedTab = 'Solicitudes';
+		this._taskOdoo.setSelectedTab(this.selectedTab);
+	}
 
-    this.task = new TaskModel();
-    this.selectedTab = 'Solicitudes';
-    this._taskOdoo.setSelectedTab(this.selectedTab);
+	ngOnDestroy(): void {
+		//Called once, before the instance is destroyed.
+		//Add 'implements OnDestroy' to the class.
+	}
 
-  }
+	ngOnInit() {
+		this.route.queryParams.subscribe((params) => {
+			this.tabActive = params.tab;
+		});
+	}
 
-  ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-
-    this.subscriptionUsuario.unsubscribe();
-
-  }
-
-  ngOnInit() {
-    this.user$ = this._authOdoo.getUser$();
-    this.subscriptionUsuario = this.user$.subscribe(user => {
-      this.ngZone.run(() => {
-        this.user = user;
-        console.log(this.user);
-      });
-
-    });
-    this.route.queryParams.subscribe(params => {
-      this.tabActive = params.tab;
-    })
-  }
-
-  userConnected() {
-    return this.user.connected;
-    // return true;
-  }
-
-  emitRequest() {
-
-    this.router.navigate(['/new-request'], { queryParams: { service: this.selectedService.name } })
-    this.selectedService = null;
-  }
+	emitRequest() {
+		this.router.navigate([ '/new-request' ], { queryParams: { service: this.selectedService.name } });
+		this.selectedService = null;
+	}
 }

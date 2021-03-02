@@ -39,11 +39,15 @@ export class PaymentStripeComponent {
 
 	pagar() {
 		this.isLoading = true;
-		this._taskOdoo.acceptProvider(this.taskPayment.id, this.taskPayment.origin_id);
 
-		setTimeout(() => {
+		console.log(this.taskPayment.id, 'this.taskPayment.id');
+		console.log(this.taskPayment.origin_id, ' this.taskPayment.origin_id');
+
+		//this._taskOdoo.acceptProvider(this.taskPayment.id, this.taskPayment.origin_id);
+
+		/* setTimeout(() => {
 			this.displayModalWorker = false;
-		}, 2000);
+		}, 2000); */
 	}
 }
 
