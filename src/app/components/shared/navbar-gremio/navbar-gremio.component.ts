@@ -20,6 +20,10 @@ export class NavbarGremioComponent implements OnInit {
 	selectedService: any;
 	selectedTab: String;
 	tabActive: string;
+	tab1_active: string = '';
+	tab2_active: string = '';
+	tab3_active: string = '';
+	tab4_active: string = '';
 
 	services = [
 		{
@@ -39,7 +43,12 @@ export class NavbarGremioComponent implements OnInit {
 	) {
 		this.user = this._authOdoo.getUser();
 		this.selectedTab = 'Solicitudes';
-		this._taskOdoo.setSelectedTab(this.selectedTab);
+
+		this.tab1_active = '_active';
+		this.tab2_active = '_active';
+		this.tab3_active = '_active';
+		this.tab4_active = '_active';
+		//this._taskOdoo.setSelectedTab(this.selectedTab);
 	}
 
 	ngOnDestroy(): void {
@@ -51,10 +60,37 @@ export class NavbarGremioComponent implements OnInit {
 		this.route.queryParams.subscribe((params) => {
 			this.tabActive = params.tab;
 		});
+
+		//this.tab4_active = '_active';
 	}
 
 	emitRequest() {
 		this.router.navigate([ '/new-request' ], { queryParams: { service: this.selectedService.name } });
 		this.selectedService = null;
+	}
+
+	change(tab: string) {
+		switch (tab) {
+			case 'request':
+				this.tab1_active = '';
+				this.tab2_active = '_active';
+				this.tab3_active = '_active';
+				break;
+			case 'hired':
+				this.tab1_active = '_active';
+				this.tab2_active = '';
+				this.tab3_active = '_active';
+				break;
+			case 'history':
+				this.tab1_active = '_active';
+				this.tab2_active = '_active';
+				this.tab3_active = '';
+				break;
+			case 'perfil':
+				//this.tab4_active = '_active';
+				break;
+		}
+
+		console.log('cambio', tab);
 	}
 }

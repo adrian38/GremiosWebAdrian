@@ -160,7 +160,7 @@
 		margin-right: 20px;
 		outline: none !important;
 		border-radius: 20px;
-		width: 61% !important;
+		width: 80% !important;
 		background-color: #fff;
 	}
 
@@ -174,21 +174,23 @@
 		cursor: pointer;
 	}
 
-	.input-group .fa {
-		color: rgb(49, 176, 185);
-		float: right;
+	.input-group-append {
+		svg {
+			color: rgb(49, 176, 185);
+			float: right;
+		}
 	}
 
 	.bottom-icons {
 		float: left;
 		margin-top: 17px;
 		width: 5% !important;
-		margin-left: 22px;
+		margin-left: 8%;
 	}
 
-	.bottom-icons .fa {
+	.bottom-icons svg {
 		color: #fff;
-		padding: 5px;
+		//padding: 5px;
 	}
 
 	.form-control:focus {

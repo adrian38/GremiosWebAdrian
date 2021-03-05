@@ -186,6 +186,12 @@
       </div>
 
 
+      <p-dialog class="cargado" header={{headerString}} [(visible)]="displayModalLoading" [modal]="true"
+        [baseZIndex]="10000" [draggable]="false">
+        <h1 style="text-align: center; font-weight: 400; margin-top: 10%;">Creando solicitud</h1>
+        <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+      </p-dialog>
+
     </div>
   </div>
 </div>
@@ -197,10 +203,4 @@
     </agm-marker>
   </agm-map>
   <!-- <button (click)="getCurrentPosition()">adrian</button> -->
-</p-dialog>
-
-<p-dialog class="cargado" header={{headerString}} [(visible)]="displayModalLoading" [modal]="true" [baseZIndex]="10000"
-  [draggable]="false">
-  <h1 style="text-align: center; font-weight: 400; margin-top: 10%;">Creando solicitud</h1>
-  <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
 </p-dialog>

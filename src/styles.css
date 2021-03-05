@@ -1,33 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
 
 .h2-aero {
-    font-family: 'Aero';
+	font-family: 'Aero';
 }
 
 .btn-primary {
-    background-color: rgb(246, 183, 118) !important;
-    border-color: rgb(246, 183, 118) !important;
+	background-color: rgb(246, 183, 118) !important;
+	border-color: rgb(246, 183, 118) !important;
 }
 
 .btn-secondary {
-    background-color: rgb(49, 176, 185) !important;
-    border-color: rgb(49, 176, 185) !important;
+	background-color: rgb(49, 176, 185) !important;
+	border-color: rgb(49, 176, 185) !important;
 }
 
 .text-green {
-    color: rgb(49, 176, 185) !important;
+	color: rgb(49, 176, 185) !important;
 }
 
 .text-black {
-    color: black !important;
+	color: black !important;
 }
 
 .modal-header {
-    background-color: rgb(246, 183, 118);
-    ;
-    border-color: rgb(246, 183, 118);
+	background-color: rgb(246, 183, 118);
+	border-color: rgb(246, 183, 118);
 }
 
 .orange-bkground {
-    background-color: rgb(246, 183, 118) !important;
+	background-color: rgb(246, 183, 118) !important;
 }

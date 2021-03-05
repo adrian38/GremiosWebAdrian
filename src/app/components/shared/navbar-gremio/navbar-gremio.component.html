@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid" fxLayout="row" fxLayoutAlign="space-between center">
-        <div fxFlex="10" fxFlexOffset="3">
+    <div class="container-fluid p-0" fxLayout="row">
+
+        <div fxFlex="5" fxFlexOffset="2">
             <img src="assets/img/logo_header.svg" alt="" class="brand-logo" />
         </div>
         <ng-container *ngIf="user.type == 'client'">
@@ -12,42 +13,57 @@
 
         <ng-container *ngIf="user.type == 'provider'">
             <div fxFlex="10" fxFlexOffset="5">
-
+                <p-dropdown [options]="services" [(ngModel)]="selectedService" placeholder="Organizar"
+                    optionLabel="name" [showClear]="true" (onChange)="emitRequest()"></p-dropdown>
             </div>
         </ng-container>
 
 
-        <div fxFlex="8" class="button-nav" fxLayout="column" fxLayoutAlign="space-around center" fxFlexOffset="1">
-            <i class="far fa-user-circle"></i>
+        <div fxFlex="15" fxFlexOffset="10" class="button-nav-go">
+            <ng-container *ngIf="user.type == 'provider'">
+                <span>Ir a Cliente</span>
+            </ng-container>
+            <ng-container *ngIf="user.type == 'client'">
+                <span>Ir a Trabajador</span>
+            </ng-container>
+        </div>
+
+        <div fxFlex="8" class="button-nav" fxLayout="column" fxLayoutAlign="space-around center" fxFlexOffset="1"
+            (click)="change('perfil')">
+            <img [src]="'assets/img/perfil_icon'+ tab4_active + '.svg'" class="brand-button" />
+
             <span>Perfil</span>
         </div>
 
+
+
         <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'request' }" fxFlex="8" fxFlexOffset="5"
             class="button-nav" [ngClass]="{ active: tabActive === 'request' }" fxLayout="column"
-            fxLayoutAlign="space-around center">
-            <i class="fas fa-circle-notch"></i>
+            fxLayoutAlign="space-around center" (click)="change('request')">
+
+            <img [src]="'assets/img/solicitudes_icon'+ tab1_active + '.svg'" class="brand-button" />
+
+
             <span>Solicitudes</span>
         </div>
+
+
         <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'hired' }" fxFlex="8" fxFlexOffset="1"
             class="button-nav" [ngClass]="{ active: tabActive === 'hired' }" fxLayout="column"
-            fxLayoutAlign="space-around center">
-            <i class="far fa-check-circle"></i>
+            fxLayoutAlign="space-around center" (click)="change('hired')">
+            <img [src]="'assets/img/contratados_icon'+ tab2_active + '.svg'" class="brand-button" />
             <span>Contratados</span>
         </div>
+
         <div [routerLink]="['/dashboard']" [queryParams]="{ tab: 'history' }" fxFlex="8" fxFlexOffset="1"
             class="button-nav" [ngClass]="{ active: tabActive === 'history' }" fxLayout="column"
-            fxLayoutAlign="space-around center">
-            <i class="fas fa-history"></i>
+            fxLayoutAlign="space-around center" (click)="change('history')">
+            <img [src]="'assets/img/historial_icon'+ tab3_active + '.svg'" class="brand-button" />
+
             <span>Historial</span>
+
         </div>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto"></ul>
-        </div>
     </div>
 </nav>

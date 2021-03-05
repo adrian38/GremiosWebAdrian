@@ -113,7 +113,7 @@ export class RequestCardComponent implements OnInit {
 			});
 		}
 
-		console.log(this.task);
+		//console.log(this.task);
 	}
 
 	ngOnDestroy(): void {
