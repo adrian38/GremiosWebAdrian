@@ -31,6 +31,18 @@
 			margin-top: 10%;
 			margin-left: 29%;
 		}
+
+		.chat-button {
+			span {
+				color: black;
+				font-size: 13px;
+				cursor: pointer;
+			}
+			.chat-button:hover {
+				cursor: pointer;
+				outline: none;
+			}
+		}
 	}
 	.image-left {
 		height: 100%;
@@ -65,14 +77,4 @@
 		opacity: 1;
 		transform: translateY(0);
 	}
-}
-
-.chat-button {
-	span {
-		color: black;
-		font-size: 13px;
-	}
-}
-#chatSubRequest:hover {
-	cursor: pointer;
 }

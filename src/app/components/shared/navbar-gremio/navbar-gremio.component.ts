@@ -33,6 +33,20 @@ export class NavbarGremioComponent implements OnInit {
       name: 'Electricidad'
     } */
 	];
+
+	filtro = [
+		{
+			name: 'Cercania'
+		},
+		{
+			name: 'Fecha'
+		}
+
+		/* {
+      name: 'Electricidad'
+    } */
+	];
+
 	constructor(
 		private router: Router,
 		private fb: FormBuilder,
@@ -44,7 +58,7 @@ export class NavbarGremioComponent implements OnInit {
 		this.user = this._authOdoo.getUser();
 		this.selectedTab = 'Solicitudes';
 
-		this.tab1_active = '_active';
+		this.tab1_active = '';
 		this.tab2_active = '_active';
 		this.tab3_active = '_active';
 		this.tab4_active = '_active';
@@ -59,9 +73,33 @@ export class NavbarGremioComponent implements OnInit {
 	ngOnInit() {
 		this.route.queryParams.subscribe((params) => {
 			this.tabActive = params.tab;
-		});
+			console.log(params, 'this.tabActive');
 
-		//this.tab4_active = '_active';
+			if (params.tab) {
+				switch (this.tabActive) {
+					case 'request':
+						this.tab1_active = '';
+						this.tab2_active = '_active';
+						this.tab3_active = '_active';
+						break;
+					case 'hired':
+						this.tab1_active = '_active';
+						this.tab2_active = '';
+						this.tab3_active = '_active';
+
+						break;
+					case 'history':
+						this.tab1_active = '_active';
+						this.tab2_active = '_active';
+						this.tab3_active = '';
+						break;
+				}
+			} else {
+				this.tab1_active = '_active';
+				//this.tab2_active = '_active';
+				//this.tab3_active = '_active';
+			}
+		});
 	}
 
 	emitRequest() {
@@ -90,7 +128,5 @@ export class NavbarGremioComponent implements OnInit {
 				//this.tab4_active = '_active';
 				break;
 		}
-
-		console.log('cambio', tab);
 	}
 }

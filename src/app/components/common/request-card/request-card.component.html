@@ -58,11 +58,12 @@
                     </button>
                   </div>
 
-
-                  <div class="col-1 p-0 ml-5" style="text-align: center;" (click)="goToChat()" id="chatSubRequest"
+                  <div class="col-1 p-0 ml-5" style="text-align: center;" id="chatSubRequest"
                     *ngIf="role=='provider' && task.offer_send.toString() == 'sent'">
-                    <div class="chat-button col-1" fxLayout="column" fxLayoutAlign="space-around center">
-                      <input type=image src="'../../../../../../../assets/img/iconChat.svg" width="30" height="20">
+                    <div class="chat-button col-1" fxLayout="column" fxLayoutAlign="space-around center"
+                      (click)="goToChat()">
+                      <input style="outline: none ;" type=image src="'../../../../../../../assets/img/iconChat.svg"
+                        width="30" height="20">
                       <span>Chat</span>
                     </div>
                   </div>
