@@ -1,17 +1,20 @@
 <ng-template appPlaceholder></ng-template>
 
+
 <div class="row m-0">
     <div class="col-6 px-0">
-        <div class="left-container" style="background-color: rgb(255, 255, 255)!important;">
-            <p-carousel [value]="imgCarousel" [numVisible]="1" [circular]="true" [autoplayInterval]="2000">
+        <div class="left-container">
+            <p-carousel [value]="imgCarousel" [numVisible]="1">
                 <ng-template let-carouselImg pTemplate="item">
                     <img class="img-carousel" [src]="carouselImg" alt="" />
                 </ng-template>
             </p-carousel>
         </div>
     </div>
+
+
     <div class="col-6 px-0">
-        <div class="right-container text-center " style="background-color: rgb(255, 255, 255)">
+        <div class="right-container text-center " style="background-color: white">
             <img class="mt-3 img-fluid" src="assets/img/logoHome.png" alt="homeLogo" />
 
             <div class="button-container">

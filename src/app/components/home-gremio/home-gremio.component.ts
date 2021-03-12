@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ViewChild, ComponentFactoryResolver,OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, ViewChild, ComponentFactoryResolver, OnInit } from '@angular/core';
 
 import { UsuarioModel } from 'src/app/models/usuario.model';
 
@@ -11,82 +11,72 @@ import { Router } from '@angular/router';
 declare const $: any;
 
 @Component({
-  selector: 'app-home-gremio',
-  templateUrl: './home-gremio.component.html',
-  styleUrls: ['./home-gremio.component.scss'],
-  encapsulation: ViewEncapsulation.None
+	selector: 'app-home-gremio',
+	templateUrl: './home-gremio.component.html',
+	styleUrls: [ './home-gremio.component.scss' ],
+	encapsulation: ViewEncapsulation.None
 })
-export class HomeGremioComponent implements OnInit{
+export class HomeGremioComponent implements OnInit {
+	//imgCarousel = [ 'assets/img/home1.jpg', 'assets/img/home3.jpg' ];
+	imgCarousel = [ 'assets/img/home1.jpg' ];
 
+	loginForm: FormGroup;
 
-  imgCarousel = ['assets/img/home1.jpg', 'assets/img/home3.jpg'];
+	usuario: UsuarioModel;
 
-  loginForm: FormGroup;
+	alerta: boolean = false;
+	disabled = false;
+	connected: boolean;
 
+	get usuarioNoValido() {
+		return this.loginForm.get('usuario').invalid && this.loginForm.get('usuario').touched;
+	}
 
-  usuario: UsuarioModel;
+	get passwordNoValido() {
+		return this.loginForm.get('password').invalid && this.loginForm.get('password').touched;
+	}
 
+	@ViewChild(PlaceHolderDirective, { static: false })
+	loginHost: PlaceHolderDirective;
 
-  alerta: boolean = false;
-  disabled = false;
-  connected: boolean;
+	constructor(
+		private fb: FormBuilder,
+		private _authOdoo: AuthOdooService,
+		private router: Router,
+		private componentFactoryResolver: ComponentFactoryResolver
+	) {
+		this.usuario = new UsuarioModel();
+		this.createForms();
+	}
 
-  get usuarioNoValido() {
-    return this.loginForm.get('usuario').invalid && this.loginForm.get('usuario').touched;
-  }
+	ngOnDestroy() {}
 
-  get passwordNoValido() {
-    return this.loginForm.get('password').invalid && this.loginForm.get('password').touched;
-  }
+	ngOnInit() {}
 
-  @ViewChild(PlaceHolderDirective, { static: false }) loginHost: PlaceHolderDirective;
+	createForms() {
+		this.loginForm = this.fb.group({
+			usuario: [ '', [ Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$') ] ],
+			password: [ '', [ Validators.required, Validators.minLength(6) ] ]
+		});
+	}
 
-  constructor(private fb: FormBuilder,
-    private _authOdoo: AuthOdooService,
-    private router:Router,
-    private componentFactoryResolver: ComponentFactoryResolver,
-  ) {
-    this.usuario = new UsuarioModel;
-    this.createForms();
-  }
+	login() {
+		this.usuario.username = this.loginForm.get('usuario').value;
+		this.usuario.password = this.loginForm.get('password').value;
+		this._authOdoo.login(this.usuario);
+		this.disabled = true;
+	}
 
-  ngOnDestroy(){
-   
-  }
+	openSignUpModal() {
+		document.getElementById('close-loginModal').click();
+	}
 
-  ngOnInit(){
+	showLoginDialog() {
+		const loginCompFactory = this.componentFactoryResolver.resolveComponentFactory(LoginComponent);
 
-  }
+		const hostViewContainerRef = this.loginHost.viewContainerRef;
+		hostViewContainerRef.clear();
 
-  createForms() {
-    this.loginForm = this.fb.group({
-      usuario: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    });
-  }
-
-  login() {
-
-    this.usuario.username = this.loginForm.get('usuario').value
-    this.usuario.password = this.loginForm.get('password').value
-    this._authOdoo.login(this.usuario);
-    this.disabled = true;
-
-  }
-
-
-  openSignUpModal() {
-    document.getElementById('close-loginModal').click();
-  }
-
-  showLoginDialog() {
-    const loginCompFactory = this.componentFactoryResolver.resolveComponentFactory(LoginComponent);
-
-    const hostViewContainerRef = this.loginHost.viewContainerRef;
-    hostViewContainerRef.clear();
-
-    const componentRef = hostViewContainerRef.createComponent(loginCompFactory);
-
-
-  }
+		const componentRef = hostViewContainerRef.createComponent(loginCompFactory);
+	}
 }

@@ -1,7 +1,7 @@
 .left-container {
 	height: 90vh;
 	position: relative;
-	top: 10vh;
+	//top: 10vh;
 	&::before {
 		content: '';
 		position: absolute;
@@ -39,7 +39,7 @@
 
 .right-container {
 	z-index: 20;
-	top: 10vh;
+	//top: 10vh;
 	background-color: #ebebeb;
 	position: relative;
 	height: 100%;
