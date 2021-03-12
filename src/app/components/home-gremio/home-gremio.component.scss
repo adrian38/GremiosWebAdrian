@@ -1,14 +1,18 @@
 .left-container {
-	height: 90vh;
+	height: 100vh;
 	position: relative;
 
 	&::before {
 		content: '';
+		background-image: url(../../../assets/img/1foto.svg);
+		background-repeat: no-repeat;
+
+		height: 50vh;
+		background-size: contain;
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		background-color: rgb(246, 183, 118);
-		opacity: 30%;
+
 		z-index: 10;
 	}
 }
@@ -20,7 +24,7 @@
 	flex-direction: column;
 	box-sizing: border-box;
 	display: flex;
-	place-content: center space-evenly;
+
 	align-items: center;
 
 	h1 {
@@ -28,6 +32,7 @@
 	}
 
 	.button-container {
+		margin-top: 20%;
 		button {
 			background-color: rgb(246, 183, 118);
 			width: 200px;
@@ -37,10 +42,8 @@
 			border: none;
 		}
 	}
-	.bordes {
-		height: 5%;
-		width: 100%;
-		border-radius: 80px;
+	.margenInicio {
+		margin-top: 12%;
 	}
 }
 
@@ -147,10 +150,12 @@ table tr:last-child td:last-child {
 	max-width: 35%;
 	height: 100%;
 	.img-container {
-		background-image: url(../../../assets/img/phoebe.png);
-		//object-fit: fill;
-		//background-repeat: no-repeat;
-		//background-position: center center;
+		height: 90px;
+		img {
+			object-fit: cover;
+			height: 100%;
+			border-radius: 15px;
+		}
 	}
 
 	.p-card {
@@ -164,4 +169,12 @@ table tr:last-child td:last-child {
 	.p-rating .p-rating-icon.pi-star {
 		color: rgb(246, 183, 118);
 	}
+}
+
+.end {
+	background-image: url(../../../assets/img/fondoinicio.svg);
+	background-repeat: no-repeat;
+	//background-position: center center;
+	height: 50vh;
+	background-size: cover;
 }
