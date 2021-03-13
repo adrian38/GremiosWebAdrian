@@ -13,15 +13,15 @@
 
     <div class="barra_1">
 
-        <div *ngIf="activateTab == 'request'" class="align-cards animated fadeIn">
+        <div *ngIf="activateTab == 'request'" class="align-cards  ">
             <app-request-card *ngFor="let task of solicitudesList; let i= index" [task]="task" [role]='usuario.type'>
             </app-request-card>
         </div>
-        <div *ngIf="activateTab == 'hired'" class="align-cards animated fadeIn">
+        <div *ngIf="activateTab == 'hired'" class="align-cards ">
             <app-hire-card *ngFor="let task of contratadosList; let i= index" [task]="task" [role]='usuario.type'>
             </app-hire-card>
         </div>
-        <div *ngIf="activateTab == 'history'" class="align-cards animated fadeIn">
+        <div *ngIf="activateTab == 'history'" class="align-cards ">
             <app-history-card *ngFor="let task of historialList; let i= index" [task]="task" [role]='usuario.type'>
             </app-history-card>
         </div>
