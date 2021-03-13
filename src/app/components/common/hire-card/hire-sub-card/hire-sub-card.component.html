@@ -81,13 +81,38 @@
     <div class="list-group" fxLayout="column" fxLayoutAlign="space-around center" style="background-color: white">
         <div class="list-group-item list-group-item-action  p-2" fxLayout="row" fxLayoutAlign="space-around center"
             style="
+    background-color: white;
+    border-bottom: 2px solid #f6b776 ;
+    width: 95%;
+    color: black;
+    
+  ">
+            <h6 fxFlex="50" style="
+      
+      height: 20px;
+      margin-bottom: 0;
+      margin-left: 50px;
+      font-weight: normal;
+                  
+    ">
+                MANO DE OBRA
+            </h6>
+            <h6 class="m-0" fxFlex="50" style="  font-weight: normal; height: 20px; border: none; text-align: center">
+                0</h6>
+
+        </div>
+
+
+        <ng-container *ngIf="!taskSub.require_materials">
+            <div class="list-group-item list-group-item-action  p-2" fxLayout="row" fxLayoutAlign="space-around center"
+                style="
             background-color: white;
             border-bottom: 2px solid #f6b776 ;
             width: 95%;
             color: black;
             
           ">
-            <h6 fxFlex="50" style="
+                <h6 fxFlex="50" style="
               
               height: 20px;
               margin-bottom: 0;
@@ -95,32 +120,11 @@
               font-weight: normal;
                           
             ">
-                Mano de Obra
-            </h6>
-
-        </div>
-
-
-        <ng-container *ngIf="!taskSub.require_materials">
-            <div class="list-group-item list-group-item-action p-2" fxLayout="row" fxLayoutAlign="space-around center"
-                style="
-            background-color: white;
-            border-bottom: 2px solid #f6b776;
-            color: black;
-            width: 95%;
-  
-            
-          ">
-                <h6 fxFlex="50" style="
-              
-          height: 20px;
-          margin-bottom: 0;
-          margin-left: 50px;
-          font-weight: normal;
-                      
-        ">
-                    Materiales
+                    MATERIALES
                 </h6>
+                <h6 class="m-0" fxFlex="50"
+                    style="  font-weight: normal; height: 20px; border: none; text-align: center">
+                    0</h6>
 
             </div>
         </ng-container>
@@ -132,6 +136,7 @@
             background-color: white;
             width: 95%;
             color: black;
+            margin-bottom: 5%;
             
           ">
             <h6 fxFlex="50" style="
@@ -145,7 +150,7 @@
                 TOTAL
             </h6>
             <h6 class="m-0" fxFlex="50" style="  font-weight: normal; height: 20px; border: none; text-align: center">
-                {{taskSub.budget}}</h6>
+                {{taskSub.budget}}€</h6>
 
         </div>
 

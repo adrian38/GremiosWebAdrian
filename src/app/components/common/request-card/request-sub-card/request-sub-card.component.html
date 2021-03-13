@@ -42,8 +42,31 @@
   </p-tabPanel>
 
   <p-tabPanel header="DIRECCION">
-    <div class="row ">
-      <div class="col-8 anchoColumn">
+    <div class="row" *ngIf=" role=='provider'">
+      <div class=" col-6 anchoColumn" style="text-align: center;">
+
+        <span class="destacado"> 10m</span>
+        <img class="ml-4 mt-3 mb-3" src="assets/img/distancia.svg" />
+        <span class="destacado">Distancia aproximada</span>
+
+      </div>
+
+
+
+      <div class="col-6 align-self-center" style="text-align: center;">
+
+        <p style="text-align: center; " class="ml-4 mr-4">
+          *La dirección del usuario no será mostrada hasta que la solicitud no sea aceptada.
+        </p>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="row" *ngIf=" role=='client'">
+      <div class=" col-8 anchoColumn">
         <p class="destacado">
           Calle {{ taskSub.address.street }}, # {{ taskSub.address.number }}<br>
           Portal {{ taskSub.address.portal }}, Escalera {{ taskSub.address.stair }}, Planta {{ taskSub.address.floor }},
@@ -218,7 +241,7 @@
 
 
 <p-galleria [(value)]="images" [(visible)]="displayBasic2" [numVisible]="7" [circular]="true" [fullScreen]="true"
-  [showItemNavigators]="true" [showThumbnails]="false" [baseZIndex]="100000">
+  [showItemNavigators]="true" [showThumbnails]="false">
   <ng-template pTemplate="item" let-item>
     <img [src]="item.previewImageSrc" style="width: 100%;height: 100%; display: block;" />
   </ng-template>

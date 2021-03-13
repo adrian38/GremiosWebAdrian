@@ -14,7 +14,7 @@
         <ng-container *ngIf="user.type == 'provider'">
             <div fxFlex="10" fxFlexOffset="5">
                 <p-dropdown [options]="filtro" [(ngModel)]="selectedService" placeholder="Organizar" optionLabel="name"
-                    [showClear]="true" (onChange)="emitRequest()"></p-dropdown>
+                    [showClear]="true"></p-dropdown>
             </div>
         </ng-container>
 

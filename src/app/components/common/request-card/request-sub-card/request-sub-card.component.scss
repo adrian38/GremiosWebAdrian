@@ -5,8 +5,19 @@
 	padding: 0;
 }
 
-/* :host ::ng-deep .p-galleria-mask {
-	width: 100%;
+:host ::ng-deep .p-galleria-mask {
+	top: 93px;
+}
+
+/* :host ::ng-deep .p-overflow-hidden {
+	z-index: 99;
+	top: 90px;
+} */
+
+/* :host ::ng-deep .p-galleria-item {
+	//top: 90px;
+	-webkit-transform: scale(0.3);
+	transform: scale(0.3);
 } */
 
 .anchoColumn {

@@ -44,7 +44,12 @@
                                 <button class="btn btn-primary p-0" fxFlex="16"
                                     *ngIf="role == 'client'">Calificar</button>
                             </div>
-                            <div class="col; p-0 my-2 ">
+                            <div class="col; p-0 my-2 " *ngIf="role=='client'">
+                                <span><i class="far fa-user mr-2"></i>Trabajador: <span
+                                        style="color:#31b0b9 ;">{{task.provider_name}}</span></span>
+                            </div>
+
+                            <div class="col; p-0 my-2 " *ngIf="role=='provider'">
                                 <span><i class="far fa-user mr-2"></i>Cliente: <span
                                         style="color:#31b0b9 ;">{{task.client_name}}</span></span>
                             </div>
@@ -75,9 +80,10 @@
 
                                     <div class="col-1 p-0 ml-3" style="text-align: center;" id="chatSubRequest">
                                         <div class="chat-button col-1" fxLayout="column"
-                                            fxLayoutAlign="space-around center">
-                                            <input type=image src="'../../../../../../../assets/img/iconChat.svg"
-                                                width="30" height="20">
+                                            fxLayoutAlign="space-around center" (click)="goToChat()">
+                                            <input style="outline: none ;" type=image
+                                                src="'../../../../../../../assets/img/iconChat.svg" width="30"
+                                                height="20">
                                             <span>Chat</span>
                                         </div>
                                     </div>

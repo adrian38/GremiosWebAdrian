@@ -38,7 +38,7 @@ export class HireCardComponent implements OnInit {
 	}
 
 	goToChat() {
-		this.router.navigate([ '/chat/', this.task.id ]);
+		this.router.navigate([ '/chat/', this.task.id_Po ]);
 	}
 
 	edtiName(name: string) {

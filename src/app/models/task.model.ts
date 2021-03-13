@@ -42,7 +42,7 @@ export class TaskModel {
 	client_id: number;
 	client_name: string;
 	provider_id: number;
-	provider_name: number;
+	provider_name: string;
 	budget: number;
 	origin: string;
 	date_planned: string;
@@ -73,7 +73,7 @@ export class TaskModel {
 		client_id: number = 0,
 		client_name: string = '',
 		provider_id: number = 0,
-		provider_name: number = 0,
+		provider_name: string = '',
 		budget: number = 0,
 		origin: string = '',
 		date_planned: string = '',
