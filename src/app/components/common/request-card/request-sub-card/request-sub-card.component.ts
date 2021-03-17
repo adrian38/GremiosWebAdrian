@@ -115,7 +115,10 @@ export class RequestSubCardComponent implements OnInit {
 
 	sendPresupuesto() {
 		//poner Spinner// inhabilitar el boton de enviar
-		this.taskSub.budget = this.workforce;
+		this.taskSub.workForce = this.workforce;
+		if (!this.taskSub.require_materials) {
+			this.taskSub.materials = this.materials;
+		}
 		this._taskOdoo.sendOffer(this.taskSub);
 	}
 

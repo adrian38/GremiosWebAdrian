@@ -1,177 +1,183 @@
 <p-toast></p-toast>
 <app-navbar-gremio></app-navbar-gremio>
-<div class="view-container animated fadeIn" fxLayout="row">
-    <div class="container-info">
-        <div class="msg-header">
-            <h4 class="active-info">{{task.title}}</h4>
-        </div>
-        <div class="input-page">
-            <div class="info-inbox">
-                <div class="info">
+<div class="barra">
 
-                    <div class="container-input">
+    <div class="barra_1">
+        <div class="view-container animated fadeIn" fxLayout="row">
+            <div class="container-info">
+                <div class="msg-header">
+                    <h4 class="active-info">{{task.title}}</h4>
+                </div>
+                <div class="input-page">
+                    <div class="info-inbox">
+                        <div class="info">
 
-                        <div class="row ml-2">
-                            <div class="col">
-                                <h6 style="color: #f6b776 ;">Presupuesto</h6>
-                            </div>
-                        </div>
+                            <div class="container-input">
 
-                        <div class="row ml-2 align-items-center">
-                            <div class="col-9">
-                                <h6>{{task.budget}}€</h6>
-                            </div>
+                                <div class="row ml-2">
+                                    <div class="col">
+                                        <h6 style="color: #f6b776 ;">Presupuesto</h6>
+                                    </div>
+                                </div>
 
-                            <div class="col" *ngIf="user.type != 'client'">
-                                <input [disabled]="true" class="location-btn" type="button">
-                            </div>
-                        </div>
+                                <div class="row ml-2 align-items-center">
+                                    <div class="col-9">
+                                        <h6>{{task.budget}}€</h6>
+                                    </div>
 
-                        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 "
-                            style="padding-bottom: 10px; border-bottom: 3px solid #f6b776;">
-                        </div>
+                                    <div class="col" *ngIf="user.type != 'client'">
+                                        <input [disabled]="true" class="location-btn" type="button">
+                                    </div>
+                                </div>
 
-                        <div class="row ml-2 mt-4">
-                            <div class="col">
-                                <h6 style="color: #f6b776 ;">Fecha</h6>
-                            </div>
+                                <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 "
+                                    style="padding-bottom: 10px; border-bottom: 3px solid #f6b776;">
+                                </div>
 
-                        </div>
-                        <div class="row ml-2 align-items-center">
-                            <div class="col-9">
-                                <h6>{{ task.date_planned | date: "EEEE, MMMM
-                                    d, y" }}</h6>
-                            </div>
+                                <div class="row ml-2 mt-4">
+                                    <div class="col">
+                                        <h6 style="color: #f6b776 ;">Fecha</h6>
+                                    </div>
 
-                            <div class="col" *ngIf="user.type == 'client'">
-                                <input [disabled]="true" class="location-btn" type="button">
-                            </div>
-                        </div>
+                                </div>
+                                <div class="row ml-2 align-items-center">
+                                    <div class="col-9">
+                                        <h6>{{ task.date_planned | date: "EEEE, MMMM
+                                            d, y" }}</h6>
+                                    </div>
 
-                        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 "
-                            style="padding-bottom: 10px; border-bottom: 3px solid #f6b776;">
-                        </div>
+                                    <div class="col" *ngIf="user.type == 'client'">
+                                        <input [disabled]="true" class="location-btn" type="button">
+                                    </div>
+                                </div>
 
-                        <div class="row ml-2 mt-4">
-                            <div class="col">
-                                <h6 style="color: #f6b776 ;">Hora</h6>
-                            </div>
+                                <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 "
+                                    style="padding-bottom: 10px; border-bottom: 3px solid #f6b776;">
+                                </div>
 
-                        </div>
-                        <div class="row ml-2 align-items-center">
-                            <div class="col-9">
-                                <h6>{{ task.time | date :
-                                    'h:mm a' }}</h6>
-                            </div>
+                                <div class="row ml-2 mt-4">
+                                    <div class="col">
+                                        <h6 style="color: #f6b776 ;">Hora</h6>
+                                    </div>
 
-                            <div class="col" *ngIf="user.type == 'client'">
-                                <input [disabled]="true" class="location-btn" type="button">
-                            </div>
-                        </div>
+                                </div>
+                                <div class="row ml-2 align-items-center">
+                                    <div class="col-9">
+                                        <h6>{{ task.time | date :
+                                            'h:mm a' }}</h6>
+                                    </div>
 
-                        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 "
-                            style="padding-bottom: 10px; border-bottom: 3px solid #f6b776;">
-                        </div>
+                                    <div class="col" *ngIf="user.type == 'client'">
+                                        <input [disabled]="true" class="location-btn" type="button">
+                                    </div>
+                                </div>
 
-                        <div class="row ml-2 mt-5 ">
-                            <div class="col-5">
-                                <button class=" btn  btn-sm" disabled style="color: white; background-color:#31b0b9;">
-                                    ACTUALIZAR
-                                </button>
-                            </div>
+                                <div fxLayout="row" fxLayoutAlign="space-evenly center" class="w-100 "
+                                    style="padding-bottom: 10px; border-bottom: 3px solid #f6b776;">
+                                </div>
 
-                            <div class="col-2">
-                                <button class=" btn  btn-sm"
-                                    style=" height: 30px;width: 40px;background-repeat: no-repeat;
+                                <div class="row ml-2 mt-5 ">
+                                    <div class="col-5">
+                                        <button class=" btn  btn-sm" disabled
+                                            style="color: white; background-color:#31b0b9;">
+                                            ACTUALIZAR
+                                        </button>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <button class=" btn  btn-sm"
+                                            style=" height: 30px;width: 40px;background-repeat: no-repeat;
                                     background-size: contain; background-image: url('../../../assets/img/aceptarAzul.svg')">
 
-                                </button>
-                            </div>
+                                        </button>
+                                    </div>
 
-                            <div class="col-2">
-                                <button class=" btn  btn-sm"
-                                    style=" height: 30px;width: 40px;background-repeat: no-repeat;
+                                    <div class="col-2">
+                                        <button class=" btn  btn-sm"
+                                            style=" height: 30px;width: 40px;background-repeat: no-repeat;
                                     background-size: contain; background-image: url('../../../assets/img/cancelarAzul.svg')">
 
-                                </button>
+                                        </button>
+                                    </div>
+
+                                </div>
                             </div>
 
                         </div>
                     </div>
 
                 </div>
+
             </div>
 
-        </div>
+            <div class="container">
+                <div class="msg-header">
+                    <div class="msg-header-img">
+                        <img src={{task.photoProvider}}>
+                    </div>
+                    <div class="active">
+                        <h4>{{task.provider_name}}</h4>
+                    </div>
+                </div>
+                <div class="chat-page">
+                    <div class="msg-inbox">
+                        <div class="chats">
+                            <div class=" msg-page">
 
-    </div>
+                                <div *ngFor="let message of messagesList">
 
-    <div class="container">
-        <div class="msg-header">
-            <div class="msg-header-img">
-                <img src={{task.photoProvider}}>
-            </div>
-            <div class="active">
-                <h4>{{task.provider_name}}</h4>
-            </div>
-        </div>
-        <div class="chat-page">
-            <div class="msg-inbox">
-                <div class="chats">
-                    <div class=" msg-page">
+                                    <div class="received-chats " *ngIf="user.partner_id !=  message.author_id ">
 
-                        <div *ngFor="let message of messagesList">
+                                        <div class="received-chats-img">
+                                            <img src={{task.photoProvider}}>
+                                        </div>
 
-                            <div class="received-chats " *ngIf="user.partner_id !=  message.author_id ">
+                                        <div class="received-msg-inbox">
+                                            <p>{{ message.message }}</p>
+                                            <!-- <span class="time">11:01 PM</span> -->
 
-                                <div class="received-chats-img">
-                                    <img src={{task.photoProvider}}>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="outgoing-chats" *ngIf="user.partner_id ==  message.author_id ">
+
+                                        <div class="outgoing-chats-img">
+                                            <img src={{user.avatar}}>
+                                        </div>
+
+                                        <div class="outgoing-chats-msg">
+                                            <p>{{ message.message }}</p>
+                                            <!-- <span class="time">11:01 PM</span> -->
+                                        </div>
+                                    </div>
+
+
                                 </div>
 
-                                <div class="received-msg-inbox">
-                                    <p>{{ message.message }}</p>
-                                    <!-- <span class="time">11:01 PM</span> -->
-
-                                </div>
                             </div>
-
-
-                            <div class="outgoing-chats" *ngIf="user.partner_id ==  message.author_id ">
-
-                                <div class="outgoing-chats-img">
-                                    <img src={{user.avatar}}>
-                                </div>
-
-                                <div class="outgoing-chats-msg">
-                                    <p>{{ message.message }}</p>
-                                    <!-- <span class="time">11:01 PM</span> -->
-                                </div>
-                            </div>
-
 
                         </div>
 
                     </div>
 
                 </div>
+                <div class="msg-bottom">
 
-            </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Escriba su mensaje..." [(ngModel)]="enter"
+                            (keyup)="onKeyUpMaterial($event)">
 
-        </div>
-        <div class="msg-bottom">
-            <div class="bottom-icons">
-                <i class="fa fa-plus-circle"></i>
-            </div>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Escriba su mensaje..." [(ngModel)]="enter"
-                    (keyup)="onKeyUpMaterial($event)">
+                        <div class="input-group-append">
+                            <span class="input-group-text" (click)='sendMessage()'><i class="fa fa-paper-plane"></i>
+                            </span>
+                        </div>
 
-                <div class="input-group-append">
-                    <span class="input-group-text" (click)='sendMessage()'><i class="fa fa-paper-plane"></i> </span>
+                    </div>
+
                 </div>
-
             </div>
-
         </div>
+
     </div>
 </div>

@@ -73,7 +73,6 @@ export class NavbarGremioComponent implements OnInit {
 	ngOnInit() {
 		this.route.queryParams.subscribe((params) => {
 			this.tabActive = params.tab;
-			console.log(params, 'this.tabActive');
 
 			if (params.tab) {
 				switch (this.tabActive) {

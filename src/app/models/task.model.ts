@@ -43,7 +43,8 @@ export class TaskModel {
 	client_name: string;
 	provider_id: number;
 	provider_name: string;
-	budget: number;
+	workForce: number;
+	materials: number;
 	origin: string;
 	date_planned: string;
 	date: string;
@@ -74,7 +75,8 @@ export class TaskModel {
 		client_name: string = '',
 		provider_id: number = 0,
 		provider_name: string = '',
-		budget: number = 0,
+		workForce: number = 0,
+		materials: number = 0,
 		origin: string = '',
 		date_planned: string = '',
 		date: string = '',
@@ -104,7 +106,8 @@ export class TaskModel {
 		this.client_name = client_name;
 		this.provider_id = provider_id;
 		this.provider_name = provider_name;
-		this.budget = budget;
+		this.workForce = workForce;
+		this.materials = materials;
 		this.origin = origin;
 		this.date_planned = date_planned;
 		this.date = date;

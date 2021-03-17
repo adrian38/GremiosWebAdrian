@@ -4,8 +4,8 @@ import { Observable, Subject } from 'rxjs';
 let jayson = require('../../../node_modules/jayson/lib/client/');
 let jaysonServer = {
 	//host: '192.168.0.102',
-	//host: '192.168.0.106',
-	host: 'todoenunapp.com',
+	host: '192.168.0.106',
+	//host: 'todoenunapp.com',
 
 	port: '8069',
 	db: 'demo',
@@ -125,10 +125,10 @@ export class AuthOdooService {
 
 					if (value[0].classification === 'custumer') {
 						usuario.type = 'client';
-						console.log('cliente');
+						//console.log('cliente');
 					} else if (value[0].classification === 'vendor') {
 						usuario.type = 'provider';
-						console.log('proveedor');
+						//console.log('proveedor');
 					}
 					search_partner_fields(usuario.id);
 				}
@@ -223,14 +223,13 @@ export class AuthOdooService {
 			},
 			function(err, error, value) {
 				if (err || !value) {
-					console.log('Login Failed');
-					console.log(err);
+					//console.log('Login Failed');
+					console.log(err, 'Login Failed');
 					usuario.connected = false;
 					userLogin = usuario;
 					user$.next(userLogin);
 				} else {
-					console.log('Connected');
-
+					//console.log('Connected');
 					get_user(value);
 				}
 			}

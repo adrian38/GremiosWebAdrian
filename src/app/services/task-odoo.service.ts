@@ -105,67 +105,6 @@ export class TaskOdooService {
 		return notificationNewMessg$.asObservable();
 	}
 
-	createSOattachment(binarybuffer) {
-		let create_SO_attachment = function() {
-			console.log(jaysonServer);
-			console.log(binarybuffer);
-
-			let attachement = {
-				name: 'test logo6.jpg',
-				datas: binarybuffer,
-				type: 'binary',
-				description: 'test logo6.jpg',
-				res_model: 'purchase.order',
-				res_id: 146
-			};
-			let inParams = [];
-			inParams.push(attachement);
-
-			let params = [];
-			params.push(inParams);
-
-			let fparams = [];
-			fparams.push(jaysonServer.db);
-			fparams.push(user.id);
-			fparams.push(jaysonServer.password);
-			fparams.push('ir.attachment'); //model
-			fparams.push('create'); //method
-
-			for (let i = 0; i < params.length; i++) {
-				fparams.push(params[i]);
-			}
-
-			client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function(
-				err,
-				error,
-				value
-			) {
-				if (err || !value) {
-					console.log(err, 'Error create_SO_attachment');
-				} else {
-					console.log(value, 'create_SO_attachment');
-				}
-			});
-		};
-		let client = jayson.http({ host: jaysonServer.host, port: jaysonServer.port + jaysonServer.pathConnection });
-		client.request(
-			'call',
-			{
-				service: 'common',
-				method: 'login',
-				args: [ jaysonServer.db, jaysonServer.username, jaysonServer.password ]
-			},
-			function(err, error, value) {
-				if (err || !value) {
-					console.log(err, 'Error conextion create_SO_attachment');
-					//notificationError$.next(true);
-				} else {
-					create_SO_attachment();
-				}
-			}
-		);
-	}
-
 	notificationPull() {
 		let id_po = [];
 		let id_po_offert = [];
@@ -418,6 +357,38 @@ export class TaskOdooService {
 	newTask(task: TaskModel) {
 		let count: number;
 
+		let cancelSOclientSelected = function(SO_id: number) {
+			let inParams = [];
+			inParams.push([ SO_id ]);
+			let params = [];
+			params.push(inParams);
+
+			let fparams = [];
+			fparams.push(jaysonServer.db);
+			fparams.push(user.id);
+			fparams.push(jaysonServer.password);
+			fparams.push('sale.order'); //model
+			fparams.push('action_cancel'); //method
+
+			for (let i = 0; i < params.length; i++) {
+				fparams.push(params[i]);
+			}
+
+			client.request('call', { service: 'object', method: 'execute_kw', args: fparams }, function(
+				err,
+				error,
+				value
+			) {
+				if (err || !value) {
+					console.log(err, 'Error cancelSOclientSelected');
+				} else {
+					console.log('Exito eliminando SO');
+
+					notificationError$.next(true);
+				}
+			});
+		};
+
 		let confirmService = function(SO_id: number) {
 			let inParams = [];
 			inParams.push(SO_id);
@@ -484,6 +455,7 @@ export class TaskOdooService {
 			) {
 				if (err || !value) {
 					console.log(err, 'Error create_SO_attachment');
+					cancelSOclientSelected(SO_id);
 				} else {
 					console.log(value, 'create_SO_attachment');
 					count--;
@@ -883,12 +855,14 @@ export class TaskOdooService {
 			) {
 				if (err) {
 					console.log(err, 'Error search_avatar_provider');
-				} else {
+				} else if (value) {
 					console.log(value, 'photo');
 					if (knownTypes[value[0].image_1920[0]]) {
 						tasksList[0].photoProvider = knownTypes[value[0].image_1920[0]] + value[0].image_1920;
 					}
 					console.log(tasksList);
+					task$.next(tasksList);
+				} else {
 					task$.next(tasksList);
 				}
 			});
@@ -1024,7 +998,7 @@ export class TaskOdooService {
 			) {
 				if (err) {
 					console.log(err, 'Error search_avatar_provider');
-				} else {
+				} else if (value) {
 					for (let resId of value) {
 						for (let task of tasksList) {
 							if (task.provider_id === resId.partner_id[0]) {
@@ -1034,6 +1008,8 @@ export class TaskOdooService {
 							}
 						}
 					}
+					tasksList$.next(tasksList);
+				} else {
 					tasksList$.next(tasksList);
 				}
 			});
@@ -1107,7 +1083,7 @@ export class TaskOdooService {
 			) {
 				if (err) {
 					console.log(err, 'Error get_photo_so');
-				} else {
+				} else if (value) {
 					for (let resId of value) {
 						for (let task of tasksList) {
 							if (task.id === resId.res_id) {
@@ -1118,6 +1094,8 @@ export class TaskOdooService {
 						}
 					}
 					///
+					get_po_of_task();
+				} else {
 					get_po_of_task();
 				}
 			});
@@ -1296,7 +1274,6 @@ export class TaskOdooService {
 				if (err) {
 					console.log(err, 'Error get_photo_so');
 				} else {
-					console.log(value);
 					if (value) {
 						for (let resId of value) {
 							for (let task of tasksList) {
@@ -1308,7 +1285,7 @@ export class TaskOdooService {
 							}
 						}
 					}
-					console.log('actualizando tareas');
+
 					tasksList$.next(tasksList);
 				}
 			});
@@ -1588,7 +1565,7 @@ export class TaskOdooService {
 			) {
 				if (err) {
 					console.log(err, 'Error search_avatar_provider');
-				} else {
+				} else if (value) {
 					for (let resId of value) {
 						for (let offer of offersList) {
 							if (offer.provider_id === resId.partner_id[0]) {
@@ -1598,6 +1575,8 @@ export class TaskOdooService {
 							}
 						}
 					}
+					search_comment_provider();
+				} else {
 					search_comment_provider();
 				}
 			});

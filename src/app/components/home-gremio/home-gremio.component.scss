@@ -1,14 +1,28 @@
+.barra {
+	overflow-y: auto;
+	height: 100%;
+}
+.barra ::-webkit-scrollbar {
+	display: none;
+}
+.barra_1 {
+	overflow-y: auto;
+	height: 100%;
+}
+
 .left-container {
 	height: 100vh;
 	position: relative;
 
 	&::before {
 		content: '';
-		background-image: url(../../../assets/img/1foto.svg);
+		background-image: url(../../../assets/img/home1.jpg);
 		background-repeat: no-repeat;
+		background-size: cover;
 
+		border-radius: 0 0 100px 0;
 		height: 50vh;
-		background-size: contain;
+
 		position: absolute;
 		width: 100%;
 		height: 100%;

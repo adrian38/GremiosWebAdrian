@@ -275,8 +275,8 @@ export class DashboardGremioComponent implements OnInit {
 					this.historialList = temp;
 				}
 
-				//console.log(this.solicitudesList);
-				console.log(this.contratadosList);
+				console.log(this.solicitudesList);
+				//console.log(this.contratadosList);
 				this.isLoading = false;
 			});
 		});

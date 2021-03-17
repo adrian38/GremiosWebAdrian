@@ -1,4 +1,16 @@
 @import '../../../assets/mystyle.scss';
+.barra {
+	overflow-y: auto;
+	height: 100%;
+}
+.barra ::-webkit-scrollbar {
+	display: none;
+}
+.barra_1 {
+	overflow-y: auto;
+	height: 100%;
+}
+
 .view-container {
 	padding: 50px 0;
 
