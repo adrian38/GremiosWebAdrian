@@ -109,7 +109,7 @@ export class DashboardGremioComponent implements OnInit {
 			this.offersList$ = this._taskOdoo.getOffers$();
 			this.subscriptionOffersList = this.offersList$.subscribe((offersList) => {
 				this.ngZone.run(() => {
-					if (offersList[0].budget === 0) {
+					if (offersList[0].workForce === 0) {
 						this.messageService.add({
 							severity: 'error',
 							summary: 'Disculpe',

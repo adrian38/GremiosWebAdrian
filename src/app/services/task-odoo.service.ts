@@ -1673,7 +1673,17 @@ export class TaskOdooService {
 			product_id: 16,
 			product_uom: 1,
 			product_qty: 1,
-			price_unit: offer.budget,
+			price_unit: offer.workForce,
+			date_planned: offer.date_planned,
+			order_id: offer.id
+		};
+
+		let POline_Material = {
+			name: 'Presupuesto_Material',
+			product_id: 41,
+			product_uom: 1,
+			product_qty: 1,
+			price_unit: offer.materials,
 			date_planned: offer.date_planned,
 			order_id: offer.id
 		};
@@ -1706,7 +1716,7 @@ export class TaskOdooService {
 				}
 			});
 		};
-		let addLinePO = function() {
+		let addLinePO = function(POline: any) {
 			console.log(POline);
 
 			let inParams = [];
@@ -1731,8 +1741,12 @@ export class TaskOdooService {
 				if (err || !value) {
 					console.log(err, 'Error addLinePO');
 				} else {
-					console.log(value);
-					acept_PO();
+					if (offer.materials !== 0) {
+						offer.materials = 0;
+						addLinePO(POline_Material);
+					} else {
+						acept_PO();
+					}
 				}
 			});
 		};
@@ -1750,7 +1764,7 @@ export class TaskOdooService {
 					console.log(err, 'Error sendOffer');
 				} else {
 					console.log(value);
-					addLinePO();
+					addLinePO(POline);
 				}
 			}
 		);
